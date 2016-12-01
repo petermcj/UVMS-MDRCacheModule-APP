@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+    <artifactId>mdr</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Maven project-archetype for UnionVms modules</description>
+
+    <developers>
+        <developer>
+            <name>Andi Kovi</name>
+            <email>andi.kovi@cegeka.be</email>
+        </developer>
+    </developers>
+
+    <properties>
+
+        <!-- sonar -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/target/coverage-reports/jacoco-unit.exec</sonar.jacoco.reportPath>
+        <sonar.language>java</sonar.language>
+
+        <!-- The MDR name is used as a common point to rename the application alias visible in USM-->
+        <mdr.name>MDR Cache</mdr.name>
+        <mdr.model.version>0.5.0-SNAPSHOT</mdr.model.version>
+
+        <!-- Core versions -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <javaee.version>7.0</javaee.version>
+        <sl4j.version>1.7.12</sl4j.version>
+        <logback.version>1.1.2</logback.version>
+
+        <!-- Other modules dependencies -->
+        <exchange.model>2.0.8</exchange.model>
+        <rules.model>2.0.7</rules.model>
+
+        <mapstruct.version>1.0.0.Final</mapstruct.version>
+        <jackson.version>2.7.3</jackson.version>
+        <logback.core.version>1.1.2</logback.core.version>
+        <asset.model.version>2.0.0</asset.model.version>
+        <movement.model.version>2.0.0</movement.model.version>
+        <application.name>${project.parent.artifactId}</application.name>
+        <application.version>${project.parent.version}</application.version>
+        <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log
+        </application.logfile>
+        <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log
+        </application.error.logfile>
+        <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log
+        </application.logfile.boot>
+        <geotools.version>14-M1</geotools.version>
+        <uvms.commons.version>2.0.13-SNAPSHOT</uvms.commons.version>
+        <uvms.test.version>0.0.3</uvms.test.version>
+        <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+        <hibernate-search-orm.version>5.5.5.Final</hibernate-search-orm.version>
+        <hibernate-entitymanager.version>5.2.5.Final</hibernate-entitymanager.version>
+        <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
+        <usm4uvms.version>2.0.16</usm4uvms.version>
+        <usm_deployment_descriptor_force_update>false</usm_deployment_descriptor_force_update>
+        <release.branch.name>uvms-1.0.0</release.branch.name>
+        <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
+        <maven.scm.provider.version>2.1.1</maven.scm.provider.version>
+        <database.dialect>oracle</database.dialect>
+        <geotools.version>14-M1</geotools.version>
+        <movement.model.version>2.0.0</movement.model.version>
+        <spatial.model.version>0.5.4</spatial.model.version>
+        <mave.plugin.api.version>2.0</mave.plugin.api.version>
+        <reasteasy.version>3.0.11.Final</reasteasy.version>
+
+        <lucene.index.directory>/app/indexes/mdr</lucene.index.directory>
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- Model dependencies -->
+
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
+                <artifactId>mdr-model</artifactId>
+                <version>${mdr.model.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
+                <artifactId>exchange-model</artifactId>
+                <version>${exchange.model}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
+                <artifactId>rules-model</artifactId>
+                <version>${rules.model}</version>
+            </dependency>
+
+            <!-- Inner dependencies -->
+
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>message</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <!-- Common libraries dependencies -->
+
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms</groupId>
+                <artifactId>uvms-commons</artifactId>
+                <version>${uvms.commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms</groupId>
+                <artifactId>uvms-test</artifactId>
+                <version>${uvms.test.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>eu.europa.ec.fisheries.uvms</groupId>
+                <artifactId>usm4uvms</artifactId>
+                <version>${usm4uvms.version}</version>
+            </dependency>
+
+            <!-- Other dependencies -->
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <!--HIBERNATE SEARCH-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search-orm</artifactId>
+                <version>${hibernate-search-orm.version}</version>
+            </dependency>
+            <!-- If using JPA, add: -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${javaee.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxb-provider</artifactId>
+                <version>3.0.11.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ojdbc</groupId>
+                <artifactId>ojdbc</artifactId>
+                <version>14</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wololo</groupId>
+                <artifactId>jts2geojson</artifactId>
+                <version>0.7.0</version>
+            </dependency>
+
+            <!-- don't delete needed for org.wololo -->
+            <dependency>
+                <groupId>com.vividsolutions</groupId>
+                <artifactId>jts</artifactId>
+                <version>1.13</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Infinispan integration: -->
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-directory-provider</artifactId>
+                <version>${infinispan-directory-provider.version}</version>
+            </dependency>
+
+            <!-- Reast related dependencies -->
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jaxb-provider</artifactId>
+                <version>${reasteasy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-multipart-provider</artifactId>
+                <version>${reasteasy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>jaxrs-api</artifactId>
+                <version>${reasteasy.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- LOGGING DEPENDENCIES -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${sl4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.core.version}</version>
+        </dependency>
+    </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>digit-releases</id>
+            <name>DG DIGIT Repository</name>
+            <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/mare/</url>
+        </repository>
+        <snapshotRepository>
+            <id>digit-snapshots</id>
+            <name>DG DIGIT Snapshot Repository</name>
+            <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/mare-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <scm>
+        <connection>scm:git:https://emkoviand@webgate.ec.europa.eu/CITnet/stash/scm/unionvms/uvms-mdr-module.git</connection>
+        <developerConnection>scm:git:https://emkoviand@webgate.ec.europa.eu/CITnet/stash/scm/unionvms/uvms-mdr-module.git</developerConnection>
+        <url>https://emsanerac@webgate.ec.europa.eu/CITnet/stash/scm/unionvms/</url>
+    </scm>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.0.4</version>
+                    <executions>
+                        <execution>
+                            <!-- This id must match the -Prelease-profile id value or else sources will be "uploaded" twice, which causes Nexus to fail -->
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.4</version>
+                <configuration>
+                    <goalPrefix>plugin</goalPrefix>
+                    <outputDirectory>target/dir</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.sonar-plugins.java</groupId>
+                <artifactId>sonar-java-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*ITest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.6.201602180812</version>
+                <configuration>
+                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+                        <artifactId>maven-scm-provider-svnjava</artifactId>
+                        <version>${maven.scm.provider.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <tagNameFormat>${project.artifactId}-${project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- add repositories for JTS and Hibernate Spatial and Hibernate (JBoss) -->
+    <repositories>
+        <repository>
+            <id>OSGEO GeoTools repo</id>
+            <url>http://download.osgeo.org/webdav/geotools</url>
+        </repository>
+        <repository>
+            <id>Hibernate Spatial Repo</id>
+            <url>http://nexus.e-is.pro/nexus/content/repositories/hibernatespatial/</url>
+        </repository>
+        <!--<repository>
+            <id>Hibernate Spatial repo</id>
+            <url>http://www.hibernatespatial.org/repository</url>
+        </repository>-->
+        <!-- add JBOSS repository for easy access to Hibernate libraries -->
+        <repository>
+            <id>JBOSS</id>
+            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>postgres</id>
+            <properties>
+                <database.dialect>postgres</database.dialect>
+                <!-- the record -->
+            </properties>
+        </profile>
+    </profiles>
+    <modules>
+        <!-- <module>model</module>-->
+        <module>rest</module>
+        <module>service</module>
+        <module>message</module>
+        <module>deploy</module>
+    </modules>
+</project>
