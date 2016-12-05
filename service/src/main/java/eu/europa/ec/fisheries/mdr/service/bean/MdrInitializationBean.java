@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.ActivityConfiguration;
+import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
@@ -86,7 +86,7 @@ public class MdrInitializationBean {
         // 3. Setting up the scheduler timer for MDR synchronization at start up.
         log.info("\n\n\t\t3. Starting up MDR Synchronization Scheduler Initialization..\n");
         // Get the scheduler config from DB;
-        ActivityConfiguration storedMdrSchedulerConfig = mdrRepository.getMdrSchedulerConfiguration();
+        MdrConfiguration storedMdrSchedulerConfig = mdrRepository.getMdrSchedulerConfiguration();
 
         // 4. Setting up the scheduler timer for MDR synchronization at start up.
         try {

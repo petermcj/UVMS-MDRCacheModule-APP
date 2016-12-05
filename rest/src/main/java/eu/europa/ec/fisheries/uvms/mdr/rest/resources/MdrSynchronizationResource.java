@@ -171,7 +171,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     }
 
     /**
-     * Saves the given cronConfigStr to the ActivityConfiguration Table.
+     * Saves the given cronConfigStr to the MdrConfiguration Table.
      *
      * @param request
      * @param cronConfigStr

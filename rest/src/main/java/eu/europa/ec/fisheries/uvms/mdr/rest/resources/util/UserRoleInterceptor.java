@@ -31,7 +31,7 @@ import java.io.Serializable;
 
 @IUserRoleInterceptor
 @Interceptor
-@Priority(Interceptor.Priority.APPLICATION)
+@Priority(2000)
 public class UserRoleInterceptor implements Serializable {
 
     @Context

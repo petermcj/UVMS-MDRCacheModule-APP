@@ -21,6 +21,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /***
@@ -29,7 +30,9 @@ import java.util.List;
 @Slf4j
 public class MdrBulkOperationsDao {
 
+    @PersistenceContext(unitName = "mdrPU")
     private EntityManager em;
+
     private static final String HQL_DELETE = "DELETE FROM ";
 
     /**

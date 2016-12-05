@@ -7,12 +7,13 @@
 <persistence-unit name="mdrPU" transaction-type="JTA">
 
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <jta-data-source>java:jboss/datasources/uvms_activity</jta-data-source>
+    <jta-data-source>java:jboss/datasources/uvms_mdr</jta-data-source>
 
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
-        <property name="hibernate.default_schema" value="activity"/>
-<!-- Decomment when generation of new SQL scripts for Mdr table creation is needed. -->
+        <property name="hibernate.default_schema" value="mdr"/>
+
+        <!-- Decomment when generation of new SQL scripts for Mdr table creation is needed. -->
         <!--<property name="javax.persistence.schema-generation.scripts.action"        value="drop-and-create"/>-->
         <!--<property name="javax.persistence.schema-generation.scripts.drop-target"   value="drop-table.ddl"/>-->
         <!--<property name="javax.persistence.schema-generation.create-source"         value="metadata"/>-->
@@ -22,13 +23,9 @@
         <property name="format_sql" value="false" />
         <property name="use_sql_comments" value="true" />
 
-
         <!--HIBERNATE SEARCH PROPS-->
-        <property name="hibernate.search.default.directory_provider"
-                  value="filesystem"/>
-
-        <property name="hibernate.search.default.indexBase"
-                  value="${lucene.index.directory}"/>
+        <property name="hibernate.search.default.directory_provider"  value="filesystem"/>
+        <property name="hibernate.search.default.indexBase"  value="${lucene.index.directory}"/>
     </properties>
 
 </persistence-unit>

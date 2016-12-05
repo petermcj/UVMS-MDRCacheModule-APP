@@ -8,26 +8,18 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
  */
-package eu.europa.ec.fisheries.uvms.mdr.message;
+package eu.europa.ec.fisheries.uvms.mdr.message.event;
 
-import eu.europa.ec.fisheries.uvms.mdr.message.exception.MdrMessageException;
-import eu.europa.ec.fisheries.uvms.mdr.message.constants.ModuleQueue;
+import javax.inject.Qualifier;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import javax.ejb.Local;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.jms.TextMessage;
-
-
-@Local
-public interface MdrMessageProducer {
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	String sendAssetsModuleSynchronousMessage(String text) throws MdrMessageException;
-
-	void sendMessageBackToRecipient(TextMessage requestMessage, String returnMessage) throws MdrMessageException;
-
-	String sendModuleMessage(String text, ModuleQueue queue) throws MdrMessageException;
-
-	String sendRulesModuleMessage(String strReqObj) throws MdrMessageException;
-}
+/**
+ * Created by kovian on 02/12/2016.
+ */
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface MdrSyncMessageEvent {}

@@ -12,7 +12,7 @@ package eu.europa.ec.fisheries.mdr.service.bean;
 
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.ActivityMdrEventService;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetFLUXFMDRSyncMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
@@ -27,7 +27,7 @@ import javax.jms.JMSException;
 
 /**
  *  Observer class listening to events fired from MessageConsumerBean (Activity).
- *  Specifically to GetFLUXFMDRSyncMessageEvent event type.
+ *  Specifically to MdrSyncMessageEvent event type.
  *  The message will contain the MDR Entity to be synchronised (As Flux XML Type at this moment).
  *  
  *  Using the MdrRepository the Entity in question will be stored in the Cache DB.
@@ -41,7 +41,7 @@ public class ActivityMdrEventServiceBean implements ActivityMdrEventService {
 	private MdrRepository mdrRepository;
 	
 	@Override
-	public void recievedSyncMdrEntityMessage(@Observes @GetFLUXFMDRSyncMessageEvent EventMessage message){
+	public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message){
 		log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
 		// Extract message from EventMessage Object
 		try {

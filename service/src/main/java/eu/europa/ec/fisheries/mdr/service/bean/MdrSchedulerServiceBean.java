@@ -9,7 +9,7 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.ActivityConfiguration;
+import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
@@ -62,7 +62,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
      */
     @Override
     public String getActualSchedulerConfiguration(){
-        ActivityConfiguration mdrSynch = mdrRepository.getMdrSchedulerConfiguration();
+        MdrConfiguration mdrSynch = mdrRepository.getMdrSchedulerConfiguration();
         return mdrSynch.getConfigValue();
     }
 
