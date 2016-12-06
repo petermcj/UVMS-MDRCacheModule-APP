@@ -10,14 +10,14 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service;
 
-import javax.ejb.Local;
-import javax.enterprise.event.Observes;
-
 import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 
+import javax.ejb.Local;
+import javax.enterprise.event.Observes;
+
 @Local
-public interface ActivityMdrEventService {
+public interface MdrEventService {
 
 	void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message);
 

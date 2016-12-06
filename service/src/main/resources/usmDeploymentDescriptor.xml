@@ -34,76 +34,14 @@
         <feature>
             <name>MANAGE_ADMIN_CONFIGURATIONS</name>
             <description>Allows you to view/update activity configurations located under the Admin tab</description>
-            <group>${mdr.name}</group>
+            <group>MDR</group>
         </feature>
 
         <feature>
             <name>MDR_SEARCH_CODE_LIST_ITEMS</name>
             <description>Allows the user to use the Lucene based MDR search API</description>
-            <group>${mdr.name}</group>
+            <group>MDR</group>
         </feature>
-
-        <option>
-            <name>DEFAULT_CONFIG</name>
-            <description>Default map configuation settings</description>
-            <dataType>TEXT</dataType>
-            <defaultValue>{
-                    "fishingActivityConfig": {
-                        "summaryReport": {
-                            "values": [
-                                "FAReportType",
-                                "activityType",
-                                "occurrence",
-                                "purposeCode",
-                                "dataSource",
-                                "fromName",
-                                "startDate",
-                                "endDate",
-                                "cfr",
-                                "ircs",
-                                "extMark",
-                                "uvi",
-                                "iccat",
-                                "gfcm",
-                                "areas",
-                                "port",
-                                "fishingGear",
-                                "speciesCode",
-                                "quantity"
-                            ],
-                            "order": [
-                                "FAReportType",
-                                "activityType",
-                                "occurrence",
-                                "purposeCode",
-                                "dataSource",
-                                "fromName",
-                                "startDate",
-                                "endDate",
-                                "cfr",
-                                "ircs",
-                                "extMark",
-                                "uvi",
-                                "iccat",
-                                "gfcm",
-                                "areas",
-                                "port",
-                                "fishingGear",
-                                "speciesCode",
-                                "quantity"
-                            ]
-                        }
-                    }
-                }
-            </defaultValue>
-        </option>
-
-        <option>
-            <name>USER_CONFIG</name>
-            <description>Default map configuation settings</description>
-            <dataType>TEXT</dataType>
-            <defaultValue></defaultValue>
-        </option>
 
     </application>
 </ns2:deployApplicationRequest>

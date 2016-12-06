@@ -31,5 +31,4 @@ public class MdrInitializerBean extends AbstractModuleInitializerBean {
         return true;
     }
 
-
 }

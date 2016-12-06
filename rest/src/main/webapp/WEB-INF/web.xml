@@ -20,6 +20,6 @@
  	</filter-mapping>
  	<context-param>
  		<param-name>usmApplication</param-name>
- 		<param-value>mdr</param-value>
+ 		<param-value>${mdr.name}</param-value>
  	</context-param>
 </web-app>
