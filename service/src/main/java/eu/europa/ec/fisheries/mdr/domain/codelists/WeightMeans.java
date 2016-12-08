@@ -15,10 +15,12 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.search.annotations.Indexed;
-import un.unece.uncefact.data.standard.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+//import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 /**
  * Created by kovian on 11/22/2016.

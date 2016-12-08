@@ -17,7 +17,7 @@ import eu.europa.ec.fisheries.mdr.util.ClassFinder;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
-import un.unece.uncefact.data.standard.response.*;
+import un.unece.uncefact.data.standard.mdr.response.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;

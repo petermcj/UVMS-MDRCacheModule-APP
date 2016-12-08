@@ -14,7 +14,7 @@ import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import un.unece.uncefact.data.standard.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 
 import javax.ejb.Local;
 import java.util.List;

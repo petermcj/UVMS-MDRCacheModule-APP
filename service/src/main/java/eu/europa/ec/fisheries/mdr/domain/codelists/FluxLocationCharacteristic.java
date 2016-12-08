@@ -15,7 +15,7 @@ import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import un.unece.uncefact.data.standard.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;;

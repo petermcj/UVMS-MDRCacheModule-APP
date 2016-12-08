@@ -11,9 +11,9 @@
  *
  */
 
-package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
+package eu.europa.ec.fisheries.uvms.activity.rest.resources.util;
 
-import un.unece.uncefact.data.standard.communication.MdrFeaturesEnum;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;

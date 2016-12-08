@@ -16,7 +16,7 @@ import eu.europa.ec.fisheries.schema.rules.module.v1.SetFLUXMDRSyncMessageRulesR
 import eu.europa.ec.fisheries.uvms.exchange.model.exception.ExchangeModelMarshallException;
 import eu.europa.ec.fisheries.uvms.exchange.model.mapper.JAXBMarshaller;
 import org.joda.time.DateTime;
-import un.unece.uncefact.data.standard.query.*;
+import un.unece.uncefact.data.standard.mdr.query.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

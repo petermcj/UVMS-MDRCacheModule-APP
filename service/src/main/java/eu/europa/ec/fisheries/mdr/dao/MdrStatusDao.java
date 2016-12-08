@@ -20,8 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import un.unece.uncefact.data.standard.response.DataSetVersionType;
-import un.unece.uncefact.data.standard.response.MDRDataSetType;
+import un.unece.uncefact.data.standard.mdr.response.DataSetVersionType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

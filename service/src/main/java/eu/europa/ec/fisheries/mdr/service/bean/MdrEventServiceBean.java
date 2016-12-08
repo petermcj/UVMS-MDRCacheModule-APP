@@ -17,8 +17,8 @@ import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import lombok.extern.slf4j.Slf4j;
-import un.unece.uncefact.data.standard.communication.SetFLUXMDRSyncMessageResponse;
-import un.unece.uncefact.data.standard.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.communication.SetFLUXMDRSyncMessageResponse;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

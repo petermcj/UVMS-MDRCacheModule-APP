@@ -32,10 +32,10 @@ import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import un.unece.uncefact.data.standard.response.FLUXMDRReturnMessage;
-import un.unece.uncefact.data.standard.response.FLUXResponseDocumentType;
-import un.unece.uncefact.data.standard.response.IDType;
-import un.unece.uncefact.data.standard.response.MDRDataSetType;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
+import un.unece.uncefact.data.standard.mdr.response.IDType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;

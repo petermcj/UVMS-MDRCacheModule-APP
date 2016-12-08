@@ -11,7 +11,7 @@
  *
  */
 
-package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
+package eu.europa.ec.fisheries.uvms.activity.rest.resources.util;
 
 /**
  * Created by padhyad on 8/17/2016.
@@ -19,7 +19,7 @@ package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
 
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.rest.constants.ErrorCodes;
-import un.unece.uncefact.data.standard.communication.MdrFeaturesEnum;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;

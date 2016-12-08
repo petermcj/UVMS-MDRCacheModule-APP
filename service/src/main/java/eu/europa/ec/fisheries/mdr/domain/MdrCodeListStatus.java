@@ -76,7 +76,7 @@ public class MdrCodeListStatus extends BaseEntity {
     @Convert(converter = CharBooleanConverter.class)
     private Boolean schedulable;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mdrCodeListStatus", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "mdrCodeListStatus", cascade = CascadeType.ALL)
     private Set<AcronymVersion> versions;
 
     public MdrCodeListStatus(){super();}

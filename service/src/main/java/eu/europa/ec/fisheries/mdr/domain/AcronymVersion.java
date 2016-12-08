@@ -22,7 +22,7 @@ public class AcronymVersion extends BaseEntity {
     @Embedded
     private DateRange validity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_ref_id", nullable = false)
     //@Cascade(CascadeType.ALL)
     private MdrCodeListStatus mdrCodeListStatus;

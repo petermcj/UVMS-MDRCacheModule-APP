@@ -19,7 +19,7 @@ import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import un.unece.uncefact.data.standard.communication.MdrModuleRequest;
+import un.unece.uncefact.data.standard.mdr.communication.MdrModuleRequest;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;

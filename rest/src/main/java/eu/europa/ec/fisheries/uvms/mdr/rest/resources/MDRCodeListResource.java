@@ -16,11 +16,11 @@ package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
+import eu.europa.ec.fisheries.uvms.activity.rest.resources.util.IUserRoleInterceptor;
+import eu.europa.ec.fisheries.uvms.activity.rest.resources.util.MdrExceptionInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
-import un.unece.uncefact.data.standard.communication.MdrFeaturesEnum;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;

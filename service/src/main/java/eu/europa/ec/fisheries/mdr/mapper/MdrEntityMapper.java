@@ -13,8 +13,8 @@ import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.extern.slf4j.Slf4j;
-import un.unece.uncefact.data.standard.response.FLUXMDRReturnMessage;
-import un.unece.uncefact.data.standard.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 import java.util.ArrayList;
 import java.util.List;
