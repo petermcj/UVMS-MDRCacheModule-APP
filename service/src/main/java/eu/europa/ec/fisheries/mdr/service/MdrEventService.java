@@ -8,26 +8,17 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
  */
-package eu.europa.ec.fisheries.uvms.mdr.message;
+package eu.europa.ec.fisheries.mdr.service;
 
-import eu.europa.ec.fisheries.uvms.mdr.message.exception.MdrMessageException;
-import eu.europa.ec.fisheries.uvms.mdr.message.constants.ModuleQueue;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 
 import javax.ejb.Local;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.jms.TextMessage;
-
+import javax.enterprise.event.Observes;
 
 @Local
-public interface MdrMessageProducer {
+public interface MdrEventService {
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	String sendAssetsModuleSynchronousMessage(String text) throws MdrMessageException;
+	void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message);
 
-	void sendMessageBackToRecipient(TextMessage requestMessage, String returnMessage) throws MdrMessageException;
-
-	String sendModuleMessage(String text, ModuleQueue queue) throws MdrMessageException;
-
-	String sendRulesModuleMessage(String strReqObj) throws MdrMessageException;
 }

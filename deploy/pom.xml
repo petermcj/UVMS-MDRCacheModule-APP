@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>activity-model</artifactId>
+            <artifactId>mdr-model</artifactId>
             <version>${mdr.model.version}</version>
             <type>ejb</type>
         </dependency>

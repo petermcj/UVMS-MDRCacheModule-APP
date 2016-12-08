@@ -31,7 +31,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
 
-@Path("/mdr")
+@Path("/service")
 @Slf4j
 @Stateless
 public class MdrSynchronizationResource extends UnionVMSResource {
@@ -171,7 +171,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     }
 
     /**
-     * Saves the given cronConfigStr to the ActivityConfiguration Table.
+     * Saves the given cronConfigStr to the MdrConfiguration Table.
      *
      * @param request
      * @param cronConfigStr

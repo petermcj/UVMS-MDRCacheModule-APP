@@ -45,18 +45,16 @@
         <movement.model.version>2.0.0</movement.model.version>
         <application.name>${project.parent.artifactId}</application.name>
         <application.version>${project.parent.version}</application.version>
-        <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log
-        </application.logfile>
-        <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log
-        </application.error.logfile>
-        <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log
-        </application.logfile.boot>
+        <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log</application.logfile>
+        <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log</application.error.logfile>
+        <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log</application.logfile.boot>
         <geotools.version>14-M1</geotools.version>
         <uvms.commons.version>2.0.13-SNAPSHOT</uvms.commons.version>
         <uvms.test.version>0.0.3</uvms.test.version>
-        <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
-        <hibernate-search-orm.version>5.5.5.Final</hibernate-search-orm.version>
-        <hibernate-entitymanager.version>5.2.5.Final</hibernate-entitymanager.version>
+        <hibernate.validator.version>4.3.2.Final</hibernate.validator.version>
+        <hibernate-search-orm.version>4.5.1.Final</hibernate-search-orm.version>
+        <hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
+        <hibernate-spatial.version>4.3</hibernate-spatial.version>
         <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
         <usm4uvms.version>2.0.16</usm4uvms.version>
         <usm_deployment_descriptor_force_update>false</usm_deployment_descriptor_force_update>
@@ -173,6 +171,13 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
                 <version>${hibernate-entitymanager.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-spatial</artifactId>
+                <version>${hibernate-spatial.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

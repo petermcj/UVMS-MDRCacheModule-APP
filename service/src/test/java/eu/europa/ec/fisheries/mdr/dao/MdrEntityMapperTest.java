@@ -17,10 +17,7 @@ import eu.europa.ec.fisheries.mdr.util.ClassFinder;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
-import un.unece.uncefact.data.standard.response.FLUXMDRReturnMessage;
-import un.unece.uncefact.data.standard.response.MDRDataNodeType;
-import un.unece.uncefact.data.standard.response.MDRDataSetType;
-import un.unece.uncefact.data.standard.response.TextType;
+import un.unece.uncefact.data.standard.response.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -66,22 +63,18 @@ public class MdrEntityMapperTest {
 	}
 
 	private FLUXMDRReturnMessage mockJaxbCodeElementType() {
-
 		FLUXMDRReturnMessage response       = new FLUXMDRReturnMessage();
 		MDRDataSetType mdrListType = new MDRDataSetType();
-
 		MDRDataNodeType codeElemType_1 = new MDRDataNodeType();
-
 		MDRDataNodeType codeElemType_2 = new MDRDataNodeType();
-		
+		IDType idType = new IDType();
+		idType.setValue(entityName);
+		mdrListType.setID(idType);
 		TextType acronym = new TextType();
 		acronym.setValue(entityName);
-		
 		mdrListType.setContainedMDRDataNodes(Arrays.asList(codeElemType_1, codeElemType_2));
 		mdrListType.setName(acronym);
-		
 		response.setMDRDataSet(mdrListType);
-		
 		return response;
 	}
 

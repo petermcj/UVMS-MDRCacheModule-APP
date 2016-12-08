@@ -6,10 +6,10 @@
 
 <persistence-unit name="mdrPU" transaction-type="JTA">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <jta-data-source>java:jboss/datasources/uvms_activity</jta-data-source>
+    <jta-data-source>java:jboss/datasources/uvms_mdr</jta-data-source>
     <properties>
         <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
-        <property name="hibernate.default_schema" value="activity"/>
+        <property name="hibernate.default_schema" value="mdr"/>
         <property name="show_sql" value="false" />
         <property name="format_sql" value="false" />
         <property name="use_sql_comments" value="true" />

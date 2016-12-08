@@ -92,7 +92,7 @@ public class ReflectivelyGetAllClassesOfProjectTest {
 
     @SneakyThrows
     @Test
-    public void TESTiFiTwORKS(){
+    public void testIfItWorks(){
         final List<String> strings = extractAllFilesPaths("C:\\GIT Repository\\activity-trunk\\uvms-activity-app", new ArrayList<String>());
         System.out.print("OK");
     }

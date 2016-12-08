@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.dao;
 
-import eu.europa.ec.fisheries.mdr.domain.ActivityConfiguration;
+import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.service.AbstractDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +23,11 @@ import java.util.List;
  * Created by kovian on 17/08/2016.
  */
 @Slf4j
-public class MdrConfigurationDao extends AbstractDAO<ActivityConfiguration> {
+public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
 
     private EntityManager em;
     
-    private static final String SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ = "from ActivityConfiguration where configName = ";
+    private static final String SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ = "from MdrConfiguration where configName = ";
     private static final String SCHEDULER_CONFIG_NAME               = "MDR_SCHED_CONFIG_NAME";
 
     public MdrConfigurationDao(EntityManager em) {
@@ -39,15 +39,15 @@ public class MdrConfigurationDao extends AbstractDAO<ActivityConfiguration> {
         return em;
     }
     
-    public List<ActivityConfiguration> findAllConfigurations() throws ServiceException {
-        return findAllEntity(ActivityConfiguration.class);
+    public List<MdrConfiguration> findAllConfigurations() throws ServiceException {
+        return findAllEntity(MdrConfiguration.class);
     }
 
-    public ActivityConfiguration findConfiguration(String configName){
-    	ActivityConfiguration configEntry      = null;
-        List<ActivityConfiguration> configList = null;
+    public MdrConfiguration findConfiguration(String configName){
+    	MdrConfiguration configEntry      = null;
+        List<MdrConfiguration> configList = null;
         try {
-            configList = findEntityByHqlQuery(ActivityConfiguration.class, SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ + "'"+configName+"'");
+            configList = findEntityByHqlQuery(MdrConfiguration.class, SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ + "'"+configName+"'");
             if(CollectionUtils.isNotEmpty(configList)){
                 configEntry =  configList.get(0);
             } else {
@@ -59,16 +59,16 @@ public class MdrConfigurationDao extends AbstractDAO<ActivityConfiguration> {
         return configEntry;
     }
     
-    public ActivityConfiguration getMdrSchedulerConfiguration(){
+    public MdrConfiguration getMdrSchedulerConfiguration(){
     	return findConfiguration(SCHEDULER_CONFIG_NAME);
     }
     
     public void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException{
-    	ActivityConfiguration newConfig = getMdrSchedulerConfiguration();
+    	MdrConfiguration newConfig = getMdrSchedulerConfiguration();
         if(newConfig != null){
             newConfig.setConfigValue(newCronExpression);
         } else {
-            ActivityConfiguration newToSaveConfig = new ActivityConfiguration(SCHEDULER_CONFIG_NAME, newCronExpression);
+            MdrConfiguration newToSaveConfig = new MdrConfiguration(SCHEDULER_CONFIG_NAME, newCronExpression);
             saveOrUpdateEntity(newToSaveConfig);
         }
 

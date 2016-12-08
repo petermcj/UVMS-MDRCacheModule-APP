@@ -64,7 +64,7 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
 
    
     protected String getSchema() {
-        return "activity";
+        return "mdr";
     }
     protected String getPersistenceUnitName() {
         return "testPU";

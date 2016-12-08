@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.repository;
 
-import eu.europa.ec.fisheries.mdr.domain.ActivityConfiguration;
+import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
@@ -30,9 +30,9 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
-    List<ActivityConfiguration> getAllConfigurations() throws ServiceException;
+    List<MdrConfiguration> getAllConfigurations() throws ServiceException;
 
-	ActivityConfiguration getConfigurationByName(String vonfigName);
+	MdrConfiguration getConfigurationByName(String vonfigName);
 
 	List<MdrCodeListStatus> findAllStatuses() throws ServiceException;
 
@@ -40,7 +40,7 @@ public interface MdrRepository {
 
 	void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException;
 
-	ActivityConfiguration getMdrSchedulerConfiguration();
+	MdrConfiguration getMdrSchedulerConfiguration();
 	
 	List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(String acronym, Integer offset, Integer pageSize, String sortBy, Boolean isReversed, String filter, String searchAttributes) throws ServiceException;
 

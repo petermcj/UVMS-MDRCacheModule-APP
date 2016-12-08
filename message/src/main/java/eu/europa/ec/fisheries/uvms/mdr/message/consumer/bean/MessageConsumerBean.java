@@ -12,8 +12,8 @@ package eu.europa.ec.fisheries.uvms.mdr.message.consumer.bean;
 
 
 import eu.europa.ec.fisheries.uvms.mdr.message.constants.MdrMessageConstants;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetFLUXFAReportMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetFLUXFMDRSyncMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
@@ -33,29 +33,28 @@ import javax.jms.TextMessage;
 
 
 @MessageDriven(mappedName = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE, activationConfig = {
-    @ActivationConfigProperty(propertyName = "messagingType", propertyValue = MdrMessageConstants.CONNECTION_TYPE),
-    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = MdrMessageConstants.DESTINATION_TYPE_QUEUE),
-    @ActivationConfigProperty(propertyName = "destination", propertyValue = MdrMessageConstants.COMPONENT_MESSAGE_IN_QUEUE_NAME)
+    @ActivationConfigProperty(propertyName = MdrMessageConstants.MESSAGING_TYPE_STR,   propertyValue = MdrMessageConstants.CONNECTION_TYPE),
+    @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_TYPE_STR, propertyValue = MdrMessageConstants.DESTINATION_TYPE_QUEUE),
+    @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_STR,      propertyValue = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE_NAME)
 })
 public class MessageConsumerBean implements MessageListener {
 
     final static Logger LOG = LoggerFactory.getLogger(MessageConsumerBean.class);
 
     @Inject
-    @GetFLUXFAReportMessageEvent
-    Event<EventMessage> getFLUXFAReportMessageEvent;
-        
+    @MdrSyncMessageEvent
+    Event<EventMessage> synMdrListEvent;
+
     @Inject
-    @GetFLUXFMDRSyncMessageEvent
-    Event<EventMessage> getFLUXFMDRSyncMessageEvent;
+    @GetMDRListMessageEvent
+    Event<EventMessage> getMdrListEvent;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void onMessage(Message message) {
-
-        TextMessage textMessage;
+        
         try {
-            textMessage = (TextMessage) message;
+            TextMessage textMessage = (TextMessage) message;
             LOG.info("Message received in activity");
             MdrModuleRequest request = JAXBMarshaller.unmarshallTextMessage(textMessage, MdrModuleRequest.class);
             LOG.info("Message unmarshalled successfully in activity");
@@ -67,21 +66,17 @@ public class MessageConsumerBean implements MessageListener {
                 LOG.error("[ Request method is null ]");
                 return;
             }
-            if(getFLUXFAReportMessageEvent==null){
-                LOG.error("[ getFLUXFAReportMessageEvent is null ]");
-                return;
-            }
-
             switch (request.getMethod()) {
-
-                case GET_FLUX_MDR_ENTITY : 
-                	 getFLUXFMDRSyncMessageEvent.fire(new EventMessage(textMessage));
+                case SYNC_MDR_CODE_LIST :
+                	 synMdrListEvent.fire(new EventMessage(textMessage));
+                     break;
+                case GET_MDR_CODE_LIST :
+                     getMdrListEvent.fire(new EventMessage(textMessage));
                      break;
                 default:
                     LOG.error("[ Request method {} is not implemented ]", request.getMethod().name());
                    // errorEvent.fire(new EventMessage(textMessage, "[ Request method " + request.getMethod().name() + "  is not implemented ]"));
             }
-
         } catch (MdrModelMarshallException | NullPointerException | ClassCastException e) {
             LOG.error("[ Error when receiving message in activity: ] {}", e);
            // errorEvent.fire(new EventMessage(textMessage, "Error when receiving message in movement: " + e.getMessage()));

@@ -8,17 +8,18 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
  */
-package eu.europa.ec.fisheries.mdr.service;
+package eu.europa.ec.fisheries.uvms.mdr.message.event;
 
-import javax.ejb.Local;
-import javax.enterprise.event.Observes;
+import javax.inject.Qualifier;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetFLUXFMDRSyncMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
-
-@Local
-public interface ActivityMdrEventService {
-
-	void recievedSyncMdrEntityMessage(@Observes @GetFLUXFMDRSyncMessageEvent EventMessage message);
-
-}
+/**
+ * Created by kovian on 02/12/2016.
+ */
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface MdrSyncMessageEvent {}

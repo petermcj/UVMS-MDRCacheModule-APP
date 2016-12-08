@@ -25,10 +25,10 @@ import javax.persistence.Table;
  * Entity that will map the configuration of Activity module.
  */
 @Entity
-@Table(name = "activity_configuration")
+@Table(name = "mdr_configuration")
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ActivityConfiguration extends BaseEntity {
+public class MdrConfiguration extends BaseEntity {
 
     @Column(name = "config_name")
     private String configName;
@@ -36,9 +36,8 @@ public class ActivityConfiguration extends BaseEntity {
     @Column(name = "config_value")
     private String configValue;
 
-    public ActivityConfiguration(){super();}
-
-    public ActivityConfiguration(String configName, String configValue) {
+    public MdrConfiguration(){super();}
+    public MdrConfiguration(String configName, String configValue) {
     	setConfigName(configName);
     	setConfigValue(configValue);
 	}

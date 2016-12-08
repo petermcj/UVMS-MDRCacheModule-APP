@@ -14,7 +14,7 @@ import eu.europa.ec.fisheries.mdr.dao.MdrConfigurationDao;
 import eu.europa.ec.fisheries.mdr.dao.MasterDataRegistryDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrBulkOperationsDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
-import eu.europa.ec.fisheries.mdr.domain.ActivityConfiguration;
+import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
@@ -116,12 +116,12 @@ public class MdrRepositoryBean implements MdrRepository {
 	 * MDR Configurations.
 	 */
 	@Override
-	public List<ActivityConfiguration> getAllConfigurations() throws ServiceException{
+	public List<MdrConfiguration> getAllConfigurations() throws ServiceException{
 		return mdrConfigDao.findAllConfigurations();
 	}
 	
 	@Override
-	public ActivityConfiguration getConfigurationByName(String configName) {
+	public MdrConfiguration getConfigurationByName(String configName) {
 		return mdrConfigDao.findConfiguration(configName);
 	}
 	
@@ -131,7 +131,7 @@ public class MdrRepositoryBean implements MdrRepository {
     }
 	
 	@Override
-	public ActivityConfiguration getMdrSchedulerConfiguration(){
+	public MdrConfiguration getMdrSchedulerConfiguration(){
 		return mdrConfigDao.getMdrSchedulerConfiguration();
 	}
 	
@@ -175,7 +175,7 @@ public class MdrRepositoryBean implements MdrRepository {
         }
 
         if (StringUtils.isNotBlank(sortBy)) {
-            query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
+            query.setSort(new Sort(new SortField(sortBy, SortField.STRING, isReversed)));
         }
 
         log.debug("[END] findCodeListItemsByAcronymAndFilter(...)");

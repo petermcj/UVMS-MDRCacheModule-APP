@@ -11,8 +11,8 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.service.bean;
 
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
-import eu.europa.ec.fisheries.mdr.service.ActivityMdrEventService;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetFLUXFMDRSyncMessageEvent;
+import eu.europa.ec.fisheries.mdr.service.MdrEventService;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
@@ -27,7 +27,7 @@ import javax.jms.JMSException;
 
 /**
  *  Observer class listening to events fired from MessageConsumerBean (Activity).
- *  Specifically to GetFLUXFMDRSyncMessageEvent event type.
+ *  Specifically to MdrSyncMessageEvent event type.
  *  The message will contain the MDR Entity to be synchronised (As Flux XML Type at this moment).
  *  
  *  Using the MdrRepository the Entity in question will be stored in the Cache DB.
@@ -35,13 +35,13 @@ import javax.jms.JMSException;
  */
 @Stateless
 @Slf4j
-public class ActivityMdrEventServiceBean implements ActivityMdrEventService {
+public class MdrEventServiceBean implements MdrEventService {
 	
 	@EJB
 	private MdrRepository mdrRepository;
 	
 	@Override
-	public void recievedSyncMdrEntityMessage(@Observes @GetFLUXFMDRSyncMessageEvent EventMessage message){
+	public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message){
 		log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
 		// Extract message from EventMessage Object
 		try {
@@ -64,8 +64,8 @@ public class ActivityMdrEventServiceBean implements ActivityMdrEventService {
 		try {
 			textMessage = message.getJmsMessage().getText();
 			String adaptedMessage = adaptTextMessageToVersion16B(textMessage);
-			SetFLUXMDRSyncMessageResponse activityResp = JAXBMarshaller.unmarshallTextMessage(adaptedMessage, SetFLUXMDRSyncMessageResponse.class);
-			respType    = JAXBMarshaller.unmarshallTextMessage(activityResp.getRequest(), FLUXMDRReturnMessage.class);
+			SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(adaptedMessage, SetFLUXMDRSyncMessageResponse.class);
+			respType    = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
 		} catch (MdrModelMarshallException | JMSException e) {
 			log.error("Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n",e);
 			throw new MdrModelMarshallException("Error while attempting to Unmarshall Flux Response Object (XML MDR Entity)", e);

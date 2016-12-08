@@ -12,23 +12,19 @@ package eu.europa.ec.fisheries.uvms.mdr.message.constants;
 
 public class MdrMessageConstants {
 
-    private MdrMessageConstants(){}
+    private MdrMessageConstants(){
+        super();
+    }
 
-    public static final String CONNECTION_FACTORY     = "java:/ConnectionFactory";
+
+    public static final String MESSAGING_TYPE_STR   = "messagingType";
+    public static final String DESTINATION_TYPE_STR = "destinationType";
+    public static final String DESTINATION_STR      = "destination";
+
     public static final String CONNECTION_TYPE        = "javax.jms.MessageListener";
     public static final String DESTINATION_TYPE_QUEUE = "javax.jms.Queue";
 
     public static final String MDR_MESSAGE_IN_QUEUE = "java:/jms/queue/UVMSMdrEvent";
-    public static final String COMPONENT_MESSAGE_IN_QUEUE_NAME = "UVMSMdrEvent";
+    public static final String MDR_MESSAGE_IN_QUEUE_NAME = "UVMSMdrEvent";
 
-    public static final String MDR_MESSAGE_QUEUE = "java:/jms/queue/UVMSMdr";
-    public static final String ACTIVITY_MESSAGE_QUEUE_NAME = "UVMSMdr";
-
-    public static final String EXCHANGE_MODULE_QUEUE = "java:/jms/queue/UVMSExchangeEvent";
-
-    public static final String ASSET_MODULE_QUEUE = "java:/jms/queue/UVMSAssetEvent";
-    
-	public static final String MODULE_NAME = "Mdr";
-	public static final String ERS_MDR_QUEUE = "java:/jms/queue/ERSMDRPlugin";
-	public static final String RULES_EVENT_QUEUE = "java:/jms/queue/UVMSRulesEvent";
 }

@@ -8,8 +8,6 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.uvms.mdr.message.exception.MdrMessageException;
-import eu.europa.ec.fisheries.uvms.mdr.message.MdrMessageProducer;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
@@ -22,6 +20,8 @@ import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
 import eu.europa.ec.fisheries.mdr.util.OperationOutcome;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
+import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
+import eu.europa.ec.fisheries.uvms.message.GenericMessageProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -51,7 +51,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private MdrStatusRepository statusRepository;
 
     @EJB
-    private MdrMessageProducer producer;
+    private GenericMessageProducer producer;
 
     private static final String OBJ_DATA_ALL = "OBJ_DATA_ALL";
     private static final String OBJ_DESC = "OBJ_DESC";
@@ -155,7 +155,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                     log.error("Error while trying to map MDRQueryType for acronym {}", actualAcronym, e);
                     errorContainer.addMessage("Error while trying to map MDRQueryType for acronym {} " + actualAcronym);
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate());
-                } catch (MdrMessageException e) {
+                } catch (JmsMessageException e) {
                     log.error("Error while trying to send message from Activity to Rules module.", e);
                     errorContainer.addMessage("Error while trying to send message from Activity to Rules module for acronym {} " + actualAcronym);
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate());
@@ -196,7 +196,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
 
         } catch (MdrMappingException e) {
             log.error("Error while trying to map MDRQueryType for acronym {}", acronymsList, e);
-        } catch (MdrMessageException e) {
+        } catch (JmsMessageException e) {
             log.error("Error while trying to send message from Activity to Rules module.", e);
         }
     }
@@ -209,7 +209,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             log.info("Synchronization Request Sent for INDEX ServiceType");
         } catch (MdrMappingException e) {
             log.error("Error while trying to map MDRQueryType for acronym {}", e);
-        } catch (MdrMessageException e) {
+        } catch (JmsMessageException e) {
             log.error("Error while trying to send message from Activity to Rules module.", e);
         }
     }
