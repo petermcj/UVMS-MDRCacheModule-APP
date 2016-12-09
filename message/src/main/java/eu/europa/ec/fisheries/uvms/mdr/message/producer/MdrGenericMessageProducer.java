@@ -17,11 +17,10 @@ import javax.jms.TextMessage;
 /**
  * Created by kovian on 02/12/2016.
  */
-public interface MdrMessageProducer {
+public interface MdrGenericMessageProducer {
 
     String sendRulesModuleMessage(String text) throws JmsMessageException;
 
     String sendModuleMessage(String text, ModuleQueues queue) throws JmsMessageException;
 
-    void sendMessageBackToRecipient(TextMessage requestMessage, String returnMessage) throws JmsMessageException;
 }

@@ -11,42 +11,25 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 
 import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
-import eu.europa.ec.fisheries.uvms.message.AbstractGenericMessageProducer;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.jms.Destination;
 import javax.jms.Queue;
-import javax.jms.TextMessage;
-import javax.jms.Topic;
 
 /**
  * Created by kovian on 02/12/2016.
  */
 @Slf4j
 @Stateless
-public class MdrMessageProducerBean extends AbstractGenericMessageProducer implements MdrMessageProducer {
-
-    @Resource(mappedName = MessageConstants.ACTIVITY_QUEUE)
-    private Queue activityQueue;
-
-    @Resource(mappedName = MessageConstants.ACTIVITY_EVENT_QUEUE)
-    private Queue activityEventQueue;
-
-    @Resource(mappedName = MessageConstants.EXCHANGE_QUEUE)
-    private Queue exchangeQueue;
-
-    @Resource(mappedName = MessageConstants.EXCHANGE_EVENT_QUEUE)
-    private Queue exchangeEventQueue;
+public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGenericMessageProducer {
 
     @Resource(mappedName = MessageConstants.RULES_QUEUE)
     private Queue rulesQueue;
 
     @Resource(mappedName = MessageConstants.RULES_EVENT_QUEUE)
     private Queue rulesEventQueue;
-
-    @Resource(mappedName = MessageConstants.ASSET_QUEUE)
-    private Queue assetsQueue;
 
     @Resource(mappedName = MessageConstants.ASSET_EVENT_QUEUE)
     private Queue assetsEventQueue;
@@ -56,9 +39,6 @@ public class MdrMessageProducerBean extends AbstractGenericMessageProducer imple
 
     @Resource(mappedName = MessageConstants.MDR_EVENT_QUEUE)
     private Queue mdrEventQueue;
-
-    @Resource(mappedName = MessageConstants.EVENT_BUS_TOPIC)
-    private Topic eventBusTopic;
 
     /**
      * Sends a message to Exchange Queue.
@@ -90,23 +70,12 @@ public class MdrMessageProducerBean extends AbstractGenericMessageProducer imple
     public String sendModuleMessage(String text, ModuleQueues queue) throws JmsMessageException {
         String messageId;
         switch (queue) {
-            case ACTIVITY:
-                messageId = sendMessage(activityQueue, text);
-                break;
-            case ACTIVITY_EVENT:
-                messageId = sendMessage(activityEventQueue, text);
-                break;
+
             case RULES:
                 messageId = sendMessage(rulesQueue, text);
                 break;
             case RULES_EVENT:
                 messageId = sendMessage(rulesEventQueue, text);
-                break;
-            case EXCHANGE:
-                messageId = sendMessage(exchangeQueue, text);
-                break;
-            case EXCHANGE_EVENT:
-                messageId = sendMessage(exchangeEventQueue, text);
                 break;
             case MDR:
                 messageId = sendMessage(mdrQueue, text);
@@ -115,25 +84,11 @@ public class MdrMessageProducerBean extends AbstractGenericMessageProducer imple
                 throw new JmsMessageException("Queue not defined or implemented");
         }
         return messageId;
-
     }
 
-
-    /**
-     * Sends a message to the recipient of the message (once a response is recieved)
-     *
-     * @param requestMessage
-     * @param returnMessage
-     * @return void
-     */
     @Override
-    public void sendMessageBackToRecipient(TextMessage requestMessage, String returnMessage) throws JmsMessageException {
-        try {
-            sendMessage(requestMessage.getJMSReplyTo(), returnMessage, requestMessage.getJMSMessageID());
-        } catch (Exception e) {
-            log.error("[ Error when sending message. ] {}", e);
-            throw new JmsMessageException("[ Error when sending message. ]", e);
-        }
+    protected Destination getJmseToReplyTo() {
+        return mdrEventQueue;
     }
 }
 
