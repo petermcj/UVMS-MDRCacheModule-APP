@@ -11,7 +11,7 @@
  *
  */
 
-package eu.europa.ec.fisheries.ers.fa.utils;
+package eu.europa.ec.fisheries.mdr.serviceutils;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;

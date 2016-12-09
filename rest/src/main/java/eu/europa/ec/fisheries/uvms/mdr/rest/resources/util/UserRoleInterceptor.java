@@ -11,7 +11,7 @@
  *
  */
 
-package eu.europa.ec.fisheries.uvms.activity.rest.resources.util;
+package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
 
 /**
  * Created by padhyad on 8/17/2016.
@@ -40,7 +40,7 @@ public class UserRoleInterceptor implements Serializable {
     @AroundInvoke
     public Object interceptRequest(final InvocationContext ic) throws Exception {
         IUserRoleInterceptor iUserRoleInterceptor = ic.getMethod().getAnnotation(IUserRoleInterceptor.class);
-        MdrFeaturesEnum[] features = iUserRoleInterceptor.requiredUserRole(); // Get User role defined in the Rest service
+        MdrFeaturesEnum[] features = iUserRoleInterceptor.requiredUserRole(); // Get User role defined in the Rest serviceutils
         Object[] parameters = ic.getParameters(); // Request parameters
         HttpServletRequest req = getHttpServletRequest(parameters);
         boolean isUserAuthorized = false;

@@ -26,18 +26,25 @@ import java.util.List;
 
 public class MdrRequestMapper {
 
-	public static final String DOUBLE_DASH = "--";
-	public static final String EN = "EN";
-	public static final String UUID = "UUID";
+	public static final String EN          = "EN";
+	public static final String UUID        = "UUID";
+	public static final String HUN         = "HUN";
+	public static final String INDEX       = "INDEX";
 	public static final String FLUX_MDR_QUERY_TYPE = "FLUX_MDR_QUERY_TYPE";
-	public static final String HUN = "HUN";
-	public static final String INDEX = "INDEX";
+
 
 	/**
 	 * This class isn't supposed to have instances.
 	 *
 	 */
-	private MdrRequestMapper(){}
+	private MdrRequestMapper(){
+		super();
+	}
+
+
+	public static String mapMdrQueryTypeToStringForINDEXServiceType(String serviceType) throws MdrMappingException {
+		return mapMdrQueryTypeToString(INDEX, serviceType);
+	}
 
 	/**
 	 * Creates an FLUXMDRQueryMessage for qurying the FLUX TL with the acronym and serviceType parameters.
@@ -64,7 +71,7 @@ public class MdrRequestMapper {
 		// Unique message ID
 		IDType messageID = new IDType();
 		messageID.setSchemeID(UUID);
-		messageID.setValue(createBusinessUUID(acronym, serviceType));
+		messageID.setValue(java.util.UUID.randomUUID().toString());
 		mdrQuery.setID(messageID);
 
 		// Service type (TypeCode);
@@ -124,25 +131,7 @@ public class MdrRequestMapper {
 	 */
 	private static DateTimeType createSubmitedDate() throws DatatypeConfigurationException {
 		XMLGregorianCalendar date   = DatatypeFactory.newInstance().newXMLGregorianCalendar(new DateTime().toGregorianCalendar());
-		/*DateTimeType.DateTimeString dateTimeString = new DateTimeType.DateTimeString();
-		dateTimeString.setValue(date.toString());
-		dateTimeString.setFormat(dateTimeString.getFormat());*/
 		return new DateTimeType(date, null);
 	}
 
-
-	/**
-	 *  BUSINESS_UUID has a prefix, a date-time combination and a serial - thus it is semi unique
-	 * @return String
-	 * @param acronym
-	 */
-	private static String createBusinessUUID(String acronym, String serviceType){
-		final String uuid = java.util.UUID.randomUUID().toString();
-		StringBuilder sb = new StringBuilder(acronym).append(DOUBLE_DASH).append(serviceType).append(DOUBLE_DASH).append(uuid);
-		return sb.toString();
-	}
-
-	public static String mapMdrQueryTypeToStringForINDEXServiceType(String serviceType) throws MdrMappingException {
-		return mapMdrQueryTypeToString(INDEX, serviceType);
-	}
 }

@@ -11,22 +11,32 @@
  *
  */
 
-package eu.europa.ec.fisheries.uvms.activity.rest.resources.util;
+package eu.europa.ec.fisheries.mdr.serviceutils;
 
-import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
+import eu.europa.ec.fisheries.wsdl.user.types.UserFault;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.enterprise.util.Nonbinding;
-import javax.interceptor.InterceptorBinding;
-import java.lang.annotation.*;
+import javax.jms.TextMessage;
+import javax.xml.bind.JAXBException;
 
 /**
- * Created by padhyad on 8/17/2016.
+ * Created by padhyad on 10/12/2016.
  */
-@Inherited
-@InterceptorBinding
-@Target({ElementType.METHOD, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface IUserRoleInterceptor {
+@Slf4j
+public abstract class ModuleService {
 
-    @Nonbinding MdrFeaturesEnum[] requiredUserRole() default MdrFeaturesEnum.MDR_ALLOWED;
+    protected boolean isUserFault(TextMessage message) {
+        boolean isErrorResponse = false;
+
+        try {
+            UserFault userFault = JaxbUtil.unmarshallTextMessage(message, UserFault.class);
+            log.error("UserFault error JMS message received with text: " + userFault.getFault());
+            isErrorResponse = true;
+        } catch (JAXBException e) {
+            //do nothing  since it's not a UserFault
+            log.error("Unexpected exception was thrown.", e);
+        }
+
+        return isErrorResponse;
+    }
 }

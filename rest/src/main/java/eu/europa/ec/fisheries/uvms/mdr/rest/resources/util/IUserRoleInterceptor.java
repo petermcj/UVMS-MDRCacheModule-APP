@@ -11,37 +11,22 @@
  *
  */
 
-package eu.europa.ec.fisheries.ers.service.search;
+package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
+
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
+
+import javax.enterprise.util.Nonbinding;
+import javax.interceptor.InterceptorBinding;
+import java.lang.annotation.*;
 
 /**
- * Created by sanera on 12/07/2016.
+ * Created by padhyad on 8/17/2016.
  */
-public class FilterDetails {
+@Inherited
+@InterceptorBinding
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IUserRoleInterceptor {
 
-    private String joinString;
-    private String condition;
-
-    public FilterDetails(String joinString, String condition) {
-        this.joinString = joinString;
-        this.condition = condition;
-    }
-
-    public FilterDetails() {
-        super();
-    }
-
-
-    public String getJoinString() {
-        return joinString;
-    }
-    public void setJoinString(String joinString) {
-        this.joinString = joinString;
-    }
-    public String getCondition() {
-        return condition;
-    }
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
+    @Nonbinding MdrFeaturesEnum[] requiredUserRole() default MdrFeaturesEnum.MDR_ALLOWED;
 }

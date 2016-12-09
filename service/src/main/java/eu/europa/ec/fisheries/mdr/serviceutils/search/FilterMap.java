@@ -11,7 +11,7 @@
  *
  */
 
-package eu.europa.ec.fisheries.ers.service.search;
+package eu.europa.ec.fisheries.mdr.serviceutils.search;
 
 import java.util.EnumMap;
 import java.util.Map;

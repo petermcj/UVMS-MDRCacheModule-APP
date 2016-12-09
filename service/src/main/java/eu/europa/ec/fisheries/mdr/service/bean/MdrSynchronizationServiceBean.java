@@ -21,7 +21,7 @@ import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
 import eu.europa.ec.fisheries.mdr.util.OperationOutcome;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
-import eu.europa.ec.fisheries.uvms.message.GenericMessageProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrMessageProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -51,11 +51,11 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private MdrStatusRepository statusRepository;
 
     @EJB
-    private GenericMessageProducer producer;
+    private MdrMessageProducer producer;
 
     private static final String OBJ_DATA_ALL = "OBJ_DATA_ALL";
-    private static final String OBJ_DESC = "OBJ_DESC";
-    private static final String INDEX = "INDEX";
+    private static final String OBJ_DESC     = "OBJ_DESC";
+    private static final String INDEX        = "INDEX";
 
     private static final List<String> exclusionList = new ArrayList<String>(){{
         add("FAO_AREA");

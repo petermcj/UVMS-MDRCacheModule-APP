@@ -8,42 +8,13 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
  */
-package eu.europa.ec.fisheries.ers.service.search;
+package eu.europa.ec.fisheries.mdr.serviceutils.search;
 
 /**
- * Created by sanera on 01/07/2016.
+ * Created by sanera on 24/06/2016.
  */
-public class SortKey {
+public enum Filters {
 
-    private Filters field;
-    private SortOrder order;
-
-    public SortKey(){
-        super();
-    }
-
-    public Filters getField() {
-        return field;
-    }
-    public void setField(Filters field) {
-        this.field = field;
-    }
-    public SortOrder getOrder() {
-        return order;
-    }
-    public void setOrder(SortOrder order) {
-        this.order = order;
-    }
-    public SortKey(Filters field, SortOrder order) {
-        this.field = field;
-        this.order = order;
-    }
-
-    @Override
-    public String toString() {
-        return "SortKey{" +
-                "field=" + field +
-                ", order=" + order +
-                '}';
-    }
+   SOURCE, FROM_ID,FROM_NAME,PERIOD_START,PERIOD_END,VESSEL_IDENTIFIRE,VESSEL_NAME,PURPOSE,REPORT_TYPE,ACTIVITY_TYPE,AREAS,PORT,GEAR,SPECIES,
+   QUNTITY_MIN,QUNTITY_MAX,WEIGHT_MEASURE,MASTER,OCCURRENCE,FA_REPORT_ID;
 }
