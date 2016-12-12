@@ -8,9 +8,13 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.uvms.mdr.message.producer;
+package eu.europa.ec.fisheries.uvms.mdr.message.producer.bean;
 
-import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrMessageProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.MessageConstants;
+import eu.europa.ec.fisheries.uvms.message.AbstractProducer;
+import eu.europa.ec.fisheries.uvms.message.MessageException;
+import eu.europa.ec.fisheries.uvms.message.ModuleQueues;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
@@ -23,7 +27,7 @@ import javax.jms.Queue;
  */
 @Slf4j
 @Stateless
-public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGenericMessageProducer {
+public class MdrMessageProducerBean extends AbstractProducer implements MdrMessageProducer {
 
     @Resource(mappedName = MessageConstants.RULES_QUEUE)
     private Queue rulesQueue;
@@ -41,18 +45,18 @@ public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGe
     private Queue mdrEventQueue;
 
     /**
-     * Sends a message to Exchange Queue.
+     * Sends a message to Rules Queue.
      *
      * @param text (to be sent to the queue)
      * @return messageID
      */
     @Override
-    public String sendRulesModuleMessage(String text) throws JmsMessageException {
+    public String sendRulesModuleMessage(String text) throws MessageException {
         log.info("Sending Request to Exchange module.");
         String messageID;
         try {
             messageID = sendModuleMessage(text, ModuleQueues.RULES_EVENT);
-        } catch (JmsMessageException e) {
+        } catch (MessageException e) {
             log.error("Error sending message to Exchange Module.", e);
             throw e;
         }
@@ -60,34 +64,34 @@ public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGe
     }
 
     /**
-     * Sends a message to a given Queue.
+     * Sends a message to a given ModuleQueues queue.
      *
      * @param text  (the message to be sent)
      * @param queue
      * @return JMSMessageID
      */
     @Override
-    public String sendModuleMessage(String text, ModuleQueues queue) throws JmsMessageException {
+    public String sendModuleMessage(String text, ModuleQueues queue) throws MessageException {
         String messageId;
         switch (queue) {
-
             case RULES:
-                messageId = sendMessage(rulesQueue, text);
+                messageId = sendModuleMessage(rulesQueue, text);
                 break;
             case RULES_EVENT:
-                messageId = sendMessage(rulesEventQueue, text);
+                messageId = sendModuleMessage(rulesEventQueue, text);
                 break;
             case MDR:
-                messageId = sendMessage(mdrQueue, text);
+                messageId = sendModuleMessage(mdrQueue, text);
                 break;
             default:
-                throw new JmsMessageException("Queue not defined or implemented");
+                throw new MessageException("Queue not defined or implemented");
         }
         return messageId;
     }
 
+
     @Override
-    protected Destination getJmseToReplyTo() {
+    protected Destination getJmsToReplyTo() {
         return mdrEventQueue;
     }
 }

@@ -10,16 +10,13 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 
+import eu.europa.ec.fisheries.uvms.message.MessageException;
+import eu.europa.ec.fisheries.uvms.message.ModuleQueues;
+
 /**
  * Created by kovian on 02/12/2016.
  */
-public enum ModuleQueues {
-    ACTIVITY,
-    ACTIVITY_EVENT,
-    RULES,
-    RULES_EVENT,
-    EXCHANGE,
-    EXCHANGE_EVENT,
-    MDR,
+public interface MdrMessageProducer {
+    String sendRulesModuleMessage(String text) throws MessageException;
+    String sendModuleMessage(String text, ModuleQueues queue) throws MessageException;
 }
-
