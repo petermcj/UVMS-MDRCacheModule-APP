@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
@@ -20,13 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by georgige on 11/15/2016.
  */
+@Ignore
 public class MdrRepositoryBeanTest extends BaseMdrDaoTest {
 
     private MdrBulkOperationsDao bulkDao = new MdrBulkOperationsDao(em);

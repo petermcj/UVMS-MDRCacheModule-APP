@@ -13,9 +13,12 @@ package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 import eu.europa.ec.fisheries.uvms.message.MessageException;
 import eu.europa.ec.fisheries.uvms.message.ModuleQueues;
 
+import javax.ejb.Local;
+
 /**
  * Created by kovian on 02/12/2016.
  */
+@Local
 public interface MdrMessageProducer {
     String sendRulesModuleMessage(String text) throws MessageException;
     String sendModuleMessage(String text, ModuleQueues queue) throws MessageException;
