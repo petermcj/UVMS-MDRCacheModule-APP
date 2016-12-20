@@ -47,7 +47,7 @@ import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistr
         })
 abstract public class MasterDataRegistry extends BaseEntity {
 
-    protected static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
+    public static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
 
     @Embedded
     @IndexedEmbedded
