@@ -21,9 +21,14 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
     protected static final Operation DELETE_ALL_MDR_CR_NAFO_STOCK = sequenceOf(
             deleteAllFrom("mdr.mdr_cr_nafo_stock")            
     );
-
     protected static final Operation DELETE_ALL_MDR_SPECIES = sequenceOf(
             deleteAllFrom("mdr.mdr_fao_species")
+    );
+    protected static final Operation DELETE_ALL_FAO_SPECIES = sequenceOf(
+            deleteAllFrom("mdr.mdr_fao_species")
+    );
+    protected static final Operation DELETE_ALL_MDR_CODELISTSTATUS = sequenceOf(
+            deleteAllFrom("mdr.mdr_codelist_status")
     );
 
     protected static final Operation INSERT_MDR_CR_NAFO_STOCK_REFERENCE_DATA = sequenceOf(
@@ -31,10 +36,6 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
                     .columns("id", "created_on", "species_code", "species_name", "area_code", "area_description")
                     .values(1L, java.sql.Date.valueOf("2014-12-12"), "ANG", "Lophius americanus", "N3NO", "NAFO 3N, 3O = FAO 21.3.N + 21.3.O")
                     .build()
-    );
-    
-    protected static final Operation DELETE_ALL_FAO_SPECIES = sequenceOf(
-            deleteAllFrom("mdr.mdr_fao_species")            
     );
 
     protected static final Operation INSERT_MDR_FAO_SPECIES = sequenceOf(

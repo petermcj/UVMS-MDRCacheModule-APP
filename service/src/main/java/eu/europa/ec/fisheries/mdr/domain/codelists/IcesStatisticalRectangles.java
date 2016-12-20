@@ -16,10 +16,8 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -33,12 +31,13 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Indexed
+@Analyzer(impl = StandardAnalyzer.class)
 public class IcesStatisticalRectangles extends MasterDataRegistry {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "ices_name")
-	@Field(name="ices_name", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="ices_name", analyze= Analyze.YES, store = Store.YES)
 	private String icesName;
 	
 	@Embedded

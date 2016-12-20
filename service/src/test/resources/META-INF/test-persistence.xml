@@ -8,11 +8,16 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <jta-data-source>java:jboss/datasources/uvms_mdr</jta-data-source>
     <properties>
-        <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
+        <property name="connection.driver_class" value="org.postgresql.Driver" />
+        <property name="hibernate.dialect" value="org.hibernate.dialect.ProgressDialect"/>
         <property name="hibernate.default_schema" value="mdr"/>
         <property name="show_sql" value="false" />
         <property name="format_sql" value="false" />
         <property name="use_sql_comments" value="true" />
+        <!--HIBERNATE SEARCH PROPS-->
+        <property name="hibernate.search.default.directory_provider"  value="filesystem"/>
+        <property name="hibernate.search.default.indexBase"  value="${lucene.index.directory}"/>
+        <property name="hibernate.hbm2ddl.auto" value="update" />
     </properties>
 
 </persistence-unit>

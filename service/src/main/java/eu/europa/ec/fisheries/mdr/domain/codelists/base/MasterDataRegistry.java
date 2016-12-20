@@ -16,10 +16,10 @@ import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.DateTimeType;
 import un.unece.uncefact.data.standard.mdr.response.DelimitedPeriodType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
@@ -31,26 +31,40 @@ import javax.persistence.MappedSuperclass;
 import java.util.ArrayList;
 import java.util.List;
 
+import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry.LOW_CASE_ANALYSER;
+
 @SuppressWarnings("serial")
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
 @ToString
-@Indexed
+@AnalyzerDef(name=LOW_CASE_ANALYSER,
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = StopFilterFactory.class, params = {
+                        @Parameter(name="ignoreCase", value="true")
+                })
+        })
 abstract public class MasterDataRegistry extends BaseEntity {
 
+    protected static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
+
     @Embedded
+    @IndexedEmbedded
     private DateRange validity;
 
     @Column(name = "version")
-    @Field(name="version", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="version", analyze= Analyze.YES, store = Store.YES)
     private String version;
 
     @Column(name = "code")
-    @Field(name="code", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="code", analyze= Analyze.YES, store = Store.YES, index = Index.YES)
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code;
 
     @Column(name="description")
-    @Field(name="description", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="description", analyze= Analyze.YES, store = Store.YES, index = Index.YES)
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String description;
 
     protected static final String CODE_STR               = "CODE";

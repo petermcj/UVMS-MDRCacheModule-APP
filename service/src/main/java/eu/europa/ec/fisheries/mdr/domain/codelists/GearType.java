@@ -15,10 +15,8 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -34,27 +32,28 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Indexed
+@Analyzer(impl = StandardAnalyzer.class)
 public class GearType extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L; 
 	
 	@Column(name = "group_name")
-	@Field(name="group_name", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="group_name", analyze= Analyze.YES, store = Store.YES)
 	private String category;
 	
 	@Column(name = "sub_group_name")
-	@Field(name="sub_group_name", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="sub_group_name", analyze= Analyze.YES, store = Store.YES)
 	private String subCategory;
 
 	@Column(name = "iss_cfg_code")
-	@Field(name="iss_cfg_code", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="iss_cfg_code", analyze= Analyze.YES, store = Store.YES)
 	private String issCfgCode;
 
 	@Column(name = "iccat_code")
-	@Field(name="iccat_code", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="iccat_code", analyze= Analyze.YES, store = Store.YES)
 	private String iccatCode;
 
 	@Column(name = "target")
-	@Field(name="target", analyze= Analyze.NO, store = Store.YES)
+	@Field(name="target", analyze= Analyze.YES, store = Store.YES)
 	private String target;
 
 	@Override

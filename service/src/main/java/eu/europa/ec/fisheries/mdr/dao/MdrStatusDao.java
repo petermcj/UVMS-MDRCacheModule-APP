@@ -196,7 +196,7 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
     }
 
     public List<MdrCodeListStatus> findStatusAndVersionsForAcronym(String objAcronym){
-        TypedQuery<MdrCodeListStatus> query = getEntityManager().createNamedQuery(MdrCodeListStatus.STATUS_AND_VERSIONS, MdrCodeListStatus.class);
+        TypedQuery<MdrCodeListStatus> query = getEntityManager().createNamedQuery(MdrCodeListStatus.STATUS_AND_VERSIONS_QUERY, MdrCodeListStatus.class);
         query.setParameter("objectAcronym", objAcronym);
         List<MdrCodeListStatus> statusses = query.getResultList();
         return statusses;

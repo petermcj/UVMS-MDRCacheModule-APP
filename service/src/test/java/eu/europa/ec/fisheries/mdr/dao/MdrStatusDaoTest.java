@@ -35,7 +35,7 @@ public class MdrStatusDaoTest extends BaseMdrDaoTest {
     @Before
     @SneakyThrows
     public void prepare(){
-        Operation operation = sequenceOf(INSERT_MDR_CODELIST_STATUS, INSERT_ACRONYMS_VERSIONS);
+        Operation operation = sequenceOf(DELETE_ALL_MDR_CODELISTSTATUS, INSERT_MDR_CODELIST_STATUS, INSERT_ACRONYMS_VERSIONS);
         DbSetup dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
         dbSetupTracker.launchIfNecessary(dbSetup);
     }

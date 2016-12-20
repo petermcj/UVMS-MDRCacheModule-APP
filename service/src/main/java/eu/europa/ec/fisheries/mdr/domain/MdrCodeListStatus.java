@@ -31,7 +31,7 @@ import java.util.Set;
  * should have the same value.
  */
 @NamedQueries({
-        @NamedQuery(name = MdrCodeListStatus.STATUS_AND_VERSIONS,
+        @NamedQuery(name = MdrCodeListStatus.STATUS_AND_VERSIONS_QUERY,
                 query = "SELECT status " +
                         "FROM MdrCodeListStatus status " +
                         "JOIN FETCH status.versions versions " +
@@ -43,7 +43,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class MdrCodeListStatus extends BaseEntity {
 
-    public static final String STATUS_AND_VERSIONS = "statusAndVersions";
+    public static final String STATUS_AND_VERSIONS_QUERY = "statusAndVersions";
 
     @Column(name = "object_acronym")
     private String objectAcronym;
@@ -72,7 +72,7 @@ public class MdrCodeListStatus extends BaseEntity {
     @Convert(converter = CharAcronymListStateConverter.class)
     private AcronymListState lastStatus;
 
-    @Column(name = "schedulable")
+    @Column(name = "schedulable", length = 1)
     @Convert(converter = CharBooleanConverter.class)
     private Boolean schedulable;
 

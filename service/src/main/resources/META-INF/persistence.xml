@@ -25,7 +25,7 @@
 
         <!--HIBERNATE SEARCH PROPS-->
         <property name="hibernate.search.default.directory_provider"  value="filesystem"/>
-        <property name="hibernate.search.default.indexBase"  value="${lucene.index.directory}"/>
+        <property name="hibernate.search.default.indexBase"  value="/app/indexes/mdr"/>
     </properties>
 
 </persistence-unit>

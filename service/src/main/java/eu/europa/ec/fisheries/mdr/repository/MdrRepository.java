@@ -41,8 +41,7 @@ public interface MdrRepository {
 	void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException;
 
 	MdrConfiguration getMdrSchedulerConfiguration();
-	
-	List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(String acronym, Integer offset, Integer pageSize, String sortBy, Boolean isReversed, String filter, String searchAttributes) throws ServiceException;
 
-	int countCodeListItemsByAcronymAndFilter(String acronym, String filter, String searchAttribute) throws ServiceException;
+	// TODO : Delete me when done testing the functionality
+	void insertTestData(List<? extends MasterDataRegistry> testList) throws ServiceException;
 }

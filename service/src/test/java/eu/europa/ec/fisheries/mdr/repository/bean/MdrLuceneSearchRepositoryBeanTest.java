@@ -20,18 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by georgige on 11/15/2016.
  */
-public class MdrRepositoryBeanTest extends BaseMdrDaoTest {
+//@Ignore
+public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
 
-    private MdrBulkOperationsDao bulkDao = new MdrBulkOperationsDao(em);
+    private MdrBulkOperationsDao              bulkDao = new MdrBulkOperationsDao(em);
+    private MdrLuceneSearchRepositoryBean mdrRepoBean = new MdrLuceneSearchRepositoryBean();
 
-    private MdrRepositoryBean mdrRepoBean = new MdrRepositoryBean();
+    public static final String CODE = "code";
 
     @Before
     @SneakyThrows
@@ -45,34 +45,20 @@ public class MdrRepositoryBeanTest extends BaseMdrDaoTest {
         mdrRepoBean.init();
     }
 
-
     @Test
     @SneakyThrows
     public void testLuceneIndexingNoSearchFilters() throws ServiceException {
-        List<FaoSpecies> species = new ArrayList<>(2);
-
-        FaoSpecies species1 = new FaoSpecies();
-        species1.setCode("COD");
-        species1.setEnName("COD fish");
-
-        FaoSpecies species2 = new FaoSpecies();
-        species2.setCode("COD");
-        species2.setEnName("COD fish");
-
-        species.add(species1);
-        species.add(species2);
-
+        List<FaoSpecies> species = mockSpecies();
         bulkDao.singleEntityBulkDeleteAndInsert(species);
 
         FullTextSession fullTextSession = Search.getFullTextSession((Session) em.getDelegate());
         Transaction tx = fullTextSession.beginTransaction();
-        FaoSpecies FaoSpecies = (FaoSpecies) fullTextSession.load( FaoSpecies.class, 1L );
-
-        fullTextSession.index(FaoSpecies);
+        FaoSpecies faoSpecies = (FaoSpecies) fullTextSession.load( FaoSpecies.class, 1L );
+        fullTextSession.index(faoSpecies);
         tx.commit(); //index only updated at commit time
 
         try {
-            List<FaoSpecies> filterredEntities = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species1.getAcronym(), 0, 5, "code", false, null, null);
+            mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(), 0, 5, CODE, false, null, null);
             fail("ServiceException was expected but not thrown.");
         } catch (ServiceException exc) {
             assertTrue(exc.getCause() instanceof  IllegalArgumentException);
@@ -81,31 +67,15 @@ public class MdrRepositoryBeanTest extends BaseMdrDaoTest {
 
     }
 
+
     @Test
     @SneakyThrows
     public void testLuceneSearch() throws ServiceException {
-        List<FaoSpecies> species = new ArrayList<>(3);
-
-        FaoSpecies species1 = new FaoSpecies();
-        species1.setCode("COD");
-        species1.setEnName("COD fish");
-
-        FaoSpecies species2 = new FaoSpecies();
-        species2.setCode("CAT");
-        species2.setEnName("CAT fish");
-
-        FaoSpecies species3 = new FaoSpecies();
-        species3.setCode("WHL");
-        species3.setEnName("Whale");
-
-        species.add(species1);
-        species.add(species2);
-        species.add(species3);
-
+        List<FaoSpecies> species = mockSpecies();
         bulkDao.singleEntityBulkDeleteAndInsert(species);
 
-        List<FaoSpecies> filterredEntities = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species1.getAcronym(),
-                0, 5, "code", true, "*", "code");
+        List<FaoSpecies> filterredEntities = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(),
+                0, 5, CODE, true, "*", CODE);
 
         assertEquals(3, filterredEntities.size());
         assertEquals("WHL", filterredEntities.get(0).getCode());
@@ -115,29 +85,51 @@ public class MdrRepositoryBeanTest extends BaseMdrDaoTest {
 
     @Test
     @SneakyThrows
-    public void testLuceneSearchCount() throws ServiceException {
-        List<FaoSpecies> species = new ArrayList<>(3);
+    public void testLuceneSearchOnMultipleFields() throws ServiceException {
 
+        List<FaoSpecies> species = mockSpecies();
+        bulkDao.singleEntityBulkDeleteAndInsert(species);
+
+        String[] fields= {CODE, "description"};
+        final String filterText = "*whl";
+        final String filterText_2 = "c*";
+
+        List<FaoSpecies> filterredEntities = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(),
+                0, 5, CODE, true, filterText, fields);
+
+        List<FaoSpecies> filterredEntities_2 = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(),
+                0, 5, CODE, true, filterText_2, fields);
+
+        assertEquals(1, filterredEntities.size());
+        assertEquals("WHL", filterredEntities.get(0).getCode());
+
+        assertEquals(2, filterredEntities_2.size());
+    }
+
+    @Test
+    @SneakyThrows
+    public void testLuceneSearchCount() throws ServiceException {
+        List<FaoSpecies> species = mockSpecies();
+        bulkDao.singleEntityBulkDeleteAndInsert(species);
+        int totalCount=  mdrRepoBean.countCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(), "c*", CODE);
+        assertEquals(2, totalCount);
+    }
+
+    private List<FaoSpecies> mockSpecies() {
+        List<FaoSpecies> species = new ArrayList<>(2);
         FaoSpecies species1 = new FaoSpecies();
         species1.setCode("COD");
         species1.setEnName("COD fish");
-
         FaoSpecies species2 = new FaoSpecies();
         species2.setCode("CAT");
         species2.setEnName("CAT fish");
-
         FaoSpecies species3 = new FaoSpecies();
         species3.setCode("WHL");
         species3.setEnName("Whale");
-
         species.add(species1);
         species.add(species2);
         species.add(species3);
-
-        bulkDao.singleEntityBulkDeleteAndInsert(species);
-
-        int totalCount=  mdrRepoBean.countCodeListItemsByAcronymAndFilter(species1.getAcronym(), "C*", "code");
-
-        assertEquals(2, totalCount);
+        return species;
     }
+
 }
