@@ -14,9 +14,7 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Store;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -33,19 +31,19 @@ import java.util.List;
 public class RectangleCoordinates implements Serializable {
 
     @Column(name = "south")
-    @Field(name="south", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="south")
     private double south;
 
     @Column(name = "west")
-    @Field(name="west", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="west")
     private double west;
 
     @Column(name = "north")
-    @Field(name="north", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="north")
     private double north;
 
     @Column(name = "east")
-    @Field(name="east", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="east")
     private double east;
 
     public RectangleCoordinates() {

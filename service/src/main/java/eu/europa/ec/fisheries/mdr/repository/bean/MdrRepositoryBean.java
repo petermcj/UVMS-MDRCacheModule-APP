@@ -32,6 +32,8 @@ import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -39,6 +41,7 @@ import java.util.Map;
 
 @Stateless
 @Slf4j
+@TransactionManagement(TransactionManagementType.BEAN)
 public class MdrRepositoryBean implements MdrRepository {
 	
 	@PersistenceContext(unitName = "mdrPU")
@@ -81,7 +84,7 @@ public class MdrRepositoryBean implements MdrRepository {
 			final MDRDataSetType mdrDataSet = response.getMDRDataSet();
 			if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
 				try {
-					bulkOperationsDao.singleEntityBulkDeleteAndInsert(mdrEntityRows);
+					insertNewData(mdrEntityRows);
 					statusDao.updateStatusSuccessForAcronym(mdrDataSet, AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
 				} catch (ServiceException e) {
 					statusDao.updateStatusFailedForAcronym(mdrEntityRows.get(0).getAcronym());
@@ -100,13 +103,28 @@ public class MdrRepositoryBean implements MdrRepository {
             }
 		}
 	}
+	/* Mthod for saving the new
+       Done in 2 steps so that we have 2 different transactions.
+       One for deleting and purging indexes.
+       One for saving data.
+       Otherwise it will double the size of the lucene indexes.
+    */
+	@Override
+	public void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException {
+		Class mdrClass       = mdrEntityRows.get(0).getClass();
+		String mdrEntityName = mdrClass.getSimpleName();
+		// Deletion phase;
+		deleteFromDbAndPurgeIndexes(mdrClass, mdrEntityName);
+		// Insertion phase;
+		saveNewEntriesAndRefreshIndexes(mdrEntityRows, mdrClass);
+	}
 
 	private String extractAcronymFromReferenceId(String responseReferenceID) {
 		return responseReferenceID.split("--")[0];
 	}
 
 	/*
-	 * MDR Configurations.
+	 * MDR Configurations related methods.
 	 */
 	@Override
 	public List<MdrConfiguration> getAllConfigurations() throws ServiceException{
@@ -143,8 +161,16 @@ public class MdrRepositoryBean implements MdrRepository {
 
 	// TODO : Delete me when done testing the functionality
 	@Override
-	public void insertTestData(List<? extends MasterDataRegistry> testList) throws ServiceException {
-		bulkOperationsDao.singleEntityBulkDeleteAndInsert(testList);
+	public void insertTestData(List<? extends MasterDataRegistry> entityRows) throws ServiceException {
+		insertNewData(entityRows);
+	}
+
+	private void saveNewEntriesAndRefreshIndexes(List<? extends MasterDataRegistry> entityRows, Class mdrClass) throws ServiceException {
+		bulkOperationsDao.saveNewEntriesAndRefreshLuceneIndexes(mdrClass, entityRows);
+	}
+
+	private void deleteFromDbAndPurgeIndexes(Class mdrClass, String mdrEntityName) throws ServiceException {
+		bulkOperationsDao.deleteFromDbAndPurgeAllFromIndex(mdrEntityName, mdrClass);
 	}
 
 }

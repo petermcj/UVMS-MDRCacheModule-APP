@@ -37,23 +37,28 @@ public class GearType extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L; 
 	
 	@Column(name = "group_name")
-	@Field(name="group_name", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="group_name")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String category;
 	
 	@Column(name = "sub_group_name")
-	@Field(name="sub_group_name", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="sub_group_name")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String subCategory;
 
 	@Column(name = "iss_cfg_code")
-	@Field(name="iss_cfg_code", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="iss_cfg_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String issCfgCode;
 
 	@Column(name = "iccat_code")
-	@Field(name="iccat_code", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="iccat_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String iccatCode;
 
 	@Column(name = "target")
-	@Field(name="target", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="target")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String target;
 
 	@Override

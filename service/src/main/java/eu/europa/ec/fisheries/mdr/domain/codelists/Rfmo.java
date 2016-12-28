@@ -34,7 +34,8 @@ public class Rfmo extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "code_2")
-	@Field(name="code_2", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="code_2")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String code2;
 
 	@Override

@@ -18,6 +18,7 @@ import lombok.ToString;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 import javax.persistence.Embedded;
@@ -34,6 +35,8 @@ import javax.persistence.Table;
 public class GfcmStatisticalRectangles extends MasterDataRegistry {
 	
 	@Embedded
+	@IndexedEmbedded
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private RectangleCoordinates rectangle;
 
 	@Override

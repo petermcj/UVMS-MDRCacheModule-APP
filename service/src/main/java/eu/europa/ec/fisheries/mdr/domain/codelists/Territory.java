@@ -26,11 +26,13 @@ import javax.persistence.Table;
 public class Territory extends MasterDataRegistry {
 
     @Column(name = "code_2")
-    @Field(name="code_2", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="code_2")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code2;
 
     @Column(name = "en_name")
-    @Field(name="en_name", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="en_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Override

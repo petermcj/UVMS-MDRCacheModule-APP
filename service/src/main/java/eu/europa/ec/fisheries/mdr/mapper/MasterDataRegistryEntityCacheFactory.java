@@ -141,7 +141,7 @@ public class MasterDataRegistryEntityCacheFactory {
 	/**
 	 * Returns the List of all available Acronyms fro MDR.
 	 * 
-	 * @return
+	 * @return acronymsList
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
@@ -158,6 +158,10 @@ public class MasterDataRegistryEntityCacheFactory {
 		return acronymsList;
 	}
 
+	/**
+	 * Initializes the cache.
+	 *
+	 */
 	public static void initialize() {
 		try {
 			initializeCache();

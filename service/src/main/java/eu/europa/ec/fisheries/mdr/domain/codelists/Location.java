@@ -37,87 +37,104 @@ import javax.persistence.Table;
 public class Location extends MasterDataRegistry {
 
 	@Column(name = "code_2")
-	@Field(name="code_2", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="code_2")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String code2;
 
 	@Column(name = "en_name")
-	@Field(name="en_name", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="en_name")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String enName;
 
 	@Column(name = "latitude")
-	@Field(name="latitude", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="latitude")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Double latitude;
 
 	@Column(name = "longitude")
-	@Field(name="longitude", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="longitude")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Double longitude;
 	
 	@Column(name = "fishing_port_ind")
-	@Field(name="fishing_port_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="fishing_port_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean fishingPortInd;
 	
 	@Column(name = "landing_place_ind")
-	@Field(name="landing_place_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="landing_place_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean landingPlaceInd;
 	
 	@Column(name = "commercial_port_ind")
-	@Field(name="commercial_port_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="commercial_port_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean commercialPortInd;
 	
 	@Column(name = "unlo_code")
-	@Field(name="unlo_code", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="unlo_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String unloCode ;
 
 	@Column(name = "coordinates")
-	@Field(name="coordinates", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="coordinates")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String coordinates ;
 	
 	@Column(name = "un_function_code")
-	@Field(name="un_function_code", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="un_function_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String unFunctionCode ;
 	
 	@Column(name = "unknown_function")
-	@Field(name="unknown_function", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="unknown_function")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean unknownFunction;
 
 	@Column(name = "port")
-	@Field(name="port", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="port")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean port;
 
 	@Column(name = "rail")
-	@Field(name="rail", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="rail")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean rail;
 
 	@Column(name = "road")
-	@Field(name="road", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="road")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean road;
 
 	@Column(name = "airport")
-	@Field(name="airport", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="airport")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean airport;
 	
 	@Column(name = "postal_exchange_office")
-	@Field(name="postal_exchange_office", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="postal_exchange_office")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean postalExchangeOffice;
 	
 	@Column(name = "multimodal_functions_ind")
-	@Field(name="multimodal_functions_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="multimodal_functions_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean multimodalFunctionsInd;
 	
 	@Column(name = "fixed_transport_functions_ind")
-	@Field(name="fixed_transport_functions_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="fixed_transport_functions_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean fixedTransportFunctionsInd;
 	
 	@Column(name = "border_crossing_function")
-	@Field(name="border_crossing_function", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="border_crossing_function")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private Boolean borderCrossingFunction;
-
 
 	@Override
 	public String getAcronym() {
 		return "LOCATION";
 	}
-
 
 	@Override
 	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {

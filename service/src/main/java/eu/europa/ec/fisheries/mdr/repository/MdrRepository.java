@@ -30,7 +30,15 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
-    List<MdrConfiguration> getAllConfigurations() throws ServiceException;
+	/* Mthod for saving the new
+       Done in 2 steps so that we have 2 different transactions.
+       One for deleting and purging indexes.
+       One for saving data.
+       Otherwise it will double the size of the lucene indexes.
+    */
+	void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
+	List<MdrConfiguration> getAllConfigurations() throws ServiceException;
 
 	MdrConfiguration getConfigurationByName(String vonfigName);
 
@@ -43,5 +51,5 @@ public interface MdrRepository {
 	MdrConfiguration getMdrSchedulerConfiguration();
 
 	// TODO : Delete me when done testing the functionality
-	void insertTestData(List<? extends MasterDataRegistry> testList) throws ServiceException;
+	void insertTestData(List<? extends MasterDataRegistry> entityRows) throws ServiceException;
 }

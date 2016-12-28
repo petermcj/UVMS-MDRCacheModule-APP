@@ -37,10 +37,12 @@ public class IcesStatisticalRectangles extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "ices_name")
-	@Field(name="ices_name", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="icesName")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String icesName;
 	
 	@Embedded
+	@IndexedEmbedded
 	private RectangleCoordinates rectangle;
 
 	@Override

@@ -30,31 +30,38 @@ public class FaoSpecies extends MasterDataRegistry {
     private String isGroup;
 
     @Column(name = "scientific_name")
-    @Field(name="scientific_name", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="scientific_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String scientificName;
 
     @Column(name = "en_name")
-    @Field(name="en_name", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="en_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Column(name = "fr_name")
-    @Field(name="fr_name", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="fr_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String frName;
 
     @Column(name = "es_name")
-    @Field(name="es_name", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="es_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String esName;
 
     @Column(name = "family")
-    @Field(name="family", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="family")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String family;
 
     @Column(name = "bio_order")
-    @Field(name="bio_order", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="bio_order")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String bioOrder;
 
     @Column(name = "taxo_code")
-    @Field(name="taxo_code", analyze= Analyze.YES, store = Store.YES)
+    @Field(name="taxo_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String taxoCode;
 
     @Override

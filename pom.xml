@@ -68,7 +68,7 @@
         <mave.plugin.api.version>2.0</mave.plugin.api.version>
         <reasteasy.version>3.0.11.Final</reasteasy.version>
 
-        <lucene.index.directory>${project.basedir}/lucene/indexes/mdr</lucene.index.directory>
+        <lucene.index.directory>/app/indexes/mdr</lucene.index.directory>
     </properties>
 
     <dependencyManagement>

@@ -24,8 +24,9 @@
         <property name="use_sql_comments" value="true" />
 
         <!--HIBERNATE SEARCH PROPS-->
-        <property name="hibernate.search.default.directory_provider"  value="filesystem"/>
-        <property name="hibernate.search.default.indexBase"  value="/app/indexes/mdr"/>
+        <property name="hibernate.search.default.directory_provider" value="filesystem"/>
+        <property name="hibernate.search.default.indexBase"          value="${lucene.index.directory}"/>
+        <property name="hibernate.transaction.factory_class"         value="org.hibernate.transaction.JDBCTransactionFactory" />
     </properties>
 
 </persistence-unit>

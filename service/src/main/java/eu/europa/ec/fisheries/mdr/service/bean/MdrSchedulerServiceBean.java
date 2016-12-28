@@ -46,7 +46,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
     /**
      * Method that will be called when a timer has been set for this EJB.
-     *
+     * When time runs up this method will trigger n requests (twoards FLUX TL) for the whole MDR registry update.
      */
     @Timeout
     public void timeOut(){

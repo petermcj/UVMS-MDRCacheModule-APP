@@ -4,7 +4,6 @@ import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DataSourceDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
-import eu.europa.ec.fisheries.mdr.dao.MdrBulkOperationsDao;
 import eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.SneakyThrows;
@@ -13,6 +12,7 @@ import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
@@ -25,10 +25,11 @@ import static org.junit.Assert.*;
 /**
  * Created by georgige on 11/15/2016.
  */
-//@Ignore
+@Ignore
 public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
 
-    private MdrBulkOperationsDao              bulkDao = new MdrBulkOperationsDao(em);
+    private MdrRepositoryBean mdrInsertionRepoBean = new MdrRepositoryBean();
+
     private MdrLuceneSearchRepositoryBean mdrRepoBean = new MdrLuceneSearchRepositoryBean();
 
     public static final String CODE = "code";
@@ -39,17 +40,19 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
         Operation operation = sequenceOf(DELETE_ALL_MDR_SPECIES);
         DbSetup dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
         dbSetupTracker.launchIfNecessary(dbSetup);
-
-        //init the bean
+        //init the beans
         Whitebox.setInternalState(mdrRepoBean, "em", em);
+        Whitebox.setInternalState(mdrInsertionRepoBean, "em", em);
         mdrRepoBean.init();
+        mdrInsertionRepoBean.init();
     }
 
     @Test
     @SneakyThrows
     public void testLuceneIndexingNoSearchFilters() throws ServiceException {
         List<FaoSpecies> species = mockSpecies();
-        bulkDao.singleEntityBulkDeleteAndInsert(species);
+
+        mdrInsertionRepoBean.insertNewData(species);
 
         FullTextSession fullTextSession = Search.getFullTextSession((Session) em.getDelegate());
         Transaction tx = fullTextSession.beginTransaction();
@@ -60,9 +63,9 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
         try {
             mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(), 0, 5, CODE, false, null, null);
             fail("ServiceException was expected but not thrown.");
-        } catch (ServiceException exc) {
-            assertTrue(exc.getCause() instanceof  IllegalArgumentException);
-            assertEquals("No search attributes are provided.", exc.getCause().getMessage());
+        } catch (Exception exc) {
+            assertTrue(exc instanceof  IllegalArgumentException);
+            assertEquals("No search attributes are provided.", exc.getMessage());
         }
 
     }
@@ -72,7 +75,7 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
     @SneakyThrows
     public void testLuceneSearch() throws ServiceException {
         List<FaoSpecies> species = mockSpecies();
-        bulkDao.singleEntityBulkDeleteAndInsert(species);
+        mdrInsertionRepoBean.insertNewData(species);
 
         List<FaoSpecies> filterredEntities = (List<FaoSpecies>) mdrRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(),
                 0, 5, CODE, true, "*", CODE);
@@ -88,7 +91,7 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
     public void testLuceneSearchOnMultipleFields() throws ServiceException {
 
         List<FaoSpecies> species = mockSpecies();
-        bulkDao.singleEntityBulkDeleteAndInsert(species);
+        mdrInsertionRepoBean.insertNewData(species);
 
         String[] fields= {CODE, "description"};
         final String filterText = "*whl";
@@ -110,7 +113,8 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
     @SneakyThrows
     public void testLuceneSearchCount() throws ServiceException {
         List<FaoSpecies> species = mockSpecies();
-        bulkDao.singleEntityBulkDeleteAndInsert(species);
+        mdrInsertionRepoBean.insertNewData(species);
+
         int totalCount=  mdrRepoBean.countCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(), "c*", CODE);
         assertEquals(2, totalCount);
     }

@@ -19,6 +19,7 @@ import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
 import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
@@ -27,6 +28,7 @@ import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
@@ -58,7 +60,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
     public Response findCodeListByAcronymFilterredByFilter(
             @Context HttpServletRequest request, SearchRequestDto searchRequest) {
         Response response;
@@ -93,7 +95,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Path("/{acronym}/{offset}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
     public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request,
                                                             @PathParam("acronym") String acronym,
                                                             @PathParam("offset") Integer offset,
@@ -136,16 +138,19 @@ public class MDRCodeListResource extends UnionVMSResource {
             effortZones1.setCode("COD"+i);
             effortZones1.setDescription("COD fish of huge size -"+i);
             effortZones1.setValidity(new DateRange(new Date(), new Date()));
+            effortZones1.setLegalReference("legalref -"+i);
 
             EffortZone effortZones2 = new EffortZone();
             effortZones2.setCode("CAT"+i);
             effortZones2.setDescription("CAT fish of medium size -"+i);
             effortZones2.setValidity(new DateRange(new Date(), new Date()));
+            effortZones2.setLegalReference("legalref -"+i);
 
             EffortZone effortZones3 = new EffortZone();
             effortZones3.setCode("WHL"+i);
             effortZones3.setDescription("Whale of big size - "+i);
             effortZones2.setValidity(new DateRange(new Date(), new Date()));
+            effortZones3.setLegalReference("legalref -"+i);
 
             effortZones.add(effortZones1);
             effortZones.add(effortZones2);
@@ -154,4 +159,5 @@ public class MDRCodeListResource extends UnionVMSResource {
         }
         return effortZones;
     }
+
 }

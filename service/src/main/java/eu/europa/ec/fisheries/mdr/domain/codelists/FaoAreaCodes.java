@@ -37,15 +37,18 @@ import javax.persistence.Table;
 public class FaoAreaCodes extends MasterDataRegistry {
 
 	@Column(name = "level")
-	@Field(name="level", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="level")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String level;
 
 	@Column(name = "en_level_name")
-	@Field(name="en_level_name", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="en_level_name")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String enLevelName;
 
 	@Column(name = "terminal_ind")
-	@Field(name="terminal_ind", analyze= Analyze.YES, store = Store.YES)
+	@Field(name="terminal_ind")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String terminalInd;
 
 	@Override
