@@ -13,11 +13,9 @@
 
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import eu.europa.ec.fisheries.mdr.domain.codelists.EffortZone;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
-import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
@@ -37,8 +35,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -114,51 +110,6 @@ public class MDRCodeListResource extends UnionVMSResource {
             log.error("Internal Server Error.", e);
             return createErrorResponse("internal_server_error");
         }
-    }
-
-    // TODO : Delete me when done testing the functionality
-    @POST
-    @Path("/testdata/insert")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertMDRtestData(@Context HttpServletRequest request){
-        List<EffortZone> effortZones = mockEffrortZone();
-        try {
-            mdrRepository.insertTestData(effortZones);
-        } catch (ServiceException e) {
-            log.error("Internal Server Error.", e);
-            return createErrorResponse("internal_server_error");
-        }
-        return createSuccessResponse(effortZones);
-    }
-
-    private List<EffortZone> mockEffrortZone() {
-        List<EffortZone> effortZones = new ArrayList<>();
-        for(int i=0; i<100;i++){
-
-            EffortZone effortZones1 = new EffortZone();
-            effortZones1.setCode("COD"+i);
-            effortZones1.setDescription("COD fish of huge size -"+i);
-            effortZones1.setValidity(new DateRange(new Date(), new Date()));
-            effortZones1.setLegalReference("legalref -"+i);
-
-            EffortZone effortZones2 = new EffortZone();
-            effortZones2.setCode("CAT"+i);
-            effortZones2.setDescription("CAT fish of medium size -"+i);
-            effortZones2.setValidity(new DateRange(new Date(), new Date()));
-            effortZones2.setLegalReference("legalref -"+i);
-
-            EffortZone effortZones3 = new EffortZone();
-            effortZones3.setCode("WHL"+i);
-            effortZones3.setDescription("Whale of big size - "+i);
-            effortZones2.setValidity(new DateRange(new Date(), new Date()));
-            effortZones3.setLegalReference("legalref -"+i);
-
-            effortZones.add(effortZones1);
-            effortZones.add(effortZones2);
-            effortZones.add(effortZones3);
-
-        }
-        return effortZones;
     }
 
 }

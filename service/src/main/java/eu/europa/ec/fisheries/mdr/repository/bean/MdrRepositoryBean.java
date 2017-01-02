@@ -159,12 +159,6 @@ public class MdrRepositoryBean implements MdrRepository {
     	return statusDao.getStatusForAcronym(acronym);
     }
 
-	// TODO : Delete me when done testing the functionality
-	@Override
-	public void insertTestData(List<? extends MasterDataRegistry> entityRows) throws ServiceException {
-		insertNewData(entityRows);
-	}
-
 	private void saveNewEntriesAndRefreshIndexes(List<? extends MasterDataRegistry> entityRows, Class mdrClass) throws ServiceException {
 		bulkOperationsDao.saveNewEntriesAndRefreshLuceneIndexes(mdrClass, entityRows);
 	}
