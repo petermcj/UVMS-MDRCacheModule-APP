@@ -74,12 +74,14 @@ public class MDRCodeListResource extends UnionVMSResource {
             String sortBy            = sorting!=null? sorting.getSortBy():null;
             boolean isReversed       = sorting!=null? sorting.isReversed():false;
             String filter            = (String) criteria.get("filter");
-            String[] searchAttribute = (String[]) criteria.get("searchAttribute");
+            List<String> searchAttributeList = ((List<String>) criteria.get("searchAttribute"));
+            String[] searchAttributes = new String[searchAttributeList.size()];
+            searchAttributeList.toArray(searchAttributes);
             if (StringUtils.isBlank(acronym)) {
                 response = createErrorResponse("missing_required_parameter_acronym");
             } else {
                 try {
-                    response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttribute);
+                    response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
                 } catch (NumberFormatException e) {
                     log.error("Internal Server Error.", e);
                     response = createErrorResponse("internal_server_error");
