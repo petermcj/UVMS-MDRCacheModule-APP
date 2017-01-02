@@ -18,7 +18,6 @@ import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.uvms.rest.dto.*;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,7 +37,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Created by georgige on 11/24/2016.
  */
-@Ignore
+
 public class MDRCodeListResourceTest {
 
     @InjectMocks
