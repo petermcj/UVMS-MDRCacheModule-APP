@@ -61,8 +61,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
     @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
-    public Response findCodeListByAcronymFilterredByFilter(
-            @Context HttpServletRequest request, SearchRequestDto searchRequest) {
+    public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request, SearchRequestDto searchRequest) {
         Response response;
         Map<String, Object> criteria = searchRequest.getCriteria();
         if (!MapUtils.isEmpty(criteria)) {
@@ -75,7 +74,7 @@ public class MDRCodeListResource extends UnionVMSResource {
             boolean isReversed       = sorting!=null? sorting.isReversed():false;
             String filter            = (String) criteria.get("filter");
             List<String> searchAttributeList = ((List<String>) criteria.get("searchAttribute"));
-            String[] searchAttributes = new String[searchAttributeList.size()];
+            String[] searchAttributes        = new String[searchAttributeList.size()];
             searchAttributeList.toArray(searchAttributes);
             if (StringUtils.isBlank(acronym)) {
                 response = createErrorResponse("missing_required_parameter_acronym");
