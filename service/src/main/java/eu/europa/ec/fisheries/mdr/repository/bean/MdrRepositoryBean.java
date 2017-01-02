@@ -103,7 +103,7 @@ public class MdrRepositoryBean implements MdrRepository {
             }
 		}
 	}
-	/* Mthod for saving the new
+	/* Method for saving the new
        Done in 2 steps so that we have 2 different transactions.
        One for deleting and purging indexes.
        One for saving data.
