@@ -15,30 +15,39 @@ import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
-import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.Search;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.util.List;
 
 /***
  * This class is used only for bulk insertions.
  */
 @Slf4j
-public class MdrBulkOperationsDao {
+public class MdrBulkOperationsDao implements Serializable {
 
     @PersistenceContext(unitName = "mdrPU")
     private EntityManager em;
 
     private static final String HQL_DELETE = "DELETE FROM ";
 
+    public MdrBulkOperationsDao() {
+        super();
+    }
+
+    public MdrBulkOperationsDao(EntityManager em) {
+        this.em = em;
+    }
+
+
     /**
      * Purges the Lucene index before deletion and insertion of the new entries.
      * Deletes all entries of all the given Entities and then inserts all the new ones.
-     * The input is the list of all the entities and all their instances (List of tables) ready to be persisted (each entity contains one or more records).
+     * The input is the list of all the entities ('Rows' of the same Entity) ready to be persisted (each entity contains one or more records).
      *
      * @param entityRows
      * @throws ServiceException
@@ -47,48 +56,143 @@ public class MdrBulkOperationsDao {
 
         if (!CollectionUtils.isEmpty(entityRows)) {
 
-            Class mdrClass = entityRows.get(0).getClass();
-            FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
+            Class mdrClass       = entityRows.get(0).getClass();
+            String mdrEntityName = mdrClass.getSimpleName();
 
-            StatelessSession session = (getEntityManager().unwrap(Session.class)).getSessionFactory().openStatelessSession();
-            Transaction tx = session.beginTransaction();
+            // Deletion and purging of all entries of this Mdr Entity.
+            deleteFromDbAndPurgeAllFromIndex(mdrEntityName, mdrClass);
 
-            try {
-                String entityName = mdrClass.getSimpleName();
+            // Refreshing Lucene indexes and storing data to DB.
+            log.info("Rebuilding Lucene index for entity : " + mdrEntityName + "...");
+            saveNewEntriesAndRefreshLuceneIndexes(mdrClass, entityRows);
+        }
 
-                log.info("Persisting entity entries for : " + entityName);
-                deleteAndPersistNewEntityByEntityName(entityRows, session, entityName);
-                log.debug("Committing transaction.");
-                tx.commit();
+    }
 
-                log.info("Rebuilding Lucene index...");
-                fullTextEntityManager.createIndexer().purgeAllOnStart(true).startAndWait();
+    /**
+     * Delets all the entries from this Entity and inserts the new ones.
+     *
+     * @param entityName
+     * @param mdrClass
+     * @throws InterruptedException
+     */
+    public void deleteFromDbAndPurgeAllFromIndex(String entityName, Class mdrClass) throws ServiceException {
+        FullTextSession fullTextSession = getFullTextSession();
+        Transaction ftTx                = fullTextSession.beginTransaction();
+        try {
+            log.info("Deleting and purging entity entries for : {}", entityName);
+            // DELETION PHASE (Deleting old entries)
+            fullTextSession.createQuery(HQL_DELETE + entityName).executeUpdate();
+            // Purging old indexes
+            fullTextSession.purgeAll(mdrClass);  // Remove obsolete content
+            fullTextSession.flushToIndexes();    // Apply purge now, before optimize
+            fullTextSession.getSearchFactory().optimize(mdrClass);
+            ftTx.commit();
+            log.info("Deletion and purging-all for {} completed.", mdrClass.toString());
+        } catch (Exception e) {
+            ftTx.rollback();
+            throw new ServiceException("Rollbacking transaction for reason : ", e);
+        } finally {
+            log.debug("Closing session");
+            fullTextSession.close();
+        }
+    }
 
-                log.info("Insertion for {} completed.", mdrClass.toString());
-            } catch (Exception e) {
-                tx.rollback();
-                throw new ServiceException("Rollbacking transaction for reason : ", e);
-            } finally {
-                log.debug("Closing session");
-                session.close();
+    /**
+     * Refreshes the Lucene indexes with the latest deletions and insertions.
+     *
+     * @param mdrClass
+     * @param entityRows
+     * @throws InterruptedException
+     */
+    public void saveNewEntriesAndRefreshLuceneIndexes(Class mdrClass, List<? extends MasterDataRegistry> entityRows) throws ServiceException {
+        FullTextSession fullTextSession = getFullTextSession();
+        Transaction tx  = fullTextSession.beginTransaction();
+        try {
+            for (MasterDataRegistry actualEnityRow : entityRows) {
+                fullTextSession.save(actualEnityRow);
             }
-        }
-
-    }
-
-    private void deleteAndPersistNewEntityByEntityName(List<? extends MasterDataRegistry> entityRows, StatelessSession session, String entityName) {
-
-        // DELETION PHASE (Deleting old entries)
-        session.createQuery(HQL_DELETE + entityName).executeUpdate();
-
-        // INSERTION PHASE (Inserting new entries)
-        for (MasterDataRegistry actualEnityRow : entityRows) {
-            session.insert(actualEnityRow);
+            fullTextSession.flush();
+            fullTextSession.clear();
+            tx.commit();
+            log.info("Insertion for {} completed.", mdrClass.toString());
+        } catch (Exception e) {
+            tx.rollback();
+            throw new ServiceException("Rollbacking transaction for reason : ", e);
+        } finally {
+            log.debug("Closing session");
+            fullTextSession.close();
         }
     }
 
-    public MdrBulkOperationsDao(EntityManager em) {
-        this.em = em;
+
+    /**
+     * Refreshes the Lucene indexes with the latest deletions and insertions.
+     *
+     * @param mdrClass
+     * @throws InterruptedException
+     */
+    private void refreshLuceneIndexes(Class mdrClass) throws ServiceException {
+        FullTextSession fullTextSession = getFullTextSession();
+        Transaction tx  = fullTextSession.beginTransaction();
+        try {
+            Search.getFullTextEntityManager(em).createIndexer(mdrClass).startAndWait();
+            tx.commit();
+            log.info("Insertion for {} completed.", mdrClass.toString());
+        } catch (Exception e) {
+            tx.rollback();
+            throw new ServiceException("Rollbacking transaction for reason : ", e);
+        } finally {
+            log.debug("Closing session");
+            fullTextSession.close();
+        }
+    }
+
+    /**
+     * Unwraps a JPA Session.
+     *
+     * @return session;
+     */
+    private Session getJpaSession() {
+        return (getEntityManager().unwrap(Session.class)).getSessionFactory().openSession();
+    }
+
+    /**
+     * Unwraps a full text Hibernate Search Session.
+     *
+     * @return session;
+     */
+    private FullTextSession getFullTextSession(){
+        return org.hibernate.search.Search.getFullTextSession(getJpaSession());
+    }
+
+    /**
+     * Returns the number of "documents" (aka rows) of a certain entity;
+     *
+     * @param mdrClass
+     * @return nrOfDocuments
+     */
+    public int getDocsNumberForEntity(Class mdrClass){
+        FullTextSession session = getFullTextSession();
+        return session.getSearchFactory().getIndexReaderAccessor().open(mdrClass).numDocs();
+    }
+
+    /**
+     * Massivly deletes all the previous indexes and depending on the annotated classes (entities)
+     * it recreates the whole index (Ps : use with caution)
+     *
+     * @throws InterruptedException
+     */
+    public void massiveFlushAndReIndex() throws InterruptedException {
+        Search.getFullTextEntityManager(em).createIndexer().startAndWait();
+    }
+
+    /**
+     * Purges all the Rows of the given entity from the lucene Index.
+     *
+     */
+    private void purgeAllForEntity(Class mdrEntityClass){
+        Search.getFullTextEntityManager(em).purgeAll(mdrEntityClass);
     }
 
     public EntityManager getEntityManager() {

@@ -30,8 +30,6 @@ public class MdrBulkOperationsDaoTest extends BaseMdrDaoTest {
 
 	private MdrBulkOperationsDao bulkDao = new MdrBulkOperationsDao(em);
 
-	private MdrStatusDao statusDao = new MdrStatusDao(em);
-
 	@Before
 	@SneakyThrows
 	public void prepare() {
@@ -47,7 +45,7 @@ public class MdrBulkOperationsDaoTest extends BaseMdrDaoTest {
 		dbSetupTracker.skipNextLaunch();
 
 		// List of Entity rows (List of instances of an entity) == List of Lists;
-		List<List<? extends MasterDataRegistry>> entitiesList = new ArrayList<List<? extends MasterDataRegistry>>();
+		List<List<? extends MasterDataRegistry>> entitiesList = new ArrayList<>();
 		
 		// ActionType list
 		List<FaoSpecies> actionEntityRows = mockSpecies();
@@ -76,19 +74,6 @@ public class MdrBulkOperationsDaoTest extends BaseMdrDaoTest {
 			list.add(species);
 		}
 		return list;
-	}
-
-	
-	private List<FaoSpecies> mockFaoSpecies() {
-		List<FaoSpecies> faoSpeciesRows = new ArrayList<>();
-		// Creating new CrNafoStocs entity to persist and adding it to this entity list (rows);
-		for(int i = 0; i < 11; i++){
-			FaoSpecies actionType = new FaoSpecies();
-			actionType.setCode("areaCode"+i);
-			actionType.setDescription("someDescription"+i);
-			faoSpeciesRows.add(actionType);
-		}	
-		return faoSpeciesRows;
 	}
 
 }

@@ -30,7 +30,9 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
-    List<MdrConfiguration> getAllConfigurations() throws ServiceException;
+	void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
+	List<MdrConfiguration> getAllConfigurations() throws ServiceException;
 
 	MdrConfiguration getConfigurationByName(String vonfigName);
 
@@ -41,8 +43,5 @@ public interface MdrRepository {
 	void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException;
 
 	MdrConfiguration getMdrSchedulerConfiguration();
-	
-	List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(String acronym, Integer offset, Integer pageSize, String sortBy, Boolean isReversed, String filter, String searchAttributes) throws ServiceException;
 
-	int countCodeListItemsByAcronymAndFilter(String acronym, String filter, String searchAttribute) throws ServiceException;
 }

@@ -5,10 +5,8 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -24,38 +22,46 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Indexed
+@Analyzer(impl = StandardAnalyzer.class)
 public class FaoSpecies extends MasterDataRegistry {
 
     @Column(name = "is_group")
-    @Field(name="is_group", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="is_group", analyze= Analyze.YES, store = Store.YES)
     private String isGroup;
 
     @Column(name = "scientific_name")
-    @Field(name="scientific_name", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="scientific_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String scientificName;
 
     @Column(name = "en_name")
-    @Field(name="en_name", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="en_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Column(name = "fr_name")
-    @Field(name="fr_name", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="fr_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String frName;
 
     @Column(name = "es_name")
-    @Field(name="es_name", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="es_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String esName;
 
     @Column(name = "family")
-    @Field(name="family", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="family")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String family;
 
     @Column(name = "bio_order")
-    @Field(name="bio_order", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="bio_order")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String bioOrder;
 
     @Column(name = "taxo_code")
-    @Field(name="taxo_code", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="taxo_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String taxoCode;
 
     @Override

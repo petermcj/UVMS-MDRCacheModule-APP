@@ -10,6 +10,8 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.domain.codelists;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Indexed;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
@@ -28,6 +30,7 @@ import javax.persistence.Table;;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Indexed
+@Analyzer(impl = StandardAnalyzer.class)
 public class FluxLocationCharacteristic extends MasterDataRegistry {
 
     @Override

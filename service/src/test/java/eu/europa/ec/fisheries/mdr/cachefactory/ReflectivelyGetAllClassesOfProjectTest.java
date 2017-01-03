@@ -12,6 +12,7 @@ package eu.europa.ec.fisheries.mdr.cachefactory;
 
 import eu.europa.ec.fisheries.mdr.util.ClassFinder;
 import lombok.SneakyThrows;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -92,6 +93,7 @@ public class ReflectivelyGetAllClassesOfProjectTest {
 
     @SneakyThrows
     @Test
+    @Ignore
     public void testIfItWorks(){
         final List<String> strings = extractAllFilesPaths("C:\\GIT Repository\\activity-trunk\\uvms-activity-app", new ArrayList<String>());
         System.out.print("OK");

@@ -15,10 +15,7 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -38,7 +35,8 @@ public class EffortZone extends MasterDataRegistry {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "legal_reference")
-    @Field(name="legalReference", analyze= Analyze.NO, store = Store.YES)
+    @Field(name="legalReference")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
     private String legalReference;
 
     @Override
@@ -60,13 +58,11 @@ public class EffortZone extends MasterDataRegistry {
         }
     }
 
-
     public String getLegalReference() {
         return legalReference;
     }
     public void setLegalReference(String legalReference) {
         this.legalReference = legalReference;
     }
-
 
 }

@@ -17,6 +17,19 @@
 
     <properties>
 
+        <application.name>${project.parent.artifactId}</application.name>
+        <application.version>${project.parent.version}</application.version>
+        <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log</application.logfile>
+        <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log</application.error.logfile>
+        <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log</application.logfile.boot>
+
+        <!-- Core versions -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <javaee.version>7.0</javaee.version>
+        <sl4j.version>1.7.12</sl4j.version>
+        <logback.version>1.1.2</logback.version>
+
         <!-- sonar -->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -27,34 +40,20 @@
         <mdr.name>MDR Cache</mdr.name>
         <mdr.model.version>0.5.0-SNAPSHOT</mdr.model.version>
 
-        <!-- Core versions -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <javaee.version>7.0</javaee.version>
-        <sl4j.version>1.7.12</sl4j.version>
-        <logback.version>1.1.2</logback.version>
-
         <!-- Other modules dependencies -->
         <exchange.model>2.0.8</exchange.model>
         <rules.model>2.0.7</rules.model>
 
-        <mapstruct.version>1.0.0.Final</mapstruct.version>
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.1.2</logback.core.version>
-        <asset.model.version>2.0.0</asset.model.version>
-        <movement.model.version>2.0.0</movement.model.version>
-        <application.name>${project.parent.artifactId}</application.name>
-        <application.version>${project.parent.version}</application.version>
-        <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log</application.logfile>
-        <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log</application.error.logfile>
-        <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log</application.logfile.boot>
-        <geotools.version>14-M1</geotools.version>
         <uvms.commons.version>2.0.14-SNAPSHOT</uvms.commons.version>
         <uvms.test.version>0.0.3</uvms.test.version>
-        <hibernate.validator.version>4.3.2.Final</hibernate.validator.version>
-        <hibernate-search-orm.version>4.5.1.Final</hibernate-search-orm.version>
-        <hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
-        <hibernate-spatial.version>4.3</hibernate-spatial.version>
+
+        <hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
+        <hibernate-search-orm.version>5.3.0.Final</hibernate-search-orm.version>
+
+        <junit.version>4.12</junit.version>
+
         <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
         <usm4uvms.version>2.0.16</usm4uvms.version>
         <usm_deployment_descriptor_force_update>false</usm_deployment_descriptor_force_update>
@@ -63,9 +62,7 @@
         <maven.scm.provider.version>2.1.1</maven.scm.provider.version>
         <database.dialect>oracle</database.dialect>
         <geotools.version>14-M1</geotools.version>
-        <movement.model.version>2.0.0</movement.model.version>
-        <spatial.model.version>0.5.4</spatial.model.version>
-        <mave.plugin.api.version>2.0</mave.plugin.api.version>
+
         <reasteasy.version>3.0.11.Final</reasteasy.version>
 
         <lucene.index.directory>/app/indexes/mdr</lucene.index.directory>
@@ -154,30 +151,23 @@
                 <version>0.4</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.validator.version}</version>
-            </dependency>
-
             <!--HIBERNATE SEARCH-->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-search-orm</artifactId>
                 <version>${hibernate-search-orm.version}</version>
+                <exclusions>
+                    <exclusion>  <!-- declare the exclusion here -->
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- If using JPA, add: -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
                 <version>${hibernate-entitymanager.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-spatial</artifactId>
-                <version>${hibernate-spatial.version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>
@@ -208,7 +198,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.4</version>
+                <version>1.16.12</version>
             </dependency>
 
             <dependency>
@@ -440,26 +430,12 @@
             <id>Hibernate Spatial Repo</id>
             <url>http://nexus.e-is.pro/nexus/content/repositories/hibernatespatial/</url>
         </repository>
-        <!--<repository>
-            <id>Hibernate Spatial repo</id>
-            <url>http://www.hibernatespatial.org/repository</url>
-        </repository>-->
-        <!-- add JBOSS repository for easy access to Hibernate libraries -->
         <repository>
             <id>JBOSS</id>
             <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
         </repository>
     </repositories>
 
-    <profiles>
-        <profile>
-            <id>postgres</id>
-            <properties>
-                <database.dialect>postgres</database.dialect>
-                <!-- the record -->
-            </properties>
-        </profile>
-    </profiles>
     <modules>
         <!-- <module>model</module>-->
         <module>rest</module>

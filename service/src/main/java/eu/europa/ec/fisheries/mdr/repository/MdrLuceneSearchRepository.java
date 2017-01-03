@@ -8,23 +8,21 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.mdr.cachefactory;
+package eu.europa.ec.fisheries.mdr.repository;
 
-import eu.europa.ec.fisheries.mdr.util.LiquibaseUtil;
-import lombok.SneakyThrows;
-import org.junit.Ignore;
-import org.junit.Test;
+import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
+import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+
+import javax.ejb.Local;
+import java.util.List;
 
 /**
- * Created by kovian on 24/11/2016.
+ * Created by kovian on 15/12/2016.
  */
-@Ignore
-public class LiquibaseCreateScriptXMLFilesTest {
+@Local
+public interface MdrLuceneSearchRepository {
 
-    @Test
-    @SneakyThrows
-    public void createLiquibaseTableFiles(){
-        LiquibaseUtil.createXMLLiquibaseEntries();
-    }
+    List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(String acronym, Integer offset, Integer pageSize, String sortBy, Boolean isReversed, String filter, String... searchAttributes) throws ServiceException;
 
+    int countCodeListItemsByAcronymAndFilter(String acronym, String filter, String... searchAttribute) throws ServiceException;
 }

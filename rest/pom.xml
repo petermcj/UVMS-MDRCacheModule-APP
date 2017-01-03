@@ -61,11 +61,6 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
         </dependency>
-		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
 
          <dependency>
 			 <groupId>org.jboss.resteasy</groupId>
@@ -81,6 +76,12 @@
 		    <groupId>org.jboss.resteasy</groupId>
 		    <artifactId>jaxrs-api</artifactId>
 		</dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
 
     </dependencies>
 

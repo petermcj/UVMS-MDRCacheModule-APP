@@ -13,7 +13,8 @@ package eu.europa.ec.fisheries.mdr.domain.codelists;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Indexed;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
@@ -23,8 +24,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mdr_flux_fa_report_type")
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
+@Analyzer(impl = StandardAnalyzer.class)
 public class FluxFaReportType extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L;
 
