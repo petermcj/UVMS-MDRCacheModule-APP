@@ -37,7 +37,6 @@ import static org.mockito.Mockito.verify;
 /**
  * Created by georgige on 11/24/2016.
  */
-
 public class MDRCodeListResourceTest {
 
     @InjectMocks

@@ -117,7 +117,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
     }
 
     /**
-     *  TODO : To be used in the future when required search for multiple words (aka phrase search).
+     *  To be used in the future when required search for multiple words (aka phrase search).
      *
      * @param acronym
      * @param filterText

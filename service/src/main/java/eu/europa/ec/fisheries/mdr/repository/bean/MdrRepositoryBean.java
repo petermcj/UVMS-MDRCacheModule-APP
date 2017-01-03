@@ -103,12 +103,17 @@ public class MdrRepositoryBean implements MdrRepository {
             }
 		}
 	}
-	/* Method for saving the new
-       Done in 2 steps so that we have 2 different transactions.
-       One for deleting and purging indexes.
-       One for saving data.
-       Otherwise it will double the size of the lucene indexes.
-    */
+
+	/**
+	 * 	Method for saving the new mdrData (MDR entity rows).
+	 *  Done in 2 steps so that we have 2 different transactions.
+	 *  One for deleting and purging lucene indexes.
+	 *  One for saving data and refreshing the indexes.
+	 *  Otherwise lucene will double the size of the indexes, and with that the results also!
+	 *
+	 * @param  mdrEntityRows
+	 * @throws ServiceException
+	 */
 	@Override
 	public void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException {
 		Class mdrClass       = mdrEntityRows.get(0).getClass();

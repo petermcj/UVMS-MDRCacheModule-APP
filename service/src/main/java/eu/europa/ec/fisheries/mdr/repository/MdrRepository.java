@@ -30,12 +30,6 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
-	/* Method for saving the new mdrData.
-       Done in 2 steps so that we have 2 different transactions.
-       One for deleting and purging lucene indexes.
-       One for saving data and refreshing the indexes.
-       Otherwise lucene will double the size of the indexes, and with that the results also!
-    */
 	void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
 
 	List<MdrConfiguration> getAllConfigurations() throws ServiceException;

@@ -25,7 +25,7 @@ import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
@@ -69,23 +69,29 @@ public class MDRCodeListResource extends UnionVMSResource {
             String sortBy            = sorting!=null? sorting.getSortBy():null;
             boolean isReversed       = sorting!=null? sorting.isReversed():false;
             String filter            = (String) criteria.get("filter");
-            List<String> searchAttributeList = ((List<String>) criteria.get("searchAttribute"));
-            String[] searchAttributes        = new String[searchAttributeList.size()];
-            searchAttributeList.toArray(searchAttributes);
-            if (StringUtils.isBlank(acronym)) {
-                response = createErrorResponse("missing_required_parameter_acronym");
-            } else {
-                try {
-                    response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
-                } catch (NumberFormatException e) {
-                    log.error("Internal Server Error.", e);
-                    response = createErrorResponse("internal_server_error");
-                }
+            String[] searchAttributes = getSearchAttributesAsArray(criteria.get("searchAttribute"));
+            try {
+                response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
+            } catch (NumberFormatException e) {
+                log.error("Internal Server Error.", e);
+                response = createErrorResponse("internal_server_error");
             }
+
         } else {
             response = createErrorResponse("missing_required_criteria");
         }
         return response;
+    }
+
+    @NotNull
+    private String[] getSearchAttributesAsArray(Object attributesObj){
+        if(attributesObj == null){
+            return new String[0];
+        }
+        List<String> searchAttributeList = (List<String>) attributesObj;
+        String[] searchAttributes        = new String[searchAttributeList.size()];
+        searchAttributeList.toArray(searchAttributes);
+        return searchAttributes;
     }
 
     @GET
