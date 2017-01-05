@@ -107,7 +107,7 @@ public class MdrBulkOperationsDao implements Serializable {
      */
     @NotNull
     private String getDeleteHqlQueryForEntity(String entityName) {
-        return HQL_DELETE + entityName;
+        return new StringBuilder(HQL_DELETE).append(entityName).toString();
     }
 
     /**
