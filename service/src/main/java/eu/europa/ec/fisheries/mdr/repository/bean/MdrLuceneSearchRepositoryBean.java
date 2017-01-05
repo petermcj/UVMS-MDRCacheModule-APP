@@ -63,7 +63,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * @throws ServiceException
      */
     @Override
-    public List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(
+    public List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter (
             String acronym, Integer offset, Integer pageSize, String sortBy,
             Boolean isReversed, String filter, String... searchAttributes) throws ServiceException {
         // Build fullTextQuery;
@@ -100,9 +100,9 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      */
     private FullTextQuery buildLuceneMdrQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
+        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
         FullTextQuery fullTextQuery;
         try {
-            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
 
             Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
@@ -128,9 +128,9 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      */
     public FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
+        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
         FullTextQuery fullTextQuery;
         try {
-            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
 
             // Split the searched phrase in multiple words to search for.
             List<String> keyWords = Arrays.asList(filterText.split(StringUtils.SPACE));
@@ -188,12 +188,12 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * @param filterText
      * @param searchAttributes
      */
-    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText, String[] searchAttributes) {
+    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText, String[] searchAttributes) throws ServiceException {
         if (StringUtils.isBlank(acronym)) {
-            throw new IllegalArgumentException("No acronym parameter is provided.");
+            throw new ServiceException("No acronym parameter is provided.");
         }
         if (StringUtils.isBlank(filterText) || searchAttributes == null || searchAttributes.length == 0) {
-            throw new IllegalArgumentException("No search attributes are provided.");
+            throw new ServiceException("No search attributes are provided.");
         }
     }
 
