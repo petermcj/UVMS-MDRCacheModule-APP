@@ -25,6 +25,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,9 @@ public class MDRCodeListResourceTest {
 
     @Mock
     private MdrLuceneSearchRepository mdrRepositoryMock;
+
+    @Mock
+    private HttpServletRequest requestMock;
     
     private static final String SOME_TEXT_STR = "someText";
 
@@ -64,7 +68,7 @@ public class MDRCodeListResourceTest {
     public void findCodeListByAcronymFilterredByFilterMissingRequiredParam1() {
         SearchRequestDto requestDto = mockSearchRequestDto();
         requestDto.getCriteria().remove("acronym");
-        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestDto);
+        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestMock, requestDto);
         Object entity = response.getEntity();
         assertTrue(entity instanceof PaginatedResponse);
         assertEquals("missing_required_parameter_acronym", ((PaginatedResponse)entity).getMsg());
@@ -75,7 +79,7 @@ public class MDRCodeListResourceTest {
     public void findCodeListByAcronymFilterredByFilterMissingRequiredParam3() {
         SearchRequestDto requestDto = mockSearchRequestDto();
         requestDto.setCriteria(null);
-        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestDto);
+        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestMock, requestDto);
         Object entity = response.getEntity();
         assertTrue(entity instanceof ResponseDto);
         assertEquals("missing_required_criteria", ((ResponseDto)entity).getMsg());
@@ -86,7 +90,7 @@ public class MDRCodeListResourceTest {
     @Test
     public void findCodeListByAcronymFilterredByFilterSUCCESS() throws ServiceException {
         SearchRequestDto requestDto = mockSearchRequestDto();
-        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestDto);
+        Response response = codeListResource.findCodeListByAcronymFilterredByFilter(requestMock, requestDto);
         verify(mdrRepositoryMock, times(1)).findCodeListItemsByAcronymAndFilter("TEST", 0, 100, "column_name", true, SOME_TEXT_STR, new String[]{SOME_TEXT_STR});
         verify(mdrRepositoryMock, times(1)).countCodeListItemsByAcronymAndFilter("TEST", SOME_TEXT_STR, new String[]{SOME_TEXT_STR});
         Object entity = response.getEntity();

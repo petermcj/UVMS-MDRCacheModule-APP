@@ -30,7 +30,9 @@ import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -55,7 +57,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
     @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
-    public Response findCodeListByAcronymFilterredByFilter(SearchRequestDto searchRequest) {
+    public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request, SearchRequestDto searchRequest) {
         Response response;
         Map<String, Object> criteria = searchRequest.getCriteria();
         if (!MapUtils.isEmpty(criteria)) {
@@ -69,7 +71,7 @@ public class MDRCodeListResource extends UnionVMSResource {
             String filter            = (String) criteria.get("filter");
             String[] searchAttributes = getSearchAttributesAsArray(criteria.get("searchAttribute"));
             try {
-                response = this.findCodeListByAcronymFilterredByFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
+                response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             } catch (NumberFormatException e) {
                 log.error("Internal Server Error.", e);
                 response = createErrorResponse("internal_server_error");
@@ -97,7 +99,8 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
     @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
-    public Response findCodeListByAcronymFilterredByFilter( @PathParam("acronym") String acronym,
+    public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request,
+                                                            @PathParam("acronym") String acronym,
                                                             @PathParam("offset") Integer offset,
                                                             @PathParam("pageSize") Integer pageSize,
                                                             @QueryParam("sortBy") String sortBy,
