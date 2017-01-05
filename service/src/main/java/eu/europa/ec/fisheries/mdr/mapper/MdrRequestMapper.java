@@ -116,11 +116,11 @@ public class MdrRequestMapper {
 		return fluxStrReq;
 	}
 
-	private static DelimitedPeriodType createValidityDelimitedPeriod() throws DatatypeConfigurationException {
+	/*private static DelimitedPeriodType createValidityDelimitedPeriod() throws DatatypeConfigurationException {
 		XMLGregorianCalendar startDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(new DateTime("2001-01-01").toGregorianCalendar());
 		XMLGregorianCalendar endDate   = DatatypeFactory.newInstance().newXMLGregorianCalendar(new DateTime().toGregorianCalendar());
 		return new DelimitedPeriodType(new DateTimeType(startDate, null), new DateTimeType(endDate, null), null);
-	}
+	}*/
 
 
 	/**

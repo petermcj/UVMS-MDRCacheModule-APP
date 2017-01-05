@@ -44,6 +44,7 @@ import java.util.List;
 @Stateless
 public class MdrSynchronizationServiceBean implements MdrSynchronizationService {
 
+    public static final String ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM = "Error while trying to map MDRQueryType for acronym {}";
     @EJB
     private MdrRepository mdrRepository;
 
@@ -152,7 +153,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.RUNNING, DateUtils.nowUTC().toDate());
                     log.info("Synchronization Request Sent for Entity : " + actualAcronym);
                 } catch (MdrMappingException e) {
-                    log.error("Error while trying to map MDRQueryType for acronym {}", actualAcronym, e);
+                    log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, actualAcronym, e);
                     errorContainer.addMessage("Error while trying to map MDRQueryType for acronym {} " + actualAcronym);
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate());
                 } catch (JmsMessageException e) {
@@ -180,7 +181,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     @Override
     public void sendRequestForMdrCodelistsStructures(Collection<String> acronymsList) {
         try {
-            List<String> missingAcronyms = java.util.Arrays.asList("EFFORT_ZONE", "FA_BAIT_TYPE", "FA_BFT_SIZE_CATEGORY", "FA_BR",
+            /*List<String> missingAcronyms = java.util.Arrays.asList("EFFORT_ZONE", "FA_BAIT_TYPE", "FA_BFT_SIZE_CATEGORY", "FA_BR",
                     "FA_CATCH_TYPE", "FA_CHARACTERISTIC", "FA_FISHERY", "FA_GEAR_CHARACTERISTIC", "FA_GEAR_PROBLEM",
                     "FA_GEAR_RECOVERY", "FA_GEAR_ROLE", "FA_QUERY_TYPE", "FA_QUERY_PARAMETER", "FA_REASON_ARRIVAL", "FA_REASON_DEPARTURE",
                     "FA_REASON_ENTRY", "FA_REASON_DISCARD", "FA_VESSEL_ROLE", "FAO_AREA", "FAO_SPECIES", "FARM", "FISH_FRESHNESS",
@@ -188,14 +189,14 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                     "FLUX_FA_REPORT_TYPE", "FLUX_FA_TYPE", "FLUX_GP_PARTY", "FLUX_GP_PURPOSE", "FLUX_GP_RESPONSE", "FLUX_GP_VALIDATION_LEVEL", "FLUX_GP_VALIDATION_TYPE",
                     "FLUX_LOCATION_CHARACTERISTIC", "FLUX_LOCATION_TYPE", "FLUX_PROCESS_TYPE", "FLUX_UNIT", "GEAR_TYPE", "GFCM_GSA",
                     "GFCM_STAT_RECTANGLE", "ICES_STAT_RECTANGLE", "LOCATION", "RFMO", "TERRITORY", "VESSEL_ACTIVITY", "VESSEL_STORAGE_TYPE", "WEIGHT_MEANS");
-
+*/
             for(String actAcron : acronymsList){
                 String strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actAcron, OBJ_DESC);
                 producer.sendRulesModuleMessage(strReqObj);
             }
 
         } catch (MdrMappingException e) {
-            log.error("Error while trying to map MDRQueryType for acronym {}", acronymsList, e);
+            log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
         } catch (JmsMessageException e) {
             log.error("Error while trying to send message from Activity to Rules module.", e);
         }
@@ -208,7 +209,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             producer.sendRulesModuleMessage(strReqObj);
             log.info("Synchronization Request Sent for INDEX ServiceType");
         } catch (MdrMappingException e) {
-            log.error("Error while trying to map MDRQueryType for acronym {}", e);
+            log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, e);
         } catch (JmsMessageException e) {
             log.error("Error while trying to send message from Activity to Rules module.", e);
         }

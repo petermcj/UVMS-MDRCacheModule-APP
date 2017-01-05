@@ -45,7 +45,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
     private FullTextEntityManager fullTextEntityManager;
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
         fullTextEntityManager = getFullTextEntityManager();
     }
 
@@ -100,15 +100,16 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      */
     private FullTextQuery buildLuceneMdrQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
-        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
         FullTextQuery fullTextQuery;
         try {
-            Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
-            FullTextEntityManager fullTextEntityManager = getFullTextEntityManager();
+            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
 
-            QueryBuilder queryBuilder  = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
+            Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
+            FullTextEntityManager ftEntityManager = getFullTextEntityManager();
+
+            QueryBuilder queryBuilder  = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
             Query luceneQuery          = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
-            fullTextQuery              = fullTextEntityManager.createFullTextQuery(luceneQuery, codeListClass);
+            fullTextQuery              = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
             log.debug("Using lucene query: {}", fullTextQuery.toString());
         } catch (IllegalArgumentException | MdrCacheInitException e) {
             throw new ServiceException("Unable to execute search query due to internal server error.", e);
@@ -125,11 +126,12 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * @return
      * @throws ServiceException
      */
-    private FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
+    public FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
-        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
         FullTextQuery fullTextQuery;
         try {
+            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
+
             // Split the searched phrase in multiple words to search for.
             List<String> keyWords = Arrays.asList(filterText.split(StringUtils.SPACE));
             Class mdrClass = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
@@ -214,7 +216,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * data inserted using a different method (e.g. pre-existing data, or test data inserted via
      * scripts or DbUnit).
      */
-    public void massiveUpdateFullTextIndex() throws Exception {
+    public void massiveUpdateFullTextIndex() throws InterruptedException {
         log.info("Updating Lucene Index for MDR module..");
         getFullTextEntityManager().createIndexer().startAndWait();
     }

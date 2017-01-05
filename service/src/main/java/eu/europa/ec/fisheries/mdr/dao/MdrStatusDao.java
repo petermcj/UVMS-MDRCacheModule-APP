@@ -69,31 +69,35 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
     }
 
     public void saveAcronymsStatusList(List<MdrCodeListStatus> statusList) throws ServiceException {
-        if (CollectionUtils.isNotEmpty(statusList)) {
-            Session session = (getEntityManager().unwrap(Session.class)).getSessionFactory().openSession();
-            Transaction tx = session.beginTransaction();
-            try {
-                log.info("Persisting entity entries for : MdrCodeListStatus");
-                int counter = 0;
-                for(MdrCodeListStatus actStatus : statusList){
-                    counter++;
-                    session.save(actStatus);
-                    if (counter % 20 == 0 ) {
-                        //Each 20 rows persist and release memory;
-                        session.flush();
-                        session.clear();
-                    }
-                }
-                log.debug("Committing transaction.");
-                tx.commit();
-            } catch (Exception e) {
-                tx.rollback();
-                throw new ServiceException("Rollbacking transaction for reason : ", e);
-            } finally {
-                log.debug("Closing session");
-                session.close();
-            }
+
+        if (CollectionUtils.isEmpty(statusList)) {
+            return;
         }
+
+        Session session = (getEntityManager().unwrap(Session.class)).getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            log.info("Persisting entity entries for : MdrCodeListStatus");
+            int counter = 0;
+            for(MdrCodeListStatus actStatus : statusList){
+                counter++;
+                session.save(actStatus);
+                if (counter % 20 == 0 ) {
+                    //Each 20 rows persist and release memory;
+                    session.flush();
+                    session.clear();
+                }
+            }
+            log.debug("Committing transaction.");
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            throw new ServiceException("Rollbacking transaction for reason : ", e);
+        } finally {
+            log.debug("Closing session");
+            session.close();
+        }
+
     }
 
     public List<MdrCodeListStatus> findAllUpdatableStatuses() {
@@ -198,8 +202,7 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
     public List<MdrCodeListStatus> findStatusAndVersionsForAcronym(String objAcronym){
         TypedQuery<MdrCodeListStatus> query = getEntityManager().createNamedQuery(MdrCodeListStatus.STATUS_AND_VERSIONS_QUERY, MdrCodeListStatus.class);
         query.setParameter("objectAcronym", objAcronym);
-        List<MdrCodeListStatus> statusses = query.getResultList();
-        return statusses;
+        return query.getResultList();
     }
 
     public MdrCodeListStatus getStatusForAcronym(String acronym) {

@@ -18,6 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.Search;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,7 +32,7 @@ import java.util.List;
 public class MdrBulkOperationsDao implements Serializable {
 
     @PersistenceContext(unitName = "mdrPU")
-    private EntityManager em;
+    private transient EntityManager em;
 
     private static final String HQL_DELETE = "DELETE FROM ";
 
@@ -82,7 +83,7 @@ public class MdrBulkOperationsDao implements Serializable {
         try {
             log.info("Deleting and purging entity entries for : {}", entityName);
             // DELETION PHASE (Deleting old entries)
-            fullTextSession.createQuery(HQL_DELETE + entityName).executeUpdate();
+            fullTextSession.createQuery(getDeleteHqlQueryForEntity(entityName)).executeUpdate();
             // Purging old indexes
             fullTextSession.purgeAll(mdrClass);  // Remove obsolete content
             fullTextSession.flushToIndexes();    // Apply purge now, before optimize
@@ -96,6 +97,17 @@ public class MdrBulkOperationsDao implements Serializable {
             log.debug("Closing session");
             fullTextSession.close();
         }
+    }
+
+    /**
+     * Creates the Hql delete query for the whole entity that has : entityName;
+     *
+     * @param entityName
+     * @return
+     */
+    @NotNull
+    private String getDeleteHqlQueryForEntity(String entityName) {
+        return HQL_DELETE + entityName;
     }
 
     /**
@@ -125,28 +137,6 @@ public class MdrBulkOperationsDao implements Serializable {
         }
     }
 
-
-    /**
-     * Refreshes the Lucene indexes with the latest deletions and insertions.
-     *
-     * @param mdrClass
-     * @throws InterruptedException
-     */
-    private void refreshLuceneIndexes(Class mdrClass) throws ServiceException {
-        FullTextSession fullTextSession = getFullTextSession();
-        Transaction tx  = fullTextSession.beginTransaction();
-        try {
-            Search.getFullTextEntityManager(em).createIndexer(mdrClass).startAndWait();
-            tx.commit();
-            log.info("Insertion for {} completed.", mdrClass.toString());
-        } catch (Exception e) {
-            tx.rollback();
-            throw new ServiceException("Rollbacking transaction for reason : ", e);
-        } finally {
-            log.debug("Closing session");
-            fullTextSession.close();
-        }
-    }
 
     /**
      * Unwraps a JPA Session.
@@ -191,7 +181,7 @@ public class MdrBulkOperationsDao implements Serializable {
      * Purges all the Rows of the given entity from the lucene Index.
      *
      */
-    private void purgeAllForEntity(Class mdrEntityClass){
+    public void purgeAllForEntity(Class mdrEntityClass){
         Search.getFullTextEntityManager(em).purgeAll(mdrEntityClass);
     }
 

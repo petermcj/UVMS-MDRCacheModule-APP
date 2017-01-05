@@ -48,7 +48,7 @@ public class MdrEventServiceBean implements MdrEventService {
 			FLUXMDRReturnMessage responseObject = extractMdrFluxResponseFromEventMessage(message);
 			mdrRepository.updateMdrEntity(responseObject);
 		} catch (MdrModelMarshallException e) {
-
+			log.error("MdrModelMarshallException while unmarshalling message from flux ",e);
 		}
 	}
 
