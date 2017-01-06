@@ -2,6 +2,8 @@ package eu.europa.ec.fisheries.mdr.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
 import eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies;
+import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
+import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.SneakyThrows;
 import org.hibernate.Session;
