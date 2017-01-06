@@ -54,7 +54,7 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     public MdrCodeListStatus findStatusByAcronym(String acronym) {
         MdrCodeListStatus entity = null;
-        List<MdrCodeListStatus> stausList = null;
+        List<MdrCodeListStatus> stausList;
         try {
             stausList = findEntityByHqlQuery(MdrCodeListStatus.class, SELECT_FROM_MDRSTATUS_WHERE_ACRONYM + "'"+acronym+"'");
             if(CollectionUtils.isNotEmpty(stausList)){
@@ -69,11 +69,6 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
     }
 
     public void saveAcronymsStatusList(List<MdrCodeListStatus> statusList) throws ServiceException {
-
-        if (CollectionUtils.isEmpty(statusList)) {
-            return;
-        }
-
         Session session = (getEntityManager().unwrap(Session.class)).getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
@@ -97,7 +92,6 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
             log.debug("Closing session");
             session.close();
         }
-
     }
 
     public List<MdrCodeListStatus> findAllUpdatableStatuses() {

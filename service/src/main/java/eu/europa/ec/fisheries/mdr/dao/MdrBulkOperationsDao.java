@@ -22,17 +22,16 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
 import java.util.List;
 
 /***
  * This class is used only for bulk insertions.
  */
 @Slf4j
-public class MdrBulkOperationsDao implements Serializable {
+public class MdrBulkOperationsDao {
 
     @PersistenceContext(unitName = "mdrPU")
-    private transient EntityManager em;
+    private EntityManager em;
 
     private static final String HQL_DELETE = "DELETE FROM ";
 
@@ -84,6 +83,7 @@ public class MdrBulkOperationsDao implements Serializable {
             log.info("Deleting and purging entity entries for : {}", entityName);
             // DELETION PHASE (Deleting old entries)
             fullTextSession.createQuery(getDeleteHqlQueryForEntity(entityName)).executeUpdate();
+
             // Purging old indexes
             fullTextSession.purgeAll(mdrClass);  // Remove obsolete content
             fullTextSession.flushToIndexes();    // Apply purge now, before optimize
@@ -103,7 +103,7 @@ public class MdrBulkOperationsDao implements Serializable {
      * Creates the Hql delete query for the whole entity that has : entityName;
      *
      * @param entityName
-     * @return
+     * @return the query
      */
     @NotNull
     private String getDeleteHqlQueryForEntity(String entityName) {

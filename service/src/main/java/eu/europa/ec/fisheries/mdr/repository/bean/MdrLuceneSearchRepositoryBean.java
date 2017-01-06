@@ -100,10 +100,9 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      */
     private FullTextQuery buildLuceneMdrQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
-        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
-        FullTextQuery fullTextQuery;
+        FullTextQuery fullTextQuery = null;
         try {
-
+            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
             Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
 
@@ -111,8 +110,10 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
             Query luceneQuery          = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
             fullTextQuery              = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
             log.debug("Using lucene query: {}", fullTextQuery.toString());
-        } catch (IllegalArgumentException | MdrCacheInitException e) {
+        } catch (MdrCacheInitException e) {
             throw new ServiceException("Unable to execute search query due to internal server error.", e);
+        } catch(IllegalArgumentException e){
+            throw new ServiceException(e.getMessage(), e);
         }
         return fullTextQuery;
     }
@@ -126,7 +127,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * @return
      * @throws ServiceException
      */
-    public FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
+    private FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
         checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
         FullTextQuery fullTextQuery;
@@ -188,12 +189,12 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      * @param filterText
      * @param searchAttributes
      */
-    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText, String[] searchAttributes) throws ServiceException {
+    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText, String[] searchAttributes) throws IllegalArgumentException {
         if (StringUtils.isBlank(acronym)) {
-            throw new ServiceException("No acronym parameter is provided.");
+            throw new IllegalArgumentException("No acronym parameter is provided.");
         }
         if (StringUtils.isBlank(filterText) || searchAttributes == null || searchAttributes.length == 0) {
-            throw new ServiceException("No search attributes are provided.");
+            throw new IllegalArgumentException("No search attributes are provided.");
         }
     }
 
