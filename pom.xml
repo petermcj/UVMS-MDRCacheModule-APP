@@ -385,8 +385,8 @@
                     <destFile>${sonar.jacoco.reportPath}</destFile>
                     <append>true</append>
                     <excludes>
-                        <exclude>eu/europa/ec/fisheries/mdr/domain/*</exclude>
-                        <exclude>eu/europa/ec/fisheries/mdr/domain/**/*</exclude>
+                        <exclude>*/eu/europa/ec/fisheries/mdr/domain/*</exclude>
+                        <exclude>*/eu/europa/ec/fisheries/mdr/domain/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
