@@ -13,6 +13,7 @@ package eu.europa.ec.fisheries.mdr.dao;
 import eu.europa.ec.fisheries.mdr.domain.AcronymVersion;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.service.AbstractDAO;
@@ -104,8 +105,11 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
         return statuses;
     }
 
-    public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) {
+    public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException {
         MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(acronym);
+        if(mdrCodeListElement == null){
+            throw new AcronymNotFoundException("The acronym status "+acronym+" you searched for is not present!");
+        }
         mdrCodeListElement.setLastSuccess(lastSuccess);
         mdrCodeListElement.setLastStatus(newStatus);
         try {

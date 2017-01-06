@@ -13,6 +13,7 @@ package eu.europa.ec.fisheries.mdr.repository.bean;
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +68,8 @@ public class MdrStatusRepositoryBean implements MdrStatusRepository {
     }
 
     @Override
-    public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess){
-        statusDao.updateStatusSuccessForAcronym(acronym, newStatus, lastSuccess);
+    public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException {
+            statusDao.updateStatusSuccessForAcronym(acronym, newStatus, lastSuccess);
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.ninja_squad.dbsetup.operation.Operation;
 import eu.europa.ec.fisheries.mdr.domain.AcronymVersion;
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import lombok.SneakyThrows;
 import org.junit.Before;
@@ -30,6 +31,7 @@ import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 public class MdrStatusDaoTest extends BaseMdrDaoTest {
 
@@ -154,9 +156,43 @@ public class MdrStatusDaoTest extends BaseMdrDaoTest {
         assertNotNull(dao.findStatusAndVersionsForAcronym("SomeAcronym1"));
     }
 
+    @Test
+    @SneakyThrows
+    public void testFlushSaveEach20AcronymsStatusList(){
+        dao.saveAcronymsStatusList(mock42MdrCodeListStatus());
+        List<MdrCodeListStatus> allMdrStatuses = dao.findAllEntity(MdrCodeListStatus.class);
+        assertEquals(45, allMdrStatuses.size());
+        assertNotNull(dao.findStatusAndVersionsForAcronym("SomeAcronym1"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void saveNotExistingAcronymValueFail(){
+        try{
+            dao.updateStatusSuccessForAcronym("BAD_ACRONYM", AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
+            fail("It should have failed since the BAD_ACRONYM doesn't exist");
+        } catch (AcronymNotFoundException ex){
+            assertEquals("The acronym status BAD_ACRONYM you searched for is not present!", ex.getMessage());
+        }
+    }
+
     private List<MdrCodeListStatus> mockMdrCodeListStatus() {
         List<MdrCodeListStatus> statusesList = new ArrayList<>();
         for(int i=0; i<5; i++){
+            MdrCodeListStatus mdrStatAct = new MdrCodeListStatus();
+            mdrStatAct.setObjectAcronym("SomeAcronym"+i);
+            mdrStatAct.setSchedulable(true);
+            mdrStatAct.setLastStatus(AcronymListState.SUCCESS);
+            mdrStatAct.setLastAttempt(DateUtils.nowUTC().toDate());
+            mdrStatAct.setLastSuccess(DateUtils.nowUTC().toDate());
+            statusesList.add(mdrStatAct);
+        }
+        return statusesList;
+    }
+
+    private List<MdrCodeListStatus> mock42MdrCodeListStatus() {
+        List<MdrCodeListStatus> statusesList = new ArrayList<>();
+        for(int i=0; i<42; i++){
             MdrCodeListStatus mdrStatAct = new MdrCodeListStatus();
             mdrStatAct.setObjectAcronym("SomeAcronym"+i);
             mdrStatAct.setSchedulable(true);

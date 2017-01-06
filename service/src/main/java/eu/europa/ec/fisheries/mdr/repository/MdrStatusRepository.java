@@ -12,6 +12,7 @@ package eu.europa.ec.fisheries.mdr.repository;
 
 import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 
 import javax.ejb.Local;
@@ -30,7 +31,7 @@ public interface MdrStatusRepository {
 
     void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt);
 
-    void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess);
+    void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException;
 
     void saveAcronymsStatusList(List<MdrCodeListStatus> diffList) throws ServiceException;
 
