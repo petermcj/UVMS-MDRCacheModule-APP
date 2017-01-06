@@ -18,7 +18,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.Search;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -82,7 +81,8 @@ public class MdrBulkOperationsDao {
         try {
             log.info("Deleting and purging entity entries for : {}", entityName);
             // DELETION PHASE (Deleting old entries)
-            fullTextSession.createQuery(getDeleteHqlQueryForEntity(entityName)).executeUpdate();
+            String query = new StringBuilder(HQL_DELETE).append(entityName).toString();
+            fullTextSession.createQuery(query).executeUpdate();
 
             // Purging old indexes
             fullTextSession.purgeAll(mdrClass);  // Remove obsolete content
@@ -99,16 +99,6 @@ public class MdrBulkOperationsDao {
         }
     }
 
-    /**
-     * Creates the Hql delete query for the whole entity that has : entityName;
-     *
-     * @param entityName
-     * @return the query
-     */
-    @NotNull
-    private String getDeleteHqlQueryForEntity(String entityName) {
-        return new StringBuilder(HQL_DELETE).append(entityName).toString();
-    }
 
     /**
      * Refreshes the Lucene indexes with the latest deletions and insertions.
