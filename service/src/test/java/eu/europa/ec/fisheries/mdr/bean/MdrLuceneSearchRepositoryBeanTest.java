@@ -1,4 +1,4 @@
-package eu.europa.ec.fisheries.mdr.repository.bean;
+package eu.europa.ec.fisheries.mdr.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
 import eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies;
@@ -30,10 +30,6 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
     @Before
     @SneakyThrows
     public void prepare() {
-        //Operation operation = sequenceOf(DELETE_ALL_MDR_SPECIES);
-        //DbSetup dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
-        //dbSetupTracker.launchIfNecessary(dbSetup);
-        //init the beans
         org.hibernate.search.jpa.Search.getFullTextEntityManager(em).flushToIndexes();
         Whitebox.setInternalState(mdrSearchingRepoBean, "em", em);
         Whitebox.setInternalState(mdrInsertionRepoBean, "em", em);
