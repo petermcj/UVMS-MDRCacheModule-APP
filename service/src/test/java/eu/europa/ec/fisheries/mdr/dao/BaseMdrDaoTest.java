@@ -17,7 +17,7 @@ import static com.ninja_squad.dbsetup.Operations.*;
 
 public abstract class BaseMdrDaoTest extends BaseDAOTest {
 
-
+    // Delete tables statements.
     protected static final Operation DELETE_ALL_MDR_CR_NAFO_STOCK = sequenceOf(
             deleteAllFrom("mdr.mdr_cr_nafo_stock")            
     );
@@ -29,6 +29,10 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
     );
     protected static final Operation DELETE_ALL_MDR_CODELISTSTATUS = sequenceOf(
             deleteAllFrom("mdr.mdr_codelist_status")
+    );
+
+    protected static final Operation DELETE_ALL_CONFIGURATIONS = sequenceOf(
+            deleteAllFrom("mdr.mdr_configuration")
     );
 
     protected static final Operation INSERT_MDR_CR_NAFO_STOCK_REFERENCE_DATA = sequenceOf(
@@ -63,6 +67,17 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
                     .columns("id", "status_ref_id",  "version_name", "start_date", "end_date").values(3L, 3L, "VERS_2", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build()
     );
 
+    protected static final Operation INSERT_ALL_CONFIGURATIONS = sequenceOf(insertInto("mdr.mdr_configuration")
+                    .columns("id", "config_name", "config_value").values(1L, "SOME_CONFIG_1","SOME_VALUE").build(),
+            insertInto("mdr.mdr_configuration")
+                    .columns("id", "config_name", "config_value").values(2L, "SOME_CONFIG_2","SOME_VALUE").build(),
+            insertInto("mdr.mdr_configuration")
+                    .columns("id", "config_name", "config_value").values(3L, "SOME_CONFIG_3","SOME_VALUE").build(),
+            insertInto("mdr.mdr_configuration")
+                    .columns("id", "config_name", "config_value").values(4L, "MDR_SCHED_CONFIG_NAME","SOME_VALUE").build()
+
+
+    );
    
     protected String getSchema() {
         return "mdr";
