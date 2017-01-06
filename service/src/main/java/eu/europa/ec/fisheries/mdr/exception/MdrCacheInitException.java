@@ -5,6 +5,7 @@ package eu.europa.ec.fisheries.mdr.exception;
  */
 public class MdrCacheInitException extends Exception {
     public MdrCacheInitException() {
+        super();
     }
 
     public MdrCacheInitException(String message) {

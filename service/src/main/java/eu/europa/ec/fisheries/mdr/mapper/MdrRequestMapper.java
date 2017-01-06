@@ -86,11 +86,7 @@ public class MdrRequestMapper {
 		idType.setValue(acronym);
 		idType.setSchemeID(INDEX);
 		subjectQueryType.setID(idType);
-		/*try {
-			subjectQueryType.setValidityDelimitedPeriod(createValidityDelimitedPeriod());
-		} catch (DatatypeConfigurationException e) {
-			throw new MdrMappingException(e);
-		}*/
+
 		mdrQuery.setSubjectMDRQueryIdentity(subjectQueryType);
 
 		// Submiter Flux party
@@ -115,13 +111,6 @@ public class MdrRequestMapper {
 		}
 		return fluxStrReq;
 	}
-
-	private static DelimitedPeriodType createValidityDelimitedPeriod() throws DatatypeConfigurationException {
-		XMLGregorianCalendar startDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(new DateTime("2001-01-01").toGregorianCalendar());
-		XMLGregorianCalendar endDate   = DatatypeFactory.newInstance().newXMLGregorianCalendar(new DateTime().toGregorianCalendar());
-		return new DelimitedPeriodType(new DateTimeType(startDate, null), new DateTimeType(endDate, null), null);
-	}
-
 
 	/**
 	 * Creates a new DateTimeType instance to be used as a createSubmitedDate.

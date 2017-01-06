@@ -90,17 +90,6 @@ public class MdrCodeListStatus extends BaseEntity {
         this.schedulable = schedulable;
     }
 
-    public MdrCodeListStatus(String objectAcronym, String objectName, String objectDescription, String objectSource, Date lastAttempt, Date lastSuccess, AcronymListState lastStatus, Boolean schedulable) {
-        this.objectAcronym = objectAcronym;
-        this.objectName = objectName;
-        this.objectDescription = objectDescription;
-        this.objectSource = objectSource;
-        this.lastAttempt = lastAttempt;
-        this.lastSuccess = lastSuccess;
-        this.lastStatus = lastStatus;
-        this.schedulable = schedulable;
-    }
-
     public String getObjectAcronym() {
         return objectAcronym;
     }

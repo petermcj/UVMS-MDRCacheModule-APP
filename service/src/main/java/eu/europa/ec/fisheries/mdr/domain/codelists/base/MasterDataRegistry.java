@@ -21,7 +21,6 @@ import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.*;
-import un.unece.uncefact.data.standard.mdr.response.DateTimeType;
 import un.unece.uncefact.data.standard.mdr.response.DelimitedPeriodType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
@@ -47,7 +46,7 @@ import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistr
                 @TokenFilterDef(factory = CommonGramsFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         })
-abstract public class MasterDataRegistry extends BaseEntity {
+public abstract class MasterDataRegistry extends BaseEntity {
 
     public static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
 
@@ -72,17 +71,15 @@ abstract public class MasterDataRegistry extends BaseEntity {
     protected static final String CODE_STR = "CODE";
     protected static final String DESCRIPTION_STR = "DESCRIPTION";
     protected static final String EN_DESCRIPTION_STR = "ENDESCRIPTION";
-    protected static final String VERSION = "VERSION";
+    protected static final String VERSION_STR = "VERSION_STR";
 
     protected void populateCommonFields(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 
         // Start date end date
         final DelimitedPeriodType validityPeriod = mdrDataType.getEffectiveDelimitedPeriod();
-        final DateTimeType startDateTime = validityPeriod.getStartDateTime();
-        final DateTimeType endDateTime = validityPeriod.getEndDateTime();
         if (validityPeriod != null) {
-            this.setValidity(new DateRange(startDateTime.getDateTime().toGregorianCalendar().getTime(),
-                    endDateTime.getDateTime().toGregorianCalendar().getTime()));
+            this.setValidity(new DateRange(validityPeriod.getStartDateTime().getDateTime().toGregorianCalendar().getTime(),
+                                           validityPeriod.getEndDateTime().getDateTime().toGregorianCalendar().getTime()));
         }
 
         // Code, Description, Version
@@ -98,7 +95,7 @@ abstract public class MasterDataRegistry extends BaseEntity {
                     || StringUtils.equalsIgnoreCase(EN_DESCRIPTION_STR, fieldName)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.equalsIgnoreCase(VERSION, fieldName)) {
+            } else if (StringUtils.equalsIgnoreCase(VERSION_STR, fieldName)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }

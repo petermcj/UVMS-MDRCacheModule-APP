@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.util;
 
 import com.google.common.base.Charsets;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -19,18 +20,46 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Created by kovian on 24/11/2016.
+ *
+ * This class is a utility class which, after having created the generatedChangelog.xml LIQUIBASE file it can read
+ * it and generate separate xml files for each table entry of generatedChangelog.xml.
+ *
+ * Each time you want to use this class remember to :
+ *
+ *  1. changeLogFilePath = Where is your generatedChangelog.xml located;
+ *  2. locationForGeneratedXmls = Where will the new xmls (single table entries) will be created;
+ *
  */
 public class LiquibaseUtil {
 
-    static String splitter     = "<changeSet ";
-    static String changeLogFilePath = "C:\\GIT Repository\\activity-trunk\\db-liquibase\\LIQUIBASE\\postgres\\changelog\\generatedChangelog.xml";
+    private static final Logger log = Logger.getLogger("LiquibaseUtilLogger");
+
+    // This Class isn't supposed to have instances.
+    private LiquibaseUtil(){
+        super();
+    }
+
+    static {
+        log.setLevel(Level.ALL);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setFormatter(new SimpleFormatter());
+        handler.setLevel(Level.ALL);
+        log.addHandler(handler);
+    }
+
+    static String splitter                 = "<changeSet ";
+    static String changeLogFilePath        = "C:\\GIT Repository\\mdr-modules-repo\\uvms-mdrmodule-db\\LIQUIBASE\\postgres\\changelog\\generatedChangelog.xml";
     static String locationForGeneratedXmls = "C:\\newLiquibaseScripts\\";
-    static String filePrefix   = "";
-    static String fileSuffix   = ".xml";
-    private static int sequence = 0;
+    static String filePrefix               = StringUtils.EMPTY;
+    static String fileSuffix               = ".xml";
+    private static int sequence            = 0;
 
     public static void createXMLLiquibaseEntries() throws IOException {
 
@@ -38,10 +67,10 @@ public class LiquibaseUtil {
 
         List<String> filesContents = Arrays.asList(filecontentStr.split(splitter));
         filesContents = fixFileContents(filesContents, splitter);
-        System.out.println("\n\n I Found : " + filesContents.size() + " Change Sets in location : " + changeLogFilePath);
+        log.log(Level.ALL, "\n\n I Found : " + filesContents.size() + " Change Sets in location : " + changeLogFilePath);
 
         for (String content : filesContents) {
-            String fileName = getFileName(filePrefix, fileSuffix, content, locationForGeneratedXmls);
+            String fileName = getFileName(/*filePrefix, fileSuffix,*/ content/*, locationForGeneratedXmls*/);
             String filePath = new StringBuilder(locationForGeneratedXmls).append(filePrefix).append(fileName).append(fileSuffix).toString();
             String header   = createHeader(fileName);
             String footer   = createFooter(fileName);
@@ -49,10 +78,12 @@ public class LiquibaseUtil {
             setSequence(sequence++);
             createNewFile(filePath, finalContent);
         }
+
+        log.log(Level.ALL, "\n\n-->>>> All the work for file creation ended successfully. \n-->>>> You can get your files at : "+locationForGeneratedXmls);
     }
 
     private static String createFooter(String fileName) {
-        String footer = "\t\n" +
+        return "\t\n" +
                 "\t<changeSet author=\"kovian\" id=\"76817789687171-"+sequence+"\" dbms=\"postgresql\">\n" +
                 "\t\t<addDefaultValue \n" +
                 "\t\t\t\tcolumnDataType=\"BIGINT\"\n" +
@@ -62,11 +93,10 @@ public class LiquibaseUtil {
                 "\t</changeSet>\t\n" +
                 "\t\n" +
                 "</databaseChangeLog>";
-        return footer;
     }
 
     private static String createHeader(String fileName) {
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                 "<databaseChangeLog xmlns=\"http://www.liquibase.org/xml/ns/dbchangelog\" \n" +
                 "\t\t\t\t   xmlns:ext=\"http://www.liquibase.org/xml/ns/dbchangelog-ext\" \n" +
                 "\t\t\t\t   xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n" +
@@ -77,7 +107,6 @@ public class LiquibaseUtil {
                 "\t  <createSequence cycle=\"false\" incrementBy=\"1\" maxValue=\"9223372036854775807\" minValue=\"1\"\n" +
                 "\t\t\t\t\t  sequenceName=\""+fileName+"_seq\" startValue=\"1\"/>\n" +
                 "    </changeSet>  \n";
-        return header;
     }
 
     private static String addHeaderAndFooter(String content, String header, String footer) {
@@ -95,10 +124,9 @@ public class LiquibaseUtil {
         return fixedContents;
     }
 
-    private static String getFileName(String filePrefix, String fileSuffix, String content, String newLocation) {
+    private static String getFileName(/*String filePrefix, String fileSuffix, */String content /*, String newLocation*/) {
         String cutStr = content.substring(content.indexOf("tableName=\""), content.indexOf("tableName=\"") + 100);
-        String fileName = cutStr.substring(cutStr.indexOf("\"") + 1, cutStr.indexOf("\"", cutStr.indexOf("\"") + 1));
-        return fileName;
+        return cutStr.substring(cutStr.indexOf("\"") + 1, cutStr.indexOf("\"", cutStr.indexOf("\"") + 1));
     }
 
 
@@ -108,24 +136,20 @@ public class LiquibaseUtil {
     }
 
     private static void createNewFile(String filePath, String content) {
-        System.out.println("\n Creating file : " + filePath);
+        log.log(Level.ALL, "\n Creating file : " + filePath);
         File fileEntry = new File(filePath);
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(fileEntry), Charsets.UTF_8))) {
             writer.write(content);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.log(Level.ALL, "UnsupportedEncodingException : ", e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.log(Level.ALL, "FileNotFoundException : ", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Level.ALL, "IOException : ", e);
         }
     }
 
-
-    public static int getSequence() {
-        return sequence;
-    }
     public static void setSequence(int sequence1) {
         sequence = sequence1;
     }

@@ -57,7 +57,7 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
             mdrSearchingRepoBean.findCodeListItemsByAcronymAndFilter(species.get(0).getAcronym(), 0, 5, CODE, false, null, null);
             fail("ServiceException was expected but not thrown.");
         } catch (Exception exc) {
-            assertTrue(exc instanceof  IllegalArgumentException);
+            assertTrue(exc.getCause() instanceof IllegalArgumentException);
             assertEquals("No search attributes are provided.", exc.getMessage());
         }
 
