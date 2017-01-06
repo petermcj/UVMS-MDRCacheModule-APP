@@ -386,7 +386,9 @@
                     <append>true</append>
                     <excludes>
                         <exclude>*/eu/europa/ec/fisheries/mdr/domain/*</exclude>
-                        <exclude>*/eu/europa/ec/fisheries/mdr/domain/**/*</exclude>
+                        <exclude>eu/europa/ec/fisheries/mdr/domain/**/*</exclude>
+                        <exclude>src/main/java/eu/europa/ec/fisheries/mdr/domain/codelists/*</exclude>
+                        <exclude>src/main/java/eu/europa/ec/fisheries/mdr/domain/codelists/**/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
