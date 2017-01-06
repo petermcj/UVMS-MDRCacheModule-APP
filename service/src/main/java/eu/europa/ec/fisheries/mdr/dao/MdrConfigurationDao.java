@@ -15,6 +15,7 @@ import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.service.AbstractDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -62,8 +63,18 @@ public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
     public MdrConfiguration getMdrSchedulerConfiguration(){
     	return findConfiguration(SCHEDULER_CONFIG_NAME);
     }
-    
-    public void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException{
+
+
+    /**
+     * Changes the mdr scheduler configuration with a new one.
+     *
+     * @param newCronExpression
+     * @throws ServiceException
+     */
+    public void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException {
+        if(StringUtils.isEmpty(newCronExpression)){
+            throw new ServiceException("Cron expression cannot be empty!");
+        }
     	MdrConfiguration newConfig = getMdrSchedulerConfiguration();
         if(newConfig != null){
             newConfig.setConfigValue(newCronExpression);
@@ -71,7 +82,6 @@ public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
             MdrConfiguration newToSaveConfig = new MdrConfiguration(SCHEDULER_CONFIG_NAME, newCronExpression);
             saveOrUpdateEntity(newToSaveConfig);
         }
-
     }
 
 }

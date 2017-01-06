@@ -21,6 +21,7 @@ import org.junit.Test;
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * Created by kovian on 06/01/2017.
@@ -33,6 +34,12 @@ public class MdrConfigurationDaoTest extends BaseMdrDaoTest {
     @SneakyThrows
     public void prepare() {
         Operation operation = sequenceOf(DELETE_ALL_CONFIGURATIONS, INSERT_ALL_CONFIGURATIONS);
+        DbSetup dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
+        dbSetupTracker.launchIfNecessary(dbSetup);
+    }
+
+    public void deleteAllData() {
+        Operation operation = sequenceOf(DELETE_ALL_CONFIGURATIONS);
         DbSetup dbSetup = new DbSetup(new DataSourceDestination(ds), operation);
         dbSetupTracker.launchIfNecessary(dbSetup);
     }
@@ -68,6 +75,33 @@ public class MdrConfigurationDaoTest extends BaseMdrDaoTest {
             e.printStackTrace();
         }
         assertEquals("1 2 * * *", mdrConfigDao.getMdrSchedulerConfiguration().getConfigValue());
+    }
+
+    @Test
+    @SneakyThrows
+    public void saveBadSchedulerConfiguration(){
+        dbSetupTracker.skipNextLaunch();
+        try {
+            mdrConfigDao.changeMdrSchedulerConfiguration(null);
+            fail("It should have thrown @ this point..");
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    public void saveInexistentSchedulerConfiguration(){
+        dbSetupTracker.skipNextLaunch();
+        deleteAllData();
+        try {
+            mdrConfigDao.changeMdrSchedulerConfiguration(null);
+            fail("It should have thrown @ this point..");
+        } catch (ServiceException e) {
+            assertEquals("Cron expression cannot be empty!", e.getMessage());
+        }
+
+
     }
 
 }
