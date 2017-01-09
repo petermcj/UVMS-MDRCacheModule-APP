@@ -107,8 +107,8 @@ public class MdrInitializationBean {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void updateMdrStatusTable() throws MdrStatusTableException {
-        List<String> acronymsFromCache = null;
-        List<String> statusListFromDb  = null;
+        List<String> acronymsFromCache;
+        List<String> statusListFromDb;
         List<MdrCodeListStatus> diffList = new ArrayList<>();
 
         try {
