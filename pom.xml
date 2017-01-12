@@ -67,13 +67,20 @@
         <geotools.version>14-M1</geotools.version>
 
         <reasteasy.version>3.0.11.Final</reasteasy.version>
-
+        <dom4j.version>1.6.1</dom4j.version>
         <lucene.index.directory>/app/indexes/mdr</lucene.index.directory>
     </properties>
 
     <dependencyManagement>
 
         <dependencies>
+
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
             <!-- Model dependencies -->
 
