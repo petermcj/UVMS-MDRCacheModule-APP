@@ -44,8 +44,8 @@ public class UserRoleInterceptor implements Serializable {
         Object[] parameters = ic.getParameters(); // Request parameters
         HttpServletRequest req = getHttpServletRequest(parameters);
         boolean isUserAuthorized = false;
-        for (MdrFeaturesEnum activityFeaturesEnum : features) {
-            isUserAuthorized = req.isUserInRole(activityFeaturesEnum.value());
+        for (MdrFeaturesEnum mdrFeaturesEnum : features) {
+            isUserAuthorized = req.isUserInRole(mdrFeaturesEnum.value());
         }
         if (!isUserAuthorized) {
             throw new ServiceException(ErrorCodes.NOT_AUTHORIZED);

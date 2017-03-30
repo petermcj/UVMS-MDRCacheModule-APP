@@ -13,22 +13,21 @@ package eu.europa.ec.fisheries.mdr.domain;
 /**
  * Created by kovian on 29/07/2016.
  */
-import eu.europa.ec.fisheries.uvms.domain.BaseEntity;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * Entity that will map the configuration of Activity module.
+ * Entity that will map the configuration of MDR module module.
  */
 @Entity
 @Table(name = "mdr_configuration")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class MdrConfiguration extends BaseEntity {
+public class MdrConfiguration implements Serializable {
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_configuration_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
     @Column(name = "config_name")
     private String configName;
@@ -53,5 +52,10 @@ public class MdrConfiguration extends BaseEntity {
     public void setConfigValue(String value) {
         this.configValue = value;
     }
-
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
 }

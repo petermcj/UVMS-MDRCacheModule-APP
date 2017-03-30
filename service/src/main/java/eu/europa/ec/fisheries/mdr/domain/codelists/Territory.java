@@ -10,20 +10,22 @@ import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by kovian on 22/11/2016.
  */
 @Entity
 @Table(name = "mdr_territory")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class Territory extends MasterDataRegistry {
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_territory_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
     @Column(name = "code_2")
     @Field(name="code_2")

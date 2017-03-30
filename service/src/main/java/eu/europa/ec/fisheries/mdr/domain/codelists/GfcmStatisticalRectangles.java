@@ -21,19 +21,21 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "mdr_gfcm_statistical_rectangles")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class GfcmStatisticalRectangles extends MasterDataRegistry {
-	
+
+	@Id
+	@Column(name = "id", unique = true, nullable = false)
+	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_gfcm_statistical_rectangles_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	private long id;
+
 	@Embedded
 	@IndexedEmbedded
 	@Analyzer(definition = LOW_CASE_ANALYSER)

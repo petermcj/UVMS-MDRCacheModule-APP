@@ -14,12 +14,8 @@ package eu.europa.ec.fisheries.uvms.mdr.message.producer;
  * Created by kovian on 02/12/2016.
  */
 public enum ModuleQueues {
-    ACTIVITY,
-    ACTIVITY_EVENT,
     RULES,
     RULES_EVENT,
-    EXCHANGE,
-    EXCHANGE_EVENT,
     MDR,
 }
 

@@ -12,47 +12,70 @@
 		<class>eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus</class>
 		<class>eu.europa.ec.fisheries.mdr.domain.AcronymVersion</class>
 
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishPackaging</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaReportType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GearType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishSizeClass</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.VesselActivity</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.Rfmo</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpParty</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpResponse</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GfcmStatisticalRectangles</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaoAreaCodes</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxContactRole</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.EffortZone</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpValidationLevel</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.WeightMeans</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxProcessType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxUnit</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaFmc</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishPreservation</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaQueryType</class>
 		<class>eu.europa.ec.fisheries.mdr.domain.codelists.Territory</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpParty</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishingTripType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaCharacteristic</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxUnit</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpValidationLevel</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaReasonEntry</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaReasonDeparture</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishSizeClass</class>
 		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxLocationType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpValidationType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishPresentation</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpPurpose</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaType</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.IcesStatisticalRectangles</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GfcmGsa</class>
-		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxLocationCharacteristic</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaBftSizeCategory</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaFcm</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaReportType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaGearRecovery</class>
 		<class>eu.europa.ec.fisheries.mdr.domain.codelists.Location</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FlapIdType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GfcmGsa</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaReasonArrival</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaBr</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxFaType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaReasonDiscard</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxProcessType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxContactRole</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaQueryParameter</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaGearProblem</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaCatchType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishingTripType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishPresentation</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GearType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaGearCharacteristic</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaFishery</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxLocationCharacteristic</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpResponse</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.VesselStorageType</class>
 		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishFreshness</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.WeightMeans</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaGearRole</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.EffortZone</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaBaitType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpPurpose</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FluxGpValidationType</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.Farm</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FishPackaging</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaVesselRole</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.VesselActivity</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.IcesStatisticalRectangles</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.FaoAreaCodes</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.GfcmStatisticalRectangles</class>
+		<class>eu.europa.ec.fisheries.mdr.domain.codelists.Rfmo</class>
 
 		<properties>
 			<property name="hibernate.default_schema"                          value="mdr" />
 			<property name="javax.persistence.schema-generation.create-source" value="metadata" />
 
-            <property name="javax.persistence.schema-generation.database.action"       value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.action"        value="drop-and-create" />
-			<property name="javax.persistence.schema-generation.scripts.create-target" value="target/scripts/create-table.ddl" />
-            <property name="javax.persistence.schema-generation.scripts.drop-target"   value="target/scripts/drop-table.ddl"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action"  value="drop-and-create" />
 
-			<property name="hibernate.connection.url"
-					  value="jdbc:h2:mem:testdb;INIT=CREATE SCHEMA IF NOT EXISTS mdr;DATABASE_TO_UPPER=false;TRACE_LEVEL_SYSTEM_OUT=2;MVCC=true;" />
+			<property name="javax.persistence.schema-generation.scripts.drop-target" value="scripts/drop-table.ddl"/>
+			<property name="javax.persistence.schema-generation.scripts.create-target" value="scripts/create-table.ddl" />
+
+			<property name="hibernate.connection.url"          value="jdbc:h2:mem:testdb;INIT=CREATE SCHEMA IF NOT EXISTS mdr;DATABASE_TO_UPPER=false;TRACE_LEVEL_SYSTEM_OUT=2;MVCC=true;" />
 			<property name="javax.persistence.schema-generation.create-database-schemas" value="true" />
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
 			<property name="hibernate.dialect"                 value="org.hibernate.dialect.HSQLDialect"/>

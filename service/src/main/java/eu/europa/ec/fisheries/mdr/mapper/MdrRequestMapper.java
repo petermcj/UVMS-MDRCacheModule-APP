@@ -43,7 +43,7 @@ public class MdrRequestMapper {
 
 
 	public static String mapMdrQueryTypeToStringForINDEXServiceType(String serviceType) throws MdrMappingException {
-		return mapMdrQueryTypeToString(INDEX, serviceType);
+		return mapMdrQueryTypeToString(INDEX, serviceType, java.util.UUID.randomUUID().toString());
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class MdrRequestMapper {
 	 * @return
 	 * @throws ExchangeModelMarshallException 
 	 */
-	public static String mapMdrQueryTypeToString(String acronym, String serviceType) throws MdrMappingException {
+	public static String mapMdrQueryTypeToString(String acronym, String serviceType, String uuid) throws MdrMappingException {
 
 		SetFLUXMDRSyncMessageRulesRequest fluxRequestObject = new SetFLUXMDRSyncMessageRulesRequest();
 		FLUXMDRQueryMessage mdrQueryMsg                     = new FLUXMDRQueryMessage();
@@ -71,7 +71,7 @@ public class MdrRequestMapper {
 		// Unique message ID
 		IDType messageID = new IDType();
 		messageID.setSchemeID(UUID);
-		messageID.setValue(java.util.UUID.randomUUID().toString());
+		messageID.setValue(uuid);
 		mdrQuery.setID(messageID);
 
 		// Service type (TypeCode);

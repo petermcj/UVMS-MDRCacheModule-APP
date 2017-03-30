@@ -27,9 +27,9 @@ import java.util.List;
 public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
 
     private EntityManager em;
-    
+
     private static final String SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ = "from MdrConfiguration where configName = ";
-    private static final String SCHEDULER_CONFIG_NAME               = "MDR_SCHED_CONFIG_NAME";
+    private static final String SCHEDULER_CONFIG_NAME = "MDR_SCHED_CONFIG_NAME";
 
     public MdrConfigurationDao(EntityManager em) {
         this.em = em;
@@ -39,18 +39,18 @@ public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
     public EntityManager getEntityManager() {
         return em;
     }
-    
+
     public List<MdrConfiguration> findAllConfigurations() throws ServiceException {
         return findAllEntity(MdrConfiguration.class);
     }
 
-    public MdrConfiguration findConfiguration(String configName){
-    	MdrConfiguration configEntry      = null;
+    public MdrConfiguration findConfiguration(String configName) {
+        MdrConfiguration configEntry = null;
         List<MdrConfiguration> configList = null;
         try {
-            configList = findEntityByHqlQuery(MdrConfiguration.class, SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ + "'"+configName+"'");
-            if(CollectionUtils.isNotEmpty(configList)){
-                configEntry =  configList.get(0);
+            configList = findEntityByHqlQuery(MdrConfiguration.class, SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ + "'" + configName + "'");
+            if (CollectionUtils.isNotEmpty(configList)) {
+                configEntry = configList.get(0);
             } else {
                 log.error("No configuration found in the db regarding {} ", configName);
             }
@@ -58,10 +58,6 @@ public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
             log.error("Error while trying to get Configuration for configName : ", configName, e);
         }
         return configEntry;
-    }
-    
-    public MdrConfiguration getMdrSchedulerConfiguration(){
-    	return findConfiguration(SCHEDULER_CONFIG_NAME);
     }
 
 
@@ -72,16 +68,21 @@ public class MdrConfigurationDao extends AbstractDAO<MdrConfiguration> {
      * @throws ServiceException
      */
     public void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException {
-        if(StringUtils.isEmpty(newCronExpression)){
+        if (StringUtils.isEmpty(newCronExpression)) {
             throw new ServiceException("Cron expression cannot be empty!");
         }
-    	MdrConfiguration newConfig = getMdrSchedulerConfiguration();
-        if(newConfig != null){
-            newConfig.setConfigValue(newCronExpression);
+        List<MdrConfiguration> newConfigList = findEntityByHqlQuery(MdrConfiguration.class, SELECT_FROM_MDRCONFIG_WHERE_NAME_EQ + "'" + SCHEDULER_CONFIG_NAME + "'");
+        if (CollectionUtils.isNotEmpty(newConfigList)) {
+            newConfigList.get(0).setConfigValue(newCronExpression);
         } else {
-            MdrConfiguration newToSaveConfig = new MdrConfiguration(SCHEDULER_CONFIG_NAME, newCronExpression);
-            saveOrUpdateEntity(newToSaveConfig);
+            saveOrUpdateEntity(new MdrConfiguration(SCHEDULER_CONFIG_NAME, newCronExpression));
         }
     }
+
+
+    public MdrConfiguration getMdrSchedulerConfiguration() {
+        return findConfiguration(SCHEDULER_CONFIG_NAME);
+    }
+
 
 }

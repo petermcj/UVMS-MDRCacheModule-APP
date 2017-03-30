@@ -20,23 +20,30 @@ import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "mdr_rfmo_codes")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class Rfmo extends MasterDataRegistry {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name = "id", unique = true, nullable = false)
+	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_rfmo_codes_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	private long id;
+
 	@Column(name = "code_2")
 	@Field(name="code_2")
 	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String code2;
+
+	@Column(name = "en_name")
+	@Field(name = "en_name")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
+	private String enName;
 
 	@Override
 	public String getAcronym() {
@@ -51,6 +58,8 @@ public class Rfmo extends MasterDataRegistry {
 			String fieldValue  = field.getName().getValue();
 			if(StringUtils.equalsIgnoreCase("CODE2", fieldName)){
 				this.setCode2(fieldValue);
+			} else if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("ENNAME", fieldName)){
+				this.setEnName(fieldValue);
 			} else {
 				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
 			}
@@ -62,5 +71,11 @@ public class Rfmo extends MasterDataRegistry {
 	}
 	public void setCode2(String code2) {
 		this.code2 = code2;
+	}
+	public String getEnName() {
+		return enName;
+	}
+	public void setEnName(String enName) {
+		this.enName = enName;
 	}
 }

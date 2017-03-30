@@ -119,7 +119,6 @@ public abstract class MdrAbstractProducer {
             } else {
                 getProducer(session, toQueue).send(message);
             }
-            disconnectQueue();
             return message.getJMSMessageID();
         } catch (JMSException ex) {
             throw new JmsMessageException("Error when sending message or closing JMS queue", ex);
@@ -136,18 +135,15 @@ public abstract class MdrAbstractProducer {
      * @throws JMSException
      */
     private Session getSession() throws JMSException {
-        if (connection == null) {
-            log.debug("Open connection to JMS broker");
-            try {
-                connection = connectionFactory.createConnection();
-                connection.start();
-                return connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-            } catch (JMSException | NullPointerException ex) {
-                log.error("Error when opening connection to JMS broker", ex);
-                throw new JMSException(ex.getMessage());
-            }
+        log.debug("Open connection to JMS broker");
+        try {
+            connection = connectionFactory.createConnection();
+            connection.start();
+            return connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
+        } catch (JMSException | NullPointerException ex) {
+            log.error("Error when opening connection to JMS broker", ex);
+            throw new JMSException(ex.getMessage());
         }
-        return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
     }
 
 

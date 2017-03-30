@@ -15,34 +15,31 @@ import eu.europa.ec.fisheries.mdr.domain.codelists.base.RectangleCoordinates;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
-import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "mdr_ices_statistical_rectangles")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class IcesStatisticalRectangles extends MasterDataRegistry {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "ices_name")
-	@Field(name="icesName")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String icesName;
-	
+	@Id
+	@Column(name = "id", unique = true, nullable = false)
+	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_ices_statistical_rectangles_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	private long id;
+
 	@Embedded
 	@IndexedEmbedded
+	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private RectangleCoordinates rectangle;
 
 	@Override
@@ -54,23 +51,9 @@ public class IcesStatisticalRectangles extends MasterDataRegistry {
 	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 		populateCommonFields(mdrDataType);
 		rectangle = new RectangleCoordinates(mdrDataType);
-		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-			String fieldName  = field.getName().getValue();
-			String fieldValue = field.getName().getValue();
-			if (StringUtils.equalsIgnoreCase("icesName", fieldName)) {
-				this.setIcesName(fieldValue);
-			} else {
-				throw new FieldNotMappedException(getClass().getSimpleName(), fieldName);
-			}
-		}
 	}
 
-	public String getIcesName() {
-		return icesName;
-	}
-	public void setIcesName(String icesName) {
-		this.icesName = icesName;
-	}
+
 	public RectangleCoordinates getRectangle() {
 		return rectangle;
 	}

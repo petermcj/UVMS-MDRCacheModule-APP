@@ -11,10 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.domain.codelists.base;
 
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
-import eu.europa.ec.fisheries.uvms.domain.BaseEntity;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilterFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -24,10 +21,12 @@ import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.DelimitedPeriodType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.TextType;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +34,6 @@ import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistr
 
 @SuppressWarnings("serial")
 @MappedSuperclass
-@EqualsAndHashCode(callSuper = true)
-@ToString
 @AnalyzerDef(name = LOW_CASE_ANALYSER,
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
@@ -46,7 +43,7 @@ import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistr
                 @TokenFilterDef(factory = CommonGramsFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         })
-public abstract class MasterDataRegistry extends BaseEntity {
+public abstract class MasterDataRegistry implements Serializable {
 
     public static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
 
@@ -68,10 +65,10 @@ public abstract class MasterDataRegistry extends BaseEntity {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String description;
 
-    protected static final String CODE_STR = "CODE";
-    protected static final String DESCRIPTION_STR = "DESCRIPTION";
-    protected static final String EN_DESCRIPTION_STR = "ENDESCRIPTION";
-    protected static final String VERSION_STR = "VERSION_STR";
+    protected static final String CODE_STR = ".CODE";
+    protected static final String DESCRIPTION_STR = ".DESCRIPTION";
+    protected static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
+    protected static final String VERSION_STR = ".VERSION";
 
     protected void populateCommonFields(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 
@@ -86,16 +83,16 @@ public abstract class MasterDataRegistry extends BaseEntity {
         List<MDRElementDataNodeType> fieldsToRemove = new ArrayList<>();
         final List<MDRElementDataNodeType> subordinateMDRElementDataNodes = mdrDataType.getSubordinateMDRElementDataNodes();
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
-            String fieldName = field.getName().getValue();
-            String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(CODE_STR, fieldName)) {
+            String fieldName = getValueFromTextType(field.getName());
+            String fieldValue = getValueFromTextType(field.getValue());
+            if (StringUtils.contains(CODE_STR, fieldName)) {
                 setCode(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.equalsIgnoreCase(DESCRIPTION_STR, fieldName)
-                    || StringUtils.equalsIgnoreCase(EN_DESCRIPTION_STR, fieldName)) {
+            } else if (StringUtils.contains(DESCRIPTION_STR, fieldName)
+                    || StringUtils.contains(EN_DESCRIPTION_STR, fieldName)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.equalsIgnoreCase(VERSION_STR, fieldName)) {
+            } else if (StringUtils.contains(VERSION_STR, fieldName)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }
@@ -108,6 +105,10 @@ public abstract class MasterDataRegistry extends BaseEntity {
     }
 
     public abstract void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException;
+
+    private String getValueFromTextType(TextType textType){
+        return textType != null ? textType.getValue() : null;
+    }
 
     public abstract String getAcronym();
     public String getVersion() {

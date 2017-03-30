@@ -100,7 +100,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
      */
     private FullTextQuery buildLuceneMdrQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
-        FullTextQuery fullTextQuery = null;
+        FullTextQuery fullTextQuery;
         try {
             checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
             Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
@@ -176,7 +176,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
             query.setMaxResults(pageSize);
         }
         if (StringUtils.isNotBlank(sortBy)) {
-            query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
+           query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
         }
         return query;
     }

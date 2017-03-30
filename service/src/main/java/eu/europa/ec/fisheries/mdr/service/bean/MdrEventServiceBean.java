@@ -26,7 +26,7 @@ import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
 
 /**
- *  Observer class listening to events fired from MessageConsumerBean (Activity).
+ *  Observer class listening to events fired from MdrMessageConsumerBean (MDR Module).
  *  Specifically to MdrSyncMessageEvent event type.
  *  The message will contain the MDR Entity to be synchronised (As Flux XML Type at this moment).
  *  
@@ -46,6 +46,10 @@ public class MdrEventServiceBean implements MdrEventService {
 		// Extract message from EventMessage Object
 		try {
 			FLUXMDRReturnMessage responseObject = extractMdrFluxResponseFromEventMessage(message);
+			if(responseObject == null){
+				log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
+						"Message content is as follows : "+extractMessageContent(message));
+			}
 			mdrRepository.updateMdrEntity(responseObject);
 		} catch (MdrModelMarshallException e) {
 			log.error("MdrModelMarshallException while unmarshalling message from flux ",e);
@@ -60,24 +64,32 @@ public class MdrEventServiceBean implements MdrEventService {
 	 */
 	private FLUXMDRReturnMessage extractMdrFluxResponseFromEventMessage(EventMessage message) throws MdrModelMarshallException {
 		String textMessage;
-		FLUXMDRReturnMessage respType;
+		FLUXMDRReturnMessage respType = null;
 		try {
-			textMessage = message.getJmsMessage().getText();
-			String adaptedMessage = adaptTextMessageToVersion16B(textMessage);
-			SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(adaptedMessage, SetFLUXMDRSyncMessageResponse.class);
+			textMessage = extractMessageContent(message);
+			SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
 			respType    = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
-		} catch (MdrModelMarshallException | JMSException e) {
-			log.error("Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n",e);
-			throw new MdrModelMarshallException("Error while attempting to Unmarshall Flux Response Object (XML MDR Entity)", e);
+		} catch (MdrModelMarshallException e) {
+			log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n",e.getMessage());
 		}
 		log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
 		return respType;
 	}
 
-	private String adaptTextMessageToVersion16B(String textMessage) {
-		return textMessage.replace("UnqualifiedDataType:18", "UnqualifiedDataType:20")
-				.replace("ReusableAggregateBusinessInformationEntity:18", "ReusableAggregateBusinessInformationEntity:20").
-						replace("FLUXMDRQueryMessage:3","FLUXMDRQueryMessage:5")
-				.replace("FLUXMDRReturnMessage:3", "FLUXMDRReturnMessage:5");
+	/**
+	 * Extracts the message content from the EventMessage wrapper.
+	 *
+	 * @param  eventMessage
+	 * @return textMessage
+	 */
+	private String extractMessageContent(EventMessage eventMessage) {
+		String textMessage = null;
+		try {
+			textMessage = eventMessage.getJmsMessage().getText();
+		} catch (JMSException e) {
+			log.error("Error : The message is null or empty!");
+		}
+		return textMessage;
 	}
+
 }

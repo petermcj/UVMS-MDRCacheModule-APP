@@ -22,10 +22,7 @@ import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.ninja_squad.dbsetup.Operations.sequenceOf;
 import static junit.framework.TestCase.assertEquals;
@@ -115,10 +112,10 @@ public class MdrStatusDaoTest extends BaseMdrDaoTest {
         dbSetupTracker.skipNextLaunch();
         MdrCodeListStatus status = dao.findStatusByAcronym("ACTION_TYPE");
         assertNotNull(status);
-        dao.updateStatusAttemptForAcronym("ACTION_TYPE", AcronymListState.NEWENTRY, new Date());
+        dao.updateStatusForAcronym("ACTION_TYPE", AcronymListState.NEWENTRY, new Date(), "uuid");
         MdrCodeListStatus status_1 = dao.findStatusByAcronym("ACTION_TYPE");
         assertEquals(status_1.getLastStatus(), AcronymListState.NEWENTRY);
-        dao.updateStatusAttemptForAcronym("ACTION_TYPE", AcronymListState.FAILED, new Date());
+        dao.updateStatusForAcronym("ACTION_TYPE", AcronymListState.FAILED, new Date(), "uuid");
         MdrCodeListStatus status_2 = dao.findStatusByAcronym("ACTION_TYPE");
         assertEquals(status_2.getLastStatus(), AcronymListState.FAILED);
     }
@@ -194,11 +191,14 @@ public class MdrStatusDaoTest extends BaseMdrDaoTest {
         List<MdrCodeListStatus> statusesList = new ArrayList<>();
         for(int i=0; i<42; i++){
             MdrCodeListStatus mdrStatAct = new MdrCodeListStatus();
+            AcronymVersion version = new AcronymVersion();
+            version.setMdrCodeListStatus(mdrStatAct);
             mdrStatAct.setObjectAcronym("SomeAcronym"+i);
             mdrStatAct.setSchedulable(true);
             mdrStatAct.setLastStatus(AcronymListState.SUCCESS);
             mdrStatAct.setLastAttempt(DateUtils.nowUTC().toDate());
             mdrStatAct.setLastSuccess(DateUtils.nowUTC().toDate());
+            mdrStatAct.setVersions(new HashSet<>(Arrays.asList(version)));
             statusesList.add(mdrStatAct);
         }
         return statusesList;

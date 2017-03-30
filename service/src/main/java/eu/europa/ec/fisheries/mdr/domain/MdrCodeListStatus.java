@@ -12,13 +12,12 @@ package eu.europa.ec.fisheries.mdr.domain;
 
 import eu.europa.ec.fisheries.mdr.converter.CharAcronymListStateConverter;
 import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
-import eu.europa.ec.fisheries.uvms.domain.BaseEntity;
 import eu.europa.ec.fisheries.uvms.domain.CharBooleanConverter;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -35,15 +34,24 @@ import java.util.Set;
                 query = "SELECT status " +
                         "FROM MdrCodeListStatus status " +
                         "JOIN FETCH status.versions versions " +
-                        "WHERE status.objectAcronym =:objectAcronym ")
+                        "WHERE status.objectAcronym =:objectAcronym "),
+        @NamedQuery(name = MdrCodeListStatus.STATUS_FOR_UUID,
+                query = "SELECT status " +
+                        "FROM MdrCodeListStatus status " +
+                        "WHERE status.referenceUuid =:uuid ")
 })
 @Entity
 @Table(name = "mdr_codelist_status")
-@EqualsAndHashCode(callSuper = true, exclude = "versions")
-@ToString(callSuper = true)
-public class MdrCodeListStatus extends BaseEntity {
+public class MdrCodeListStatus implements Serializable {
 
     public static final String STATUS_AND_VERSIONS_QUERY = "statusAndVersions";
+    public static final String STATUS_FOR_UUID           = "statusForUuid";
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_codelist_status_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
     @Column(name = "object_acronym")
     private String objectAcronym;
@@ -79,6 +87,9 @@ public class MdrCodeListStatus extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "mdrCodeListStatus", cascade = CascadeType.ALL)
     private Set<AcronymVersion> versions;
 
+    @Column(name = "reference_uuid")
+    private String referenceUuid;
+
     public MdrCodeListStatus(){super();}
 
     public MdrCodeListStatus(String objectAcronym, String objectName, Date lastUpdate, Date lastAttempt, AcronymListState state, Boolean schedulable) {
@@ -88,6 +99,7 @@ public class MdrCodeListStatus extends BaseEntity {
         this.lastAttempt = lastAttempt;
         this.lastStatus = state;
         this.schedulable = schedulable;
+        this.referenceUuid = StringUtils.EMPTY;
     }
 
     public String getObjectAcronym() {
@@ -149,5 +161,11 @@ public class MdrCodeListStatus extends BaseEntity {
     }
     public void setVersions(Set<AcronymVersion> versions) {
         this.versions = versions;
+    }
+    public String getReferenceUuid() {
+        return referenceUuid;
+    }
+    public void setReferenceUuid(String reference_uuid) {
+        this.referenceUuid = reference_uuid;
     }
 }

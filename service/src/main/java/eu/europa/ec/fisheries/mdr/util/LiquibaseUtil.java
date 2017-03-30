@@ -70,20 +70,23 @@ public class LiquibaseUtil {
         log.log(Level.ALL, "\n\n I Found : " + filesContents.size() + " Change Sets in location : " + changeLogFilePath);
 
         for (String content : filesContents) {
+            content = "\t"+content;
             String fileName = getFileName(/*filePrefix, fileSuffix,*/ content/*, locationForGeneratedXmls*/);
             String filePath = new StringBuilder(locationForGeneratedXmls).append(filePrefix).append(fileName).append(fileSuffix).toString();
             String header   = createHeader(fileName);
-            String footer   = createFooter(fileName);
-            String finalContent = addHeaderAndFooter(content, header, footer);
-            setSequence(sequence++);
+            String footer   = createAddPrimaryKeyAndFooter(fileName);
+            String finalContent = addAllTogether(content, header, footer);
+            sequence++;
             createNewFile(filePath, finalContent);
         }
 
         log.log(Level.ALL, "\n\n-->>>> All the work for file creation ended successfully. \n-->>>> You can get your files at : "+locationForGeneratedXmls);
     }
 
-    private static String createFooter(String fileName) {
-        return "\t\n" +
+    private static String createAddPrimaryKeyAndFooter(String fileName) {
+        return "\n\t<changeSet author=\"kovian (generated)\" id=\"1490280409454-"+sequence+"\" objectQuotingStrategy=\"QUOTE_ALL_OBJECTS\">\n" +
+                "        <addPrimaryKey columnNames=\"id\" constraintName=\""+fileName+"_pkey\" tableName=\""+fileName+"\"/>\n" +
+                "    </changeSet>" + "\n\t\n" +
                 "\t<changeSet author=\"kovian\" id=\"76817789687171-"+sequence+"\" dbms=\"postgresql\">\n" +
                 "\t\t<addDefaultValue \n" +
                 "\t\t\t\tcolumnDataType=\"BIGINT\"\n" +
@@ -106,10 +109,10 @@ public class LiquibaseUtil {
                 "    <changeSet author=\"kovian\" id=\"1890672105152481"+sequence+"\">\n" +
                 "\t  <createSequence cycle=\"false\" incrementBy=\"1\" maxValue=\"9223372036854775807\" minValue=\"1\"\n" +
                 "\t\t\t\t\t  sequenceName=\""+fileName+"_seq\" startValue=\"1\"/>\n" +
-                "    </changeSet>  \n";
+                "    </changeSet>  \n\n";
     }
 
-    private static String addHeaderAndFooter(String content, String header, String footer) {
+    private static String addAllTogether(String content, String header, String footer) {
         return new StringBuilder(header).append(content).append(footer).toString();
     }
 
@@ -125,7 +128,12 @@ public class LiquibaseUtil {
     }
 
     private static String getFileName(/*String filePrefix, String fileSuffix, */String content /*, String newLocation*/) {
-        String cutStr = content.substring(content.indexOf("tableName=\""), content.indexOf("tableName=\"") + 100);
+        String cutStr = StringUtils.EMPTY;
+        try {
+            cutStr = content.substring(content.indexOf("tableName=\""), content.indexOf("tableName=\"") + 100);
+        } catch(StringIndexOutOfBoundsException ex){
+            throw ex;
+        }
         return cutStr.substring(cutStr.indexOf("\"") + 1, cutStr.indexOf("\"", cutStr.indexOf("\"") + 1));
     }
 
@@ -136,7 +144,7 @@ public class LiquibaseUtil {
     }
 
     private static void createNewFile(String filePath, String content) {
-        log.log(Level.ALL, "\n Creating file : " + filePath);
+        log.log(Level.ALL, "\n Creating file : " + filePath+". Sequence : "+sequence);
         File fileEntry = new File(filePath);
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(fileEntry), Charsets.UTF_8))) {

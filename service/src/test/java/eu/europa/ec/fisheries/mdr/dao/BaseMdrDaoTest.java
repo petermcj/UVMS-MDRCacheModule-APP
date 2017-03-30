@@ -51,20 +51,20 @@ public abstract class BaseMdrDaoTest extends BaseDAOTest {
 
     protected static final Operation INSERT_MDR_CODELIST_STATUS = sequenceOf(
             insertInto("mdr.mdr_codelist_status")
-                    .columns("id", "object_acronym", "schedulable").values(1L, "ACTION_TYPE", "Y").build(),
+                    .columns("id", "object_acronym", "schedulable").values(100L, "ACTION_TYPE", "Y").build(),
             insertInto("mdr.mdr_codelist_status")
-                    .columns("id", "object_acronym", "schedulable").values(2L, "CONVERSION_FACTOR", "Y").build(),
+                    .columns("id", "object_acronym", "schedulable").values(200L, "CONVERSION_FACTOR", "Y").build(),
             insertInto("mdr.mdr_codelist_status")
-                    .columns("id", "object_acronym", "schedulable").values(3L, "GEAR_TYPE", "N").build()
+                    .columns("id", "object_acronym", "schedulable").values(300L, "GEAR_TYPE", "N").build()
     );
 
     protected static final Operation INSERT_ACRONYMS_VERSIONS = sequenceOf(
             insertInto("mdr.mdr_acronymversion")
-                    .columns("id", "status_ref_id", "version_name", "start_date", "end_date").values(1L, 1L, "VERS_1", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build(),
+                    .columns("id", "status_ref_id", "version_name", "start_date", "end_date").values(100L, 100L, "VERS_1", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build(),
             insertInto("mdr.mdr_acronymversion")
-                    .columns("id", "status_ref_id",  "version_name", "start_date", "end_date").values(2L, 1L, "VERS_2", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build(),
+                    .columns("id", "status_ref_id",  "version_name", "start_date", "end_date").values(200L, 100L, "VERS_2", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build(),
             insertInto("mdr.mdr_acronymversion")
-                    .columns("id", "status_ref_id",  "version_name", "start_date", "end_date").values(3L, 3L, "VERS_2", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build()
+                    .columns("id", "status_ref_id",  "version_name", "start_date", "end_date").values(300L, 300L, "VERS_2", "2015-10-10 16:02:59.047", "2016-12-10 16:02:59.047").build()
     );
 
     protected static final Operation INSERT_ALL_CONFIGURATIONS = sequenceOf(insertInto("mdr.mdr_configuration")

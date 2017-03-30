@@ -48,7 +48,7 @@ public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGe
      */
     @Override
     public String sendRulesModuleMessage(String text) throws JmsMessageException {
-        log.info("Sending Request to Exchange module.");
+        log.info("Sending Request to Rules module.");
         String messageID;
         try {
             messageID = sendModuleMessage(text, ModuleQueues.RULES_EVENT);

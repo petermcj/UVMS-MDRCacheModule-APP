@@ -20,9 +20,7 @@ import org.hibernate.search.annotations.*;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by kovian on 11/22/2016.
@@ -30,273 +28,162 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "mdr_location")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class Location extends MasterDataRegistry {
 
-	@Column(name = "code_2")
-	@Field(name="code_2")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String code2;
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_location_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
-	@Column(name = "en_name")
-	@Field(name="en_name")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String enName;
+    @Column(name = "code_2")
+    @Field(name = "code_2")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String code2;
 
-	@Column(name = "latitude")
-	@Field(name="latitude")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Double latitude;
+    @Column(name = "en_name")
+    @Field(name = "en_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String enName;
 
-	@Column(name = "longitude")
-	@Field(name="longitude")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Double longitude;
-	
-	@Column(name = "fishing_port_ind")
-	@Field(name="fishing_port_ind")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean fishingPortInd;
-	
-	@Column(name = "landing_place_ind")
-	@Field(name="landing_place_ind")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean landingPlaceInd;
-	
-	@Column(name = "commercial_port_ind")
-	@Field(name="commercial_port_ind")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean commercialPortInd;
-	
-	@Column(name = "unlo_code")
-	@Field(name="unlo_code")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String unloCode ;
+    @Column(name = "latitude")
+    @Field(name = "latitude")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private Double latitude;
 
-	@Column(name = "coordinates")
-	@Field(name="coordinates")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String coordinates ;
-	
-	@Column(name = "un_function_code")
-	@Field(name="un_function_code")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String unFunctionCode ;
-	
-	@Column(name = "unknown_function")
-	@Field(name="unknown_function")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean unknownFunction;
+    @Column(name = "longitude")
+    @Field(name = "longitude")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private Double longitude;
 
-	@Column(name = "port")
-	@Field(name="port")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean port;
+    @Column(name = "fishing_port_ind")
+    @Field(name = "fishing_port_ind")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private Boolean fishingPortInd;
 
-	@Column(name = "rail")
-	@Field(name="rail")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean rail;
+    @Column(name = "landing_place_ind")
+    @Field(name = "landing_place_ind")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private Boolean landingPlaceInd;
 
-	@Column(name = "road")
-	@Field(name="road")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean road;
+    @Column(name = "commercial_port_ind")
+    @Field(name = "commercial_port_ind")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private Boolean commercialPortInd;
 
-	@Column(name = "airport")
-	@Field(name="airport")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean airport;
-	
-	@Column(name = "postal_exchange_office")
-	@Field(name="postal_exchange_office")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean postalExchangeOffice;
-	
-	@Column(name = "multimodal_functions_ind")
-	@Field(name="multimodal_functions_ind")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean multimodalFunctionsInd;
-	
-	@Column(name = "fixed_transport_functions_ind")
-	@Field(name="fixed_transport_functions_ind")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean fixedTransportFunctionsInd;
-	
-	@Column(name = "border_crossing_function")
-	@Field(name="border_crossing_function")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private Boolean borderCrossingFunction;
+    @Column(name = "unlo_code")
+    @Field(name = "unlo_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String unloCode;
 
-	@Override
-	public String getAcronym() {
-		return "LOCATION";
-	}
+    @Column(name = "un_function_code")
+    @Field(name = "un_function_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String unFunctionCode;
 
-	@Override
-	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
-		populateCommonFields(mdrDataType);
-		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-			String fieldName  = field.getName().getValue();
-			String fieldValue = field.getName().getValue();
-			if(StringUtils.equalsIgnoreCase("CODE2", fieldName)){
-				this.setCode2(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("LATITUDE", fieldName)){
-				this.setLatitude(Double.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("LONGITUDE", fieldName)){
-				this.setLongitude(Double.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("FISHINGPORTIND", fieldName)){
-				this.setFishingPortInd(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("LANDINGPLACEIND", fieldName)){
-				this.setLandingPlaceInd(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("COMMERCIALPORTIND", fieldName)){
-				this.setCommercialPortInd(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("LOCODE", fieldName)){
-				this.setUnloCode(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("COORDINATES", fieldName)){
-				this.setCoordinates(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("UNFCTCODE", fieldName)){
-				this.setUnFunctionCode(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("UNKIND", fieldName)){
-				this.setUnknownFunction(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("PORTIND", fieldName)){
-				this.setPort(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("RAILIND", fieldName)){
-				this.setRail(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("ROADIND", fieldName)){
-				this.setRoad(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("AIRPORTIND", fieldName)){
-				this.setAirport(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("POSTALIND", fieldName)){
-				this.setPostalExchangeOffice(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("MULTIMODEIND", fieldName)){
-				this.setMultimodalFunctionsInd(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("TRANSPIND", fieldName)){
-				this.setFixedTransportFunctionsInd(Boolean.valueOf(fieldValue));
-			} else if(StringUtils.equalsIgnoreCase("BORDERIND", fieldName)){
-				this.setBorderCrossingFunction(Boolean.valueOf(fieldValue));
-			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
-			}
-		}
-	}
+    @Column(name = "coordinates")
+    @Field(name = "coordinates")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String coordinates;
 
-	public String getCode2() {
-		return code2;
-	}
-	public void setCode2(String iso3CountryCode) {
-		this.code2 = iso3CountryCode;
-	}
-	public Double getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-	public Double getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-	public Boolean getFishingPortInd() {
-		return fishingPortInd;
-	}
-	public void setFishingPortInd(Boolean fishingPortInd) {
-		this.fishingPortInd = fishingPortInd;
-	}
-	public Boolean getLandingPlaceInd() {
-		return landingPlaceInd;
-	}
-	public void setLandingPlaceInd(Boolean landingPlaceInd) {
-		this.landingPlaceInd = landingPlaceInd;
-	}
-	public Boolean getCommercialPortInd() {
-		return commercialPortInd;
-	}
-	public void setCommercialPortInd(Boolean commercialPortInd) {
-		this.commercialPortInd = commercialPortInd;
-	}
-	public String getUnloCode() {
-		return unloCode;
-	}
-	public void setUnloCode(String unloCode) {
-		this.unloCode = unloCode;
-	}
-	public String getCoordinates() {
-		return coordinates;
-	}
-	public void setCoordinates(String coordinates) {
-		this.coordinates = coordinates;
-	}
-	public String getUnFunctionCode() {
-		return unFunctionCode;
-	}
-	public void setUnFunctionCode(String unFunctionCode) {
-		this.unFunctionCode = unFunctionCode;
-	}
-	public Boolean getUnknownFunction() {
-		return unknownFunction;
-	}
-	public void setUnknownFunction(Boolean unknownFunction) {
-		this.unknownFunction = unknownFunction;
-	}
-	public Boolean getPort() {
-		return port;
-	}
-	public void setPort(Boolean port) {
-		this.port = port;
-	}
-	public Boolean getRail() {
-		return rail;
-	}
-	public void setRail(Boolean rail) {
-		this.rail = rail;
-	}
-	public Boolean getRoad() {
-		return road;
-	}
-	public void setRoad(Boolean road) {
-		this.road = road;
-	}
-	public Boolean getAirport() {
-		return airport;
-	}
-	public void setAirport(Boolean airport) {
-		this.airport = airport;
-	}
-	public Boolean getPostalExchangeOffice() {
-		return postalExchangeOffice;
-	}
-	public void setPostalExchangeOffice(Boolean postalExchangeOffice) {
-		this.postalExchangeOffice = postalExchangeOffice;
-	}
-	public Boolean getMultimodalFunctionsInd() {
-		return multimodalFunctionsInd;
-	}
-	public void setMultimodalFunctionsInd(Boolean multimodalFunctionsInd) {
-		this.multimodalFunctionsInd = multimodalFunctionsInd;
-	}
-	public Boolean getFixedTransportFunctionsInd() {
-		return fixedTransportFunctionsInd;
-	}
-	public void setFixedTransportFunctionsInd(Boolean fixedTransportFunctionsInd) {
-		this.fixedTransportFunctionsInd = fixedTransportFunctionsInd;
-	}
-	public Boolean getBorderCrossingFunction() {
-		return borderCrossingFunction;
-	}
-	public void setBorderCrossingFunction(Boolean borderCrossingFunction) {
-		this.borderCrossingFunction = borderCrossingFunction;
-	}
-	public String getEnName() {
-		return enName;
-	}
-	public void setEnName(String enName) {
-		this.enName = enName;
-	}
-	
+    @Override
+    public String getAcronym() {
+        return "LOCATION";
+    }
+
+    @Override
+    public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+        populateCommonFields(mdrDataType);
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getName().getValue();
+            if (StringUtils.equalsIgnoreCase("CODE2", fieldName)) {
+                this.setCode2(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase("LATITUDE", fieldName)) {
+                this.setLatitude(Double.valueOf(fieldValue));
+            } else if (StringUtils.equalsIgnoreCase("LONGITUDE", fieldName)) {
+                this.setLongitude(Double.valueOf(fieldValue));
+            } else if (StringUtils.equalsIgnoreCase("FISHINGPORTIND", fieldName)) {
+                this.setFishingPortInd(Boolean.valueOf(fieldValue));
+            } else if (StringUtils.equalsIgnoreCase("LANDINGPLACEIND", fieldName)) {
+                this.setLandingPlaceInd(Boolean.valueOf(fieldValue));
+            } else if (StringUtils.equalsIgnoreCase("COMMERCIALPORTIND", fieldName)) {
+                this.setCommercialPortInd(Boolean.valueOf(fieldValue));
+            } else if(StringUtils.equalsIgnoreCase("ENNAME", fieldName)){
+                this.setEnName(fieldValue);
+            }  else if (StringUtils.equalsIgnoreCase("LOCODE", fieldName)) {
+                this.setUnloCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase("COORDINATES", fieldName)) {
+                this.setCoordinates(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase("UNFCTCODE", fieldName)) {
+                this.setUnFunctionCode(fieldValue);
+            } else {
+                throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+            }
+        }
+    }
+
+    public String getCode2() {
+        return code2;
+    }
+    public void setCode2(String iso3CountryCode) {
+        this.code2 = iso3CountryCode;
+    }
+    public Double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+    public Double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+    public Boolean getFishingPortInd() {
+        return fishingPortInd;
+    }
+    public void setFishingPortInd(Boolean fishingPortInd) {
+        this.fishingPortInd = fishingPortInd;
+    }
+    public Boolean getLandingPlaceInd() {
+        return landingPlaceInd;
+    }
+    public void setLandingPlaceInd(Boolean landingPlaceInd) {
+        this.landingPlaceInd = landingPlaceInd;
+    }
+    public Boolean getCommercialPortInd() {
+        return commercialPortInd;
+    }
+    public void setCommercialPortInd(Boolean commercialPortInd) {
+        this.commercialPortInd = commercialPortInd;
+    }
+    public String getUnloCode() {
+        return unloCode;
+    }
+    public void setUnloCode(String unloCode) {
+        this.unloCode = unloCode;
+    }
+    public String getCoordinates() {
+        return coordinates;
+    }
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+    public String getUnFunctionCode() {
+        return unFunctionCode;
+    }
+    public void setUnFunctionCode(String unFunctionCode) {
+        this.unFunctionCode = unFunctionCode;
+    }
+    public String getEnName() {
+        return enName;
+    }
+    public void setEnName(String enName) {
+        this.enName = enName;
+    }
+
 }

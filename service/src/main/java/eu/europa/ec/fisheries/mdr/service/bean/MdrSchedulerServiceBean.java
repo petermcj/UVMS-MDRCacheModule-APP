@@ -19,6 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 /**
@@ -29,10 +32,14 @@ import java.util.Collection;
  */
 @Slf4j
 @Stateless
+@Transactional
 public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
     public static final String MDR_SYNCHRONIZATION_TIMER = "MDRSynchronizationTimer";
     private static final TimerConfig TIMER_CONFIG        = new TimerConfig(MDR_SYNCHRONIZATION_TIMER, false);
+
+    @PersistenceContext(unitName = "mdrPU")
+    private EntityManager em;
 
     @EJB
     private MdrRepository mdrRepository;
@@ -45,8 +52,9 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
 
     /**
-     * Method that will be called when a timer has been set for this EJB.
-     * When time runs up this method will trigger n requests (twoards FLUX TL) for the whole MDR registry update.
+     *  Method that will be called when a timer has been set for this EJB.
+     *  When time runs up this method will trigger n requests (twoards FLUX TL, n being the nr. of available codeLists)
+     *  for the whole MDR registry update.
      */
     @Timeout
     public void timeOut(){
@@ -72,6 +80,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
      * @param schedulerExpressionStr
      */
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void reconfigureScheduler(String schedulerExpressionStr) throws IllegalArgumentException {
         log.info("[START] Re-configure MDR scheduler with expression: {}", schedulerExpressionStr);
         String schedulerExpressionStrClean = null;

@@ -29,7 +29,7 @@ public interface MdrStatusRepository {
 
     MdrCodeListStatus getStatusForAcronym(String acronym);
 
-    void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt);
+    void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt, String uuid);
 
     void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException;
 
@@ -40,4 +40,6 @@ public interface MdrStatusRepository {
     void updateStatusFailedForAcronym(String acronym);
 
     void updateSchedulableForAcronym(String acronym, boolean schedulable);
+
+
 }

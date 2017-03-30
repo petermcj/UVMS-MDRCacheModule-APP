@@ -19,19 +19,23 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;;
+import javax.persistence.*;
+;
 
 /**
  * Created by georgige on 11/23/2016.
  */
 @Entity
 @Table(name = "mdr_flux_location_characteristic")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class FluxLocationCharacteristic extends MasterDataRegistry {
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_flux_location_characteristic_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {

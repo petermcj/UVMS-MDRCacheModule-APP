@@ -11,8 +11,6 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.domain.codelists.base;
 
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.search.annotations.Field;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
@@ -26,8 +24,6 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Embeddable
-@EqualsAndHashCode
-@ToString
 public class RectangleCoordinates implements Serializable {
 
     @Column(name = "south")
@@ -51,10 +47,6 @@ public class RectangleCoordinates implements Serializable {
     }
 
     public RectangleCoordinates(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
-        populateRectangle(mdrDataType);
-    }
-
-    public void populateRectangle(MDRDataNodeType mdrDataType) {
         List<MDRElementDataNodeType> fieldsToRemove  = new ArrayList<>();
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
@@ -73,9 +65,7 @@ public class RectangleCoordinates implements Serializable {
                 fieldsToRemove.add(field);
             }
         }
-        mdrDataType.getSubordinateMDRElementDataNodes().removeAll(fieldsToRemove);
     }
-
 
     public double getSouth() {
         return south;

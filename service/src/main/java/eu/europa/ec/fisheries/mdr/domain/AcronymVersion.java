@@ -1,20 +1,22 @@
 package eu.europa.ec.fisheries.mdr.domain;
 
-import eu.europa.ec.fisheries.uvms.domain.BaseEntity;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by kovian on 10/11/2016.
  */
 @Entity
 @Table(name = "mdr_acronymversion")
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class AcronymVersion extends BaseEntity {
+public class AcronymVersion implements Serializable {
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_acronymversion_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
     @Column(name = "version_name")
     private String versionName;
@@ -24,7 +26,6 @@ public class AcronymVersion extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_ref_id", nullable = false)
-    //@Cascade(CascadeType.ALL)
     private MdrCodeListStatus mdrCodeListStatus;
 
     public AcronymVersion() {

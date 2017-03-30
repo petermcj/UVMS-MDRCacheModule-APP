@@ -41,7 +41,7 @@ import static javax.ejb.ConcurrencyManagementType.BEAN;
 @DependsOn(value = {"MdrSynchronizationServiceBean", "MdrStatusRepositoryBean", "MdrRepositoryBean", "MdrSchedulerServiceBean"})
 public class MdrInitializationBean {
 
-    private static final String FIXED_SCHED_CONFIGURATION = "0 1 20 * * *";
+    private static final String FIXED_SCHED_CONFIGURATION = "0 1 20 * *";
 
     @EJB
     private MdrSynchronizationService synchBean;
@@ -56,7 +56,7 @@ public class MdrInitializationBean {
     private MdrRepository mdrRepository;
 
     /**
-     * Method for start up Jobs of Activity Module (Deploy phase)
+     * Method for start up Jobs of MDR module Module (Deploy phase)
      *
      *  1. Initializing the acronyms cache.
      *  2. Setting up the scheduler timer for MDR synchronization at start up.
@@ -68,7 +68,7 @@ public class MdrInitializationBean {
 
         long startTime  = System.currentTimeMillis();
 
-        log.info("[START] Starting up ActivityModule Initialization..");
+        log.info("[START] Starting up MDR moduleModule Initialization..");
         log.info("Going to : \n\t\t1. Initailize acronymsCache..\n\t\t2. Update MDR status table..\n\t\t3. Set up MDR scheduler..  ");
 
         // 1. Initializing the acronyms cache;
@@ -80,7 +80,7 @@ public class MdrInitializationBean {
         try {
             updateMdrStatusTable();
         } catch (MdrStatusTableException e) {
-            log.error("Exception occured while attempting to update the Status table at Activity module deploy phase!", e);
+            log.error("Exception occured while attempting to update the Status table at MDR module module deploy phase!", e);
         }
 
         // 3. Setting up the scheduler timer for MDR synchronization at start up.
@@ -101,7 +101,7 @@ public class MdrInitializationBean {
             log.debug("\n\n\t\t Creating scheduler threw the following error : \n", ex);
         }
 
-        log.info("[END] Finished Starting up ActivityModule Initialization.");
+        log.info("[END] Finished Starting up MDR moduleModule Initialization.");
         log.debug("\n\n -- It Took " + (System.currentTimeMillis() - startTime) + " milliseconds for startUp activities to finish.. -- \n\n");
     }
 

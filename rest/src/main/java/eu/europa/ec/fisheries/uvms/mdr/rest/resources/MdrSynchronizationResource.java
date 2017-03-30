@@ -15,11 +15,9 @@ import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -28,6 +26,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,7 +35,7 @@ import java.util.List;
 @Stateless
 public class MdrSynchronizationResource extends UnionVMSResource {
 
-    private static final String ERROR_GETTING_AVAIL_MDR = "An error occured while trying to get MDR available Acronyms List. The List is actually Empty! Have to reinitialize Activity Module!";
+    private static final String ERROR_GETTING_AVAIL_MDR = "An error occured while trying to get MDR available Acronyms List. The List is actually Empty! Have to reinitialize MDR module Module!";
     private static final String ERROR_MANUAL_MDR_SYNC = "An error occured while trying to manually update the MDR List.";
 
     @EJB
@@ -57,7 +56,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/sync/all")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response synchronizeAllAcronyms(@Context HttpServletRequest request) {
         log.info("Starting MDR Synchronization...");
         GenericOperationOutcome outcome = syncBean.manualStartMdrSynchronization();
@@ -82,7 +81,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/sync/list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response synchronizeListOfAcronyms(@Context HttpServletRequest request, Collection<String> acronymsToSynch) {
         log.info("Starting MDR Synchronization...");
         GenericOperationOutcome outcome = syncBean.updateMdrEntities((List<String>) acronymsToSynch);
@@ -90,7 +89,6 @@ public class MdrSynchronizationResource extends UnionVMSResource {
         if (!outcome.isOK()) {
             return createErrorResponse(ERROR_MANUAL_MDR_SYNC);
         }
-        //outcome.setIncludedObject(mdrStatusBean.getAllAcronymsStatuses());
         return createSuccessResponse(outcome);
     }
 
@@ -99,10 +97,16 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/structure")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
-    public Response sendRequestForMDRCodeListsStructure(@Context HttpServletRequest request,  Collection<String> acronymsToSynch) {
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    public Response sendRequestForMDRCodeListsStructure(@Context HttpServletRequest request, Collection<String> acronymsToSynch) {
         log.info("Sending MDR Lists Structure request");
-        syncBean.sendRequestForMdrCodelistsStructures(acronymsToSynch);
+        List<String> acronymsList;
+        if (CollectionUtils.isEmpty(acronymsToSynch)) {
+            acronymsList = getMockedCodeListsList();
+        } else {
+            acronymsList = (List<String>) acronymsToSynch;
+        }
+        syncBean.sendRequestForMdrCodelistsStructures(acronymsList);
         log.info("Finished Sending MDR Lists Structure request");
         return createSuccessResponse();
     }
@@ -110,7 +114,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/index")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response sendRequestForMDRCodeListsIndex(@Context HttpServletRequest request) {
         log.info("Sending MDR Lists Structure request");
         syncBean.sendRequestForMdrCodelistsIndex();
@@ -128,7 +132,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/acronyms/details")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.LIST_MDR_CODE_LISTS})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.LIST_MDR_CODE_LISTS})
     public Response getAvailableMdrAcronymsStatuses(@Context HttpServletRequest request) {
         log.debug("[START] getAvailableMdrAcronymsDetails ");
         List<MdrCodeListStatus> acronymsList = mdrStatusBean.getAllAcronymsStatuses();
@@ -165,7 +169,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/scheduler/config")
     @Produces(MediaType.APPLICATION_JSON)
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
     public Response getSchedulerConfiguration(@Context HttpServletRequest request) {
         return createSuccessResponse(schedulerService.getActualSchedulerConfiguration());
     }
@@ -179,7 +183,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @PUT
     @Path("/scheduler/config/update")
     @Produces(MediaType.APPLICATION_JSON)
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
     public Response saveSchedulerConfiguration(@Context HttpServletRequest request, String cronConfigStr) {
         try {
             schedulerService.reconfigureScheduler(cronConfigStr);
@@ -202,11 +206,34 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/status/schedulable/update/{acronym}/{schedulable}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE})
-    public Response changeSchedulableForAcronym(@Context HttpServletRequest request, @PathParam("acronym") String acronym, @PathParam("schedulable") Boolean schedulable) {
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE})
+    public Response changeSchedulableForAcronym(@Context HttpServletRequest request,
+                                                @PathParam("acronym") String acronym,
+                                                @PathParam("schedulable") Boolean schedulable) {
         log.info("Changing schedulable for acronym : ", acronym);
         mdrStatusBean.updateSchedulableForAcronym(acronym, schedulable);
         return createSuccessResponse();
     }
 
+    public List<String> getMockedCodeListsList() {
+        return Arrays.asList("EFFORT_ZONE",
+                "FA_BAIT_TYPE", "FA_BFT_SIZE_CATEGORY", "FA_BR",
+                "FA_CATCH_TYPE", "FA_CHARACTERISTIC", "FA_FISHERY",
+                "FA_GEAR_CHARACTERISTIC", "FA_GEAR_PROBLEM", "FA_GEAR_RECOVERY",
+                "FA_GEAR_ROLE", "FA_QUERY_TYPE", "FA_QUERY_PARAMETER",
+                "FA_REASON_ARRIVAL", "FA_REASON_DEPARTURE", "FA_REASON_ENTRY",
+                "FA_REASON_DISCARD", "FA_VESSEL_ROLE", "FAO_AREA",
+                "FAO_SPECIES", "FARM", "FISH_FRESHNESS",
+                "FISH_PACKAGING", "FISH_PRESENTATION", "FISH_PRESERVATION",
+                "FISH_SIZE_CLASS", "FISHING_TRIP_TYPE", "FLAP_ID_TYPE",
+                "FLUX_CONTACT_ROLE", "FLUX_FA_FMC", "FLUX_FA_REPORT_TYPE",
+                "FLUX_FA_TYPE", "FLUX_GP_PARTY", "FLUX_GP_PURPOSE",
+                "FLUX_GP_RESPONSE", "FLUX_GP_VALIDATION_LEVEL",
+                "FLUX_GP_VALIDATION_TYPE", "FLUX_LOCATION_CHARACTERISTIC",
+                "FLUX_LOCATION_TYPE", "FLUX_PROCESS_TYPE", "FLUX_UNIT",
+                "GEAR_TYPE", "GFCM_GSA", "GFCM_STAT_RECTANGLE", "ICES_STAT_RECTANGLE",
+                "LOCATION", "RFMO", "TERRITORY",
+                "VESSEL_ACTIVITY", "VESSEL_STORAGE_TYPE", "WEIGHT_MEANS"
+        );
+    }
 }

@@ -37,9 +37,9 @@ import javax.jms.TextMessage;
     @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_TYPE_STR, propertyValue = MdrMessageConstants.DESTINATION_TYPE_QUEUE),
     @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_STR,      propertyValue = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE_NAME)
 })
-public class MessageConsumerBean implements MessageListener {
+public class MdrMessageConsumerBean implements MessageListener {
 
-    final static Logger LOG = LoggerFactory.getLogger(MessageConsumerBean.class);
+    final static Logger LOG = LoggerFactory.getLogger(MdrMessageConsumerBean.class);
 
     @Inject
     @MdrSyncMessageEvent
@@ -55,9 +55,9 @@ public class MessageConsumerBean implements MessageListener {
         
         try {
             TextMessage textMessage = (TextMessage) message;
-            LOG.info("Message received in activity");
+            LOG.info("Message received in MDR module");
             MdrModuleRequest request = JAXBMarshaller.unmarshallTextMessage(textMessage, MdrModuleRequest.class);
-            LOG.info("Message unmarshalled successfully in activity");
+            LOG.info("Message unmarshalled successfully in MDR module");
             if(request==null){
                 LOG.error("[ Request is null ]");
                 return;
@@ -78,7 +78,7 @@ public class MessageConsumerBean implements MessageListener {
                    // errorEvent.fire(new EventMessage(textMessage, "[ Request method " + request.getMethod().name() + "  is not implemented ]"));
             }
         } catch (MdrModelMarshallException | NullPointerException | ClassCastException e) {
-            LOG.error("[ Error when receiving message in activity: ] {}", e);
+            LOG.error("[ Error when receiving message in MDR module: ] {}", e);
            // errorEvent.fire(new EventMessage(textMessage, "Error when receiving message in movement: " + e.getMessage()));
         }
     }

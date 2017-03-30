@@ -20,7 +20,6 @@ import eu.europa.ec.fisheries.uvms.service.AbstractDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import un.unece.uncefact.data.standard.mdr.response.DataSetVersionType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
@@ -72,7 +71,6 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     public void saveAcronymsStatusList(List<MdrCodeListStatus> statusList) throws ServiceException {
         Session session = (getEntityManager().unwrap(Session.class)).getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
         try {
             log.info("Persisting entity entries for : MdrCodeListStatus");
             int counter = 0;
@@ -85,11 +83,10 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
                 }
             }
             log.debug("Committing transaction.");
-            tx.commit();
         } catch (Exception e) {
-            tx.rollback();
             throw new ServiceException("Rollbacking transaction for reason : ", e);
         } finally {
+            session.flush();
             log.debug("Closing session");
             session.close();
         }
@@ -133,11 +130,12 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     private void fillMetaDataForMDRStatus(MDRDataSetType xmlCodeListMetaData, MdrCodeListStatus codeListFromDB) {
 
+        // Filling objectSource, description and name
         codeListFromDB.setObjectSource(xmlCodeListMetaData.getOrigin().getValue());
         codeListFromDB.setObjectDescription(xmlCodeListMetaData.getDescription().getValue());
         codeListFromDB.setObjectName(xmlCodeListMetaData.getName().getValue());
 
-        // Filling supported versions and VGalidity Ranges for each version
+        // Filling supported versions and Validity Ranges for each version
         List<DataSetVersionType> specifiedDataSetVersions = xmlCodeListMetaData.getSpecifiedDataSetVersions();
         if(CollectionUtils.isNotEmpty(specifiedDataSetVersions)){
             Set<AcronymVersion> acrVersions = new HashSet<>();
@@ -172,14 +170,15 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
         }
     }
 
-    public void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt) {
+    public void updateStatusForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt, String uuid) {
         MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(acronym);
         try {
             mdrCodeListElement.setLastAttempt(lastAttempt);
             mdrCodeListElement.setLastStatus(newStatus);
+            mdrCodeListElement.setReferenceUuid(uuid);
             saveOrUpdateEntity(mdrCodeListElement);
         } catch (NullPointerException | ServiceException e) {
-            log.error(ERROR_WHILE_SAVING_STATUS,e);
+            log.error(ERROR_WHILE_SAVING_STATUS, e);
         }
     }
 
@@ -205,5 +204,11 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     public MdrCodeListStatus getStatusForAcronym(String acronym) {
         return findStatusByAcronym(acronym);
+    }
+
+    public MdrCodeListStatus getStatusForUuid(String uuid) {
+        TypedQuery<MdrCodeListStatus> query = getEntityManager().createNamedQuery(MdrCodeListStatus.STATUS_FOR_UUID, MdrCodeListStatus.class);
+        query.setParameter("referenceUuid", uuid);
+        return query.getSingleResult();
     }
 }

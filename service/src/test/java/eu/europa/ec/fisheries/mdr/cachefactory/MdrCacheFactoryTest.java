@@ -13,7 +13,6 @@ package eu.europa.ec.fisheries.mdr.cachefactory;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import lombok.SneakyThrows;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -23,10 +22,10 @@ import java.util.List;
 /**
  * Created by kovian on 24/11/2016.
  */
-@Ignore
+/*@Ignore*/
 public class MdrCacheFactoryTest {
 
-    String filesPath              = "C:\\GIT Repository\\activity-trunk\\db-liquibase\\LIQUIBASE\\postgres\\schema\\tables";
+    String filesPath              = "C:\\GIT Repository\\mdr-modules-repo\\uvms-mdrmodule-db\\LIQUIBASE\\postgres\\schema\\tables";
     String includeDeclarationInit = "<include file=\"\\postgres\\schema\\tables\\";
 
     @Test
@@ -36,6 +35,7 @@ public class MdrCacheFactoryTest {
         List<String> acronyms = MasterDataRegistryEntityCacheFactory.getAcronymsList();
         System.out.println("\nWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
         System.out.println("\nWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        System.out.println("\n\nFOUND : "+acronyms.size()+" files.\n\n");
         for(String acronym : acronyms){
             MasterDataRegistry mdrEntity = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym);
             System.out.println("<class>"+mdrEntity.getClass().getCanonicalName().toString()+"</class>");
@@ -50,6 +50,7 @@ public class MdrCacheFactoryTest {
         String includeDeclarationEnd  = "\"/>";
         String limitToFilesThatContainThisString = "mdr_";
         List<String> fileNamesList = getFilesListFromPath(filesPath, limitToFilesThatContainThisString);
+        System.out.println("\n\nFOUND : "+fileNamesList.size()+" files in : "+filesPath+"\n\n");
         for(String fileName : fileNamesList){
             System.out.println(includeDeclarationInit+fileName+includeDeclarationEnd);
         }

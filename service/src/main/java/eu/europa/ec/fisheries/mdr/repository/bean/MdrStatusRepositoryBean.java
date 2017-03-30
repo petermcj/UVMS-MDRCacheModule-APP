@@ -19,9 +19,10 @@ import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import java.util.List;
  */
 @Stateless
 @Slf4j
+@Transactional
 public class MdrStatusRepositoryBean implements MdrStatusRepository {
 
     @PersistenceContext(unitName = "mdrPU")
@@ -63,21 +65,25 @@ public class MdrStatusRepositoryBean implements MdrStatusRepository {
     }
 
     @Override
-    public void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt){
-        statusDao.updateStatusAttemptForAcronym(acronym, newStatus, lastAttempt);
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt, String uuid){
+        statusDao.updateStatusForAcronym(acronym, newStatus, lastAttempt, uuid);
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException {
             statusDao.updateStatusSuccessForAcronym(acronym, newStatus, lastSuccess);
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void updateStatusFailedForAcronym(String acronym) {
         statusDao.updateStatusFailedForAcronym(acronym);
     }
 
     @Override
+    @Transactional(Transactional.TxType.REQUIRED)
     public void updateSchedulableForAcronym(String acronym, boolean schedulable){
         statusDao.updateSchedulableForAcronym(acronym, schedulable);
     }

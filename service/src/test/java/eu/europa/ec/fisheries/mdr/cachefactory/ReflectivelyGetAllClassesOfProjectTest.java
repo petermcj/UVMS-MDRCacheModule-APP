@@ -36,7 +36,7 @@ public class ReflectivelyGetAllClassesOfProjectTest {
     @SneakyThrows
     public void testGetAllPackages(){
         final Set<String> packageNamesForErs = findAllForPackages(ERS_BASE_PACKAGE, MDR_BASE_PACKAGE);
-        System.out.println("I found : " + packageNamesForErs.size() + " Activity related packages in this project!");
+        System.out.println("I found : " + packageNamesForErs.size() + " Mdr related packages in this project!");
         logPackages(packageNamesForErs);
         System.out.println("\n Getting class refferences for each package! This may take a while..\n");
         final List<Class<?>> classes = new ArrayList<>();

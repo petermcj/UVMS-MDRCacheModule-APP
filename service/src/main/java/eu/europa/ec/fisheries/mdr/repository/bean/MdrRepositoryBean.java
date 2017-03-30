@@ -32,16 +32,15 @@ import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 @Stateless
 @Slf4j
-@TransactionManagement(TransactionManagementType.BEAN)
+@Transactional
 public class MdrRepositoryBean implements MdrRepository {
 	
 	@PersistenceContext(unitName = "mdrPU")
@@ -75,12 +74,20 @@ public class MdrRepositoryBean implements MdrRepository {
 			int maxResultLimit) throws ServiceException {
 		return mdrDao.findEntityByHqlQuery(type, hqlQuery, parameters, maxResultLimit);
 	}
-	
+
+
+	/**
+	 * Saves the codeList received from this message. Only if the response is ok it will be saved, and the status will be changed to SUCCESS.
+	 * Otherwise the status for that codeList will be changed to failed.
+	 *
+	 * @param response
+	 */
 	@Override
+	@Transactional(Transactional.TxType.REQUIRED)
 	public void updateMdrEntity(FLUXMDRReturnMessage response){
 		// Response is OK
 		final FLUXResponseDocumentType fluxResponseDocument = response.getFLUXResponseDocument();
-		if(fluxResponseDocument.getResponseCode().toString().toUpperCase() != "NOK") {
+		if(!fluxResponseDocument.getResponseCode().toString().toUpperCase().equalsIgnoreCase("NOK")) {
 			List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
 			final MDRDataSetType mdrDataSet = response.getMDRDataSet();
 			if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
@@ -98,9 +105,14 @@ public class MdrRepositoryBean implements MdrRepository {
 		} else {
 			final IDType referencedID = fluxResponseDocument.getReferencedID();
 			if(referencedID != null && StringUtils.isNotEmpty(referencedID.getValue())){//, but has referenceID
-				statusDao.updateStatusFailedForAcronym(extractAcronymFromReferenceId(referencedID.getValue()));
+				MdrCodeListStatus referencedStatus = statusDao.getStatusForUuid(referencedID.getValue());
+				if(referencedStatus != null){
+					statusDao.updateStatusFailedForAcronym(referencedStatus.getObjectAcronym());
+				} else {
+					log.error("[[ERROR]] The MDR response received in MDR module was OK, but the referenceId couldn't be found in status table!");
+				}
 			} else {//, and doesn't have referenceID
-                log.error("[[ERROR]] The MDR response received in activity was NOK and has no referenceId!!");
+                log.error("[[ERROR]] The MDR response received in MDR module was NOK and has no referenceId to link it to!");
             }
 		}
 	}
@@ -110,7 +122,7 @@ public class MdrRepositoryBean implements MdrRepository {
 	 *  Done in 2 steps so that we have 2 different transactions.
 	 *  One for deleting and purging lucene indexes.
 	 *  One for saving data and refreshing the indexes.
-	 *  Otherwise lucene will double the size of the indexes, and with that the results also!
+	 *  Otherwise lucene will double the size of the indexes, and with that the returned result set also!
 	 *
 	 * @param  mdrEntityRows
 	 * @throws ServiceException
@@ -123,10 +135,6 @@ public class MdrRepositoryBean implements MdrRepository {
 		deleteFromDbAndPurgeIndexes(mdrClass, mdrEntityName);
 		// Insertion phase;
 		saveNewEntriesAndRefreshIndexes(mdrEntityRows, mdrClass);
-	}
-
-	private String extractAcronymFromReferenceId(String responseReferenceID) {
-		return responseReferenceID.split("--")[0];
 	}
 
 	/*
@@ -143,6 +151,7 @@ public class MdrRepositoryBean implements MdrRepository {
 	}
 	
 	@Override
+	@Transactional(Transactional.TxType.REQUIRED)
     public void changeMdrSchedulerConfiguration(String newCronExpression) throws ServiceException{
     	mdrConfigDao.changeMdrSchedulerConfiguration(newCronExpression);
     }

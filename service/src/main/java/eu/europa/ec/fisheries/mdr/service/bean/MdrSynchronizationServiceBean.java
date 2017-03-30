@@ -29,6 +29,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.List;
  */
 @Slf4j
 @Stateless
+@Transactional
 public class MdrSynchronizationServiceBean implements MdrSynchronizationService {
 
     public static final String ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM = "Error while trying to map MDRQueryType for acronym {}";
@@ -61,6 +63,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private static final List<String> exclusionList = new ArrayList<String>(){{
         add("FAO_AREA");
         add("TERRITORY");
+        add("FA_BR");
     }};
 
     /**
@@ -68,6 +71,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
      * It will check if the acronym is schedulable before sending a request.
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public GenericOperationOutcome manualStartMdrSynchronization() {
         log.info("\n\t\t--->>> STARTING MDR SYNCHRONIZATION \n");
         return extractAcronymsAndUpdateMdr();
@@ -143,27 +147,28 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         }
 
         for (String actualAcronym : acronymsList) {
-            log.info("Preparing Request Object for " + actualAcronym + " and sending message to Exchange queue.");
+            log.info("Preparing Request Object for " + actualAcronym + " and sending message to Rules queue.");
             // Create request object and send message to exchange module
             if (existingAcronymsList.contains(actualAcronym) && !acronymIsInExclusionList(actualAcronym)) {// Acronym exists
                 String strReqObj;
+                String uuid = java.util.UUID.randomUUID().toString();
                 try {
-                    strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actualAcronym, OBJ_DATA_ALL);
+                    strReqObj   = MdrRequestMapper.mapMdrQueryTypeToString(actualAcronym, OBJ_DATA_ALL, uuid);
                     producer.sendRulesModuleMessage(strReqObj);
-                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.RUNNING, DateUtils.nowUTC().toDate());
+                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.RUNNING, DateUtils.nowUTC().toDate(), uuid);
                     log.info("Synchronization Request Sent for Entity : " + actualAcronym);
                 } catch (MdrMappingException e) {
                     log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, actualAcronym, e);
                     errorContainer.addMessage("Error while trying to map MDRQueryType for acronym {} " + actualAcronym);
-                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate());
+                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate(), uuid);
                 } catch (JmsMessageException e) {
-                    log.error("Error while trying to send message from Activity to Rules module.", e);
-                    errorContainer.addMessage("Error while trying to send message from Activity to Rules module for acronym {} " + actualAcronym);
-                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate());
+                    log.error("Error while trying to send message from MDR module to Rules module.", e);
+                    errorContainer.addMessage("Error while trying to send message from MDR module to Rules module for acronym {} " + actualAcronym);
+                    statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate(), uuid);
                 }
                 errorContainer.setIncludedObject(statusRepository.getAllAcronymsStatuses());
             } else {// Acronym does not exist
-                log.debug("Couldn't find the acronym'" + actualAcronym + "' (or the acronym is in Exclusion List) in the cachedAcronymsList! Request for said acronym won't be sent to flux!");
+                log.debug("Couldn't find the acronym \" " + actualAcronym + " \" (or the acronym is in Exclusion List) in the cachedAcronymsList! Request for said acronym won't be sent to flux!");
                 errorContainer.addMessage("The following acronym doesn't exist (or is excluded) in the cacheFactory : " + actualAcronym);
             }
         }
@@ -182,13 +187,13 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     public void sendRequestForMdrCodelistsStructures(Collection<String> acronymsList) {
         try {
             for(String actAcron : acronymsList){
-                String strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actAcron, OBJ_DESC);
+                String strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actAcron, OBJ_DESC, java.util.UUID.randomUUID().toString());
                 producer.sendRulesModuleMessage(strReqObj);
             }
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
         } catch (JmsMessageException e) {
-            log.error("Error while trying to send message from Activity to Rules module.", e);
+            log.error("Error while trying to send message from MDR module to Rules module.", e);
         }
     }
 
@@ -201,7 +206,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, e);
         } catch (JmsMessageException e) {
-            log.error("Error while trying to send message from Activity to Rules module.", e);
+            log.error("Error while trying to send message from MDR module to Rules module.", e);
         }
     }
 
