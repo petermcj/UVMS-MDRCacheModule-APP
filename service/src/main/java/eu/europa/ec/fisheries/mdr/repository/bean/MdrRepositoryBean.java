@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
 import un.unece.uncefact.data.standard.mdr.response.IDType;
-import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -89,22 +88,21 @@ public class MdrRepositoryBean implements MdrRepository {
 		final FLUXResponseDocumentType fluxResponseDocument = response.getFLUXResponseDocument();
 		if(!fluxResponseDocument.getResponseCode().toString().toUpperCase().equalsIgnoreCase("NOK")) {
 			List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
-			final MDRDataSetType mdrDataSet = response.getMDRDataSet();
 			if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
 				try {
 					insertNewData(mdrEntityRows);
-					statusDao.updateStatusSuccessForAcronym(mdrDataSet, AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
+					statusDao.updateStatusSuccessForAcronym(response.getMDRDataSet(), AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
 				} catch (ServiceException e) {
 					statusDao.updateStatusFailedForAcronym(mdrEntityRows.get(0).getAcronym());
 					log.error("Transaction rolled back! Couldn't persist mdr Entity : ", e);
 				}
 			} else {
-				log.error("Got Message from Flux related to MDR but, the list is empty! So, nothing is going to be persisted!");
+				log.error("[[ ERROR ]] Got Message from Flux related to MDR but, the list is empty! So, nothing is going to be persisted!");
 			}
 		// Response is NOT OK
 		} else {
 			final IDType referencedID = fluxResponseDocument.getReferencedID();
-			if(referencedID != null && StringUtils.isNotEmpty(referencedID.getValue())){//, but has referenceID
+			if(referencedID != null && StringUtils.isNotEmpty(referencedID.getValue())){//, but has referenceID to relate which acronym failed
 				MdrCodeListStatus referencedStatus = statusDao.getStatusForUuid(referencedID.getValue());
 				if(referencedStatus != null){
 					statusDao.updateStatusFailedForAcronym(referencedStatus.getObjectAcronym());

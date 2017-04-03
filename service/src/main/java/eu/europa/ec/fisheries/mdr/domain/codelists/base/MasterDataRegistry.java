@@ -12,6 +12,7 @@ package eu.europa.ec.fisheries.mdr.domain.codelists.base;
 
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilterFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -43,6 +44,7 @@ import static eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistr
                 @TokenFilterDef(factory = CommonGramsFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         })
+@Slf4j
 public abstract class MasterDataRegistry implements Serializable {
 
     public static final String LOW_CASE_ANALYSER = "lowCaseAnalyser";
@@ -85,21 +87,21 @@ public abstract class MasterDataRegistry implements Serializable {
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
             String fieldName = getValueFromTextType(field.getName());
             String fieldValue = getValueFromTextType(field.getValue());
-            if (StringUtils.contains(CODE_STR, fieldName)) {
+            if (StringUtils.contains(fieldName, CODE_STR)) {
                 setCode(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.contains(DESCRIPTION_STR, fieldName)
-                    || StringUtils.contains(EN_DESCRIPTION_STR, fieldName)) {
+            } else if (StringUtils.contains(fieldName, DESCRIPTION_STR)
+                    || StringUtils.contains(fieldName, EN_DESCRIPTION_STR)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.contains(VERSION_STR, fieldName)) {
+            } else if (StringUtils.contains(fieldName, VERSION_STR)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }
         }
         // If we are inside here it means that code and description have to be both set, otherwise we have attributes missing.
-        if (StringUtils.isEmpty(getCode()) || StringUtils.isEmpty(getDescription())) {
-            throw new FieldNotMappedException(this.getClass().getSimpleName(), "Code or Description missing");
+        if (StringUtils.isEmpty(code) || StringUtils.isEmpty(description)) {
+            log.warn("[[WARNING]] Code or Description missing.");
         }
         subordinateMDRElementDataNodes.removeAll(fieldsToRemove);
     }

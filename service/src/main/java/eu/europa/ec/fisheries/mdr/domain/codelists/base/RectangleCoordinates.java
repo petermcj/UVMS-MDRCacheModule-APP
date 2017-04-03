@@ -10,7 +10,6 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.domain.codelists.base;
 
-import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.search.annotations.Field;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
@@ -28,67 +27,68 @@ public class RectangleCoordinates implements Serializable {
 
     @Column(name = "south")
     @Field(name="south")
-    private double south;
+    private String south;
 
     @Column(name = "west")
     @Field(name="west")
-    private double west;
+    private String west;
 
     @Column(name = "north")
     @Field(name="north")
-    private double north;
+    private String north;
 
     @Column(name = "east")
     @Field(name="east")
-    private double east;
+    private String east;
 
     public RectangleCoordinates() {
         super();
     }
 
-    public RectangleCoordinates(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+    public RectangleCoordinates(MDRDataNodeType mdrDataType) {
         List<MDRElementDataNodeType> fieldsToRemove  = new ArrayList<>();
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
-            String fieldValue = field.getName().getValue();
-            if(StringUtils.equalsIgnoreCase("WEST", fieldName)){
-                this.setWest(Double.parseDouble(fieldValue));
+            String fieldValue = field.getValue().getValue();
+            if(StringUtils.contains(fieldName, ".WEST")){
+                this.setWest(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.equalsIgnoreCase("EAST", fieldName)){
-                this.setEast(Double.parseDouble(fieldValue));
+            } else if(StringUtils.contains(fieldName, ".EAST")){
+                this.setEast(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.equalsIgnoreCase("NORTH", fieldName)){
-                this.setNorth(Double.parseDouble(fieldValue));
+            } else if(StringUtils.contains(fieldName, ".NORTH")){
+                this.setNorth(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.equalsIgnoreCase("SOUTH", fieldName)){
-                this.setSouth(Double.parseDouble(fieldValue));
+            } else if(StringUtils.contains(fieldName, ".SOUTH")){
+                this.setSouth(fieldValue);
                 fieldsToRemove.add(field);
             }
         }
+        fieldsToRemove.removeAll(fieldsToRemove);
     }
 
-    public double getSouth() {
+    public String getSouth() {
         return south;
     }
-    public void setSouth(double south) {
+    public void setSouth(String south) {
         this.south = south;
     }
-    public double getWest() {
+    public String getWest() {
         return west;
     }
-    public void setWest(double west) {
+    public void setWest(String west) {
         this.west = west;
     }
-    public double getNorth() {
+    public String getNorth() {
         return north;
     }
-    public void setNorth(double north) {
+    public void setNorth(String north) {
         this.north = north;
     }
-    public double getEast() {
+    public String getEast() {
         return east;
     }
-    public void setEast(double east) {
+    public void setEast(String east) {
         this.east = east;
     }
 

@@ -65,11 +65,11 @@ public class FaoAreaCodes extends MasterDataRegistry {
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
 			String fieldValue  = field.getName().getValue();
-			if(StringUtils.equalsIgnoreCase("LEVEL", fieldName)){
+			if(StringUtils.contains(fieldName, "LEVEL")){
 				this.setLevel(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("ENLEVELNAME", fieldName)){
+			} else if(StringUtils.contains(fieldName, "ENLEVELNAME")){
 				this.setEnLevelName(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("TERMINALIND", fieldName)){
+			} else if(StringUtils.contains(fieldName, "TERMINALIND")){
 				this.setTerminalInd(fieldValue);
 			} else {
 				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);

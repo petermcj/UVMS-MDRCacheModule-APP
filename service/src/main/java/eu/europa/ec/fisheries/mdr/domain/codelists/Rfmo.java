@@ -56,9 +56,9 @@ public class Rfmo extends MasterDataRegistry {
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
 			String fieldValue  = field.getName().getValue();
-			if(StringUtils.equalsIgnoreCase("CODE2", fieldName)){
+			if(StringUtils.contains(fieldName, "CODE2")){
 				this.setCode2(fieldValue);
-			} else if(org.apache.commons.lang.StringUtils.equalsIgnoreCase("ENNAME", fieldName)){
+			} else if(org.apache.commons.lang.StringUtils.contains(fieldName, "ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
 				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);

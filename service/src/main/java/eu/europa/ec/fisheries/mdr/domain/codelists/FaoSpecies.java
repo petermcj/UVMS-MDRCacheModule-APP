@@ -73,21 +73,21 @@ public class FaoSpecies extends MasterDataRegistry {
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
             String fieldValue  = field.getName().getValue();
-            if(StringUtils.equalsIgnoreCase("ISGROUP", fieldName)){
+            if(StringUtils.contains(fieldName, "ISGROUP")){
                 this.setIsGroup(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("SCIENTNAME", fieldName)){
+            } else if(StringUtils.contains(fieldName, "SCIENTNAME")){
                 this.setScientificName(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("ENNAME", fieldName)){
+            } else if(StringUtils.contains(fieldName, "ENNAME")){
                 this.setEnName(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("FRNAME", fieldName)){
+            } else if(StringUtils.contains(fieldName, "FRNAME")){
                 this.setFrName(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("ESNAME", fieldName)){
+            } else if(StringUtils.contains(fieldName, "ESNAME")){
                 this.setEsName(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("FAMILY", fieldName)){
+            } else if(StringUtils.contains(fieldName, "FAMILY")){
                 this.setFamily(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("BIOORDER", fieldName)){
+            } else if(StringUtils.contains(fieldName, "BIOORDER")){
                 this.setBioOrder(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("TAXOCODE", fieldName)){
+            } else if(StringUtils.contains(fieldName, "TAXOCODE")){
                 this.setEnName(fieldValue);
             } else {
                 throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);

@@ -13,8 +13,6 @@ package eu.europa.ec.fisheries.mdr.domain.codelists;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.domain.codelists.base.RectangleCoordinates;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Indexed;
@@ -50,7 +48,7 @@ public class IcesStatisticalRectangles extends MasterDataRegistry {
 	@Override
 	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 		populateCommonFields(mdrDataType);
-		rectangle = new RectangleCoordinates(mdrDataType);
+		setRectangle(new RectangleCoordinates(mdrDataType));
 	}
 
 

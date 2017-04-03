@@ -13,8 +13,10 @@ import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,10 @@ public class MdrEntityMapper {
 	 * @return
 	 */
 	public static List<MasterDataRegistry> mapJAXBObjectToMasterDataType(FLUXMDRReturnMessage response){
+		MDRDataSetType mdrDataSet = response.getMDRDataSet();
+		if(mdrDataSet == null || CollectionUtils.isEmpty(mdrDataSet.getContainedMDRDataNodes())){
+			return null;
+		}
 		return mapJaxbToMDRType(response.getMDRDataSet().getContainedMDRDataNodes(), response.getMDRDataSet().getID().getValue());
 	}
 

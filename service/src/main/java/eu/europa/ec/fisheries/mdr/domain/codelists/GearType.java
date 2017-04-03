@@ -75,15 +75,15 @@ public class GearType extends MasterDataRegistry {
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
 			String fieldValue  = field.getName().getValue();
-			if(StringUtils.equalsIgnoreCase("CATEGORY", fieldName)){
+			if(StringUtils.contains(fieldName, "CATEGORY")){
 				this.setCategory(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("SUBCATEGORY", fieldName)){
+			} else if(StringUtils.contains(fieldName, "SUBCATEGORY")){
 				this.setSubCategory(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("ICCATCODE", fieldName)){
+			} else if(StringUtils.contains(fieldName, "ICCATCODE")){
 				this.setIccatCode(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("ISSCFGCODE", fieldName)){
+			} else if(StringUtils.contains(fieldName, "ISSCFGCODE")){
 				this.setIssCfgCode(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase("TARGET", fieldName)){
+			} else if(StringUtils.contains(fieldName, "TARGET")){
 				this.setTarget(fieldValue);
 			} else {
 				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);

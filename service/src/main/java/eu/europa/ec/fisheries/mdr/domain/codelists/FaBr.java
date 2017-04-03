@@ -76,17 +76,17 @@ public class FaBr extends MasterDataRegistry {
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
 			String fieldValue  = field.getName().getValue();
-			if(StringUtils.equalsIgnoreCase("FIELD", fieldName)){
+			if(StringUtils.contains(fieldName, "FIELD")){
 				this.setField(fieldValue);
-			}else if(StringUtils.equalsIgnoreCase("ENMESSAGE", fieldName)){
+			}else if(StringUtils.contains(fieldName, "ENMESSAGE")){
 				this.setMessageIfFailing(fieldValue);
-			}else if(StringUtils.equalsIgnoreCase("SEQORDER", fieldName)){
+			}else if(StringUtils.contains(fieldName, "SEQORDER")){
 				this.setSequenceOrder(fieldValue);
-			}else if(StringUtils.equalsIgnoreCase("BRLEVELFK_X_KEY", fieldName)){
+			}else if(StringUtils.contains(fieldName, "BRLEVELFK_X_KEY")){
 				this.setBrLevelFkXKey(fieldValue);
-			}else if(StringUtils.equalsIgnoreCase("BRSUBLEVEL", fieldName)){
+			}else if(StringUtils.contains(fieldName, "BRSUBLEVEL")){
 				this.setBrSublevel(fieldValue);
-			}else if(StringUtils.equalsIgnoreCase("ACTIVEIND", fieldName)){
+			}else if(StringUtils.contains(fieldName, "ACTIVEIND")){
 				this.setActivationIndicator(fieldValue);
 			} else {
 				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);

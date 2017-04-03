@@ -79,15 +79,15 @@ public class Farm extends MasterDataRegistry {
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
             String fieldValue  = field.getName().getValue();
-            if(StringUtils.equalsIgnoreCase("CODE2", fieldName)){
+            if(StringUtils.contains(fieldName, "CODE2")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("ENNAME", fieldName)){
+            } else if(StringUtils.contains(fieldName, "ENNAME")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("PLACEFK_X_KEY", fieldName)){
+            } else if(StringUtils.contains(fieldName, "PLACEFK_X_KEY")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("ENDESCRIPTION", fieldName)){
+            } else if(StringUtils.contains(fieldName, "ENDESCRIPTION")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase("CONTRACTINGPARTY", fieldName)){
+            } else if(StringUtils.contains(fieldName, "CONTRACTINGPARTY")){
                 this.setLegalReference(fieldValue);
             }  else {
                 throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
