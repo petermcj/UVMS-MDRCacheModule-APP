@@ -16,10 +16,11 @@ import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrStatusRepositoryBean;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
+import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.mdr.service.bean.MdrInitializationBean;
 import eu.europa.ec.fisheries.mdr.service.bean.MdrSchedulerServiceBean;
 import eu.europa.ec.fisheries.mdr.service.bean.MdrSynchronizationServiceBean;
-import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrGenericMessageProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.IMdrMessageProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrMessageProducerBean;
 import lombok.SneakyThrows;
 import org.junit.Before;
@@ -34,21 +35,23 @@ import javax.ejb.TimerService;
  */
 public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
-    private MdrInitializationBean initBean          = new MdrInitializationBean();
+    private MdrInitializationBean initBean = new MdrInitializationBean();
 
-    private MdrSynchronizationService synchBean     = new MdrSynchronizationServiceBean();
-    private MdrStatusRepository statusRepository    = new MdrStatusRepositoryBean();
-    private MdrGenericMessageProducer producer      = new MdrMessageProducerBean();
+    private MdrSynchronizationService synchBean = new MdrSynchronizationServiceBean();
+    private MdrStatusRepository statusRepository = new MdrStatusRepositoryBean();
+    private IMdrMessageProducer producer = new MdrMessageProducerBean();
 
 
-    private MdrSchedulerService schedulerBean       = new MdrSchedulerServiceBean();
+    private MdrSchedulerService schedulerBean = new MdrSchedulerServiceBean();
 
     @Mock
     private TimerService timerServ;
 
 
     private MdrStatusRepositoryBean mdrStatusRepository = new MdrStatusRepositoryBean();
-    private MdrRepositoryBean mdrRepository             = new MdrRepositoryBean();
+    private MdrRepositoryBean mdrRepository = new MdrRepositoryBean();
+
+    private BaseMdrBean baseBean;
 
 
     @Before
@@ -64,8 +67,8 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
         Whitebox.setInternalState(schedulerBean, "synchBean", synchBean);
         Whitebox.setInternalState(schedulerBean, "timerServ", timerServ);
 
-        Whitebox.setInternalState(mdrStatusRepository, "em", em);
-        Whitebox.setInternalState(mdrRepository, "em", em);
+        Whitebox.setInternalState(mdrStatusRepository, "postgres", em);
+        Whitebox.setInternalState(mdrRepository, "postgres", em);
 
         // initBean internal state
         Whitebox.setInternalState(initBean, "synchBean", synchBean);
@@ -79,7 +82,7 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
     @Test
     @SneakyThrows
-    public void testStartUpMdrInitializationProcess(){
+    public void testStartUpMdrInitializationProcess() {
         initBean.startUpMdrInitializationProcess();
     }
 

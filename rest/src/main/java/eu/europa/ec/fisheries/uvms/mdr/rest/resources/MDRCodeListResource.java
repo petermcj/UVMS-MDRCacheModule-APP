@@ -13,9 +13,8 @@
 
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
-import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
@@ -46,10 +45,7 @@ import java.util.Map;
 public class MDRCodeListResource extends UnionVMSResource {
 
     @EJB
-    private MdrLuceneSearchRepository mdrService;
-
-    @EJB
-    private MdrRepository mdrRepository;
+    private MdrLuceneSearchRepository mdrSearchRepositroy;
 
     @POST
     @Path("/search")
@@ -98,7 +94,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Path("/{acronym}/{offset}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
-    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
+    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
     public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request,
                                                             @PathParam("acronym") String acronym,
                                                             @PathParam("offset") Integer offset,
@@ -106,11 +102,11 @@ public class MDRCodeListResource extends UnionVMSResource {
                                                             @QueryParam("sortBy") String sortBy,
                                                             @QueryParam("sortReversed") Boolean isReversed,
                                                             @QueryParam("filter") String filter,
-                                                            @QueryParam("searchAttribute") String[] searchAttributes) {
+                                                            @QueryParam("searchAttributes") String[] searchAttributes) {
         log.debug("findCodeListByAcronymFilterredByFilter(acronym={}, offset={}, pageSize={}, sortBy={}, isReversed={}, filter={}, searchAttribute={})", acronym,offset,pageSize,sortBy,isReversed,filter, searchAttributes);
         try {
-            List<? extends MasterDataRegistry> mdrList = mdrService.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
-            int totalCodeItemsCount = mdrService.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);
+            List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
+            int totalCodeItemsCount = mdrSearchRepositroy.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);
             return createSuccessPaginatedResponse(mdrList, totalCodeItemsCount);
         } catch (ServiceException e) {
             log.error("Internal Server Error.", e);

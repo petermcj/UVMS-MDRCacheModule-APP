@@ -10,9 +10,9 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.dao;
 
-import eu.europa.ec.fisheries.mdr.domain.AcronymVersion;
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.entities.AcronymVersion;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;

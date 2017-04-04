@@ -14,12 +14,13 @@ import eu.europa.ec.fisheries.mdr.dao.MasterDataRegistryDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrBulkOperationsDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrConfigurationDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
-import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
-import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.mapper.MdrEntityMapper;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
+import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,6 @@ import un.unece.uncefact.data.standard.mdr.response.IDType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +39,7 @@ import java.util.Map;
 @Stateless
 @Slf4j
 @Transactional
-public class MdrRepositoryBean implements MdrRepository {
-	
-	@PersistenceContext(unitName = "mdrPU")
-    private EntityManager em;
+public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
 
 	private MdrBulkOperationsDao bulkOperationsDao;
 	
@@ -55,10 +51,11 @@ public class MdrRepositoryBean implements MdrRepository {
 
     @PostConstruct
     public void init() {
-    	bulkOperationsDao = new MdrBulkOperationsDao(em);
-    	mdrDao 			  = new MasterDataRegistryDao<>(em);
-    	mdrConfigDao      = new MdrConfigurationDao(em);
-		statusDao         = new MdrStatusDao(em);
+		initEntityManager();
+    	bulkOperationsDao = new MdrBulkOperationsDao(getEntityManager());
+    	mdrDao 			  = new MasterDataRegistryDao<>(getEntityManager());
+    	mdrConfigDao      = new MdrConfigurationDao(getEntityManager());
+		statusDao         = new MdrStatusDao(getEntityManager());
     }
 
 	@SuppressWarnings("unchecked")

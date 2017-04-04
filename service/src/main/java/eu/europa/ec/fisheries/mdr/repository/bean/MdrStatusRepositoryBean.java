@@ -11,17 +11,16 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.repository.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
+import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.Stateless;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -32,16 +31,14 @@ import java.util.List;
 @Stateless
 @Slf4j
 @Transactional
-public class MdrStatusRepositoryBean implements MdrStatusRepository {
-
-    @PersistenceContext(unitName = "mdrPU")
-    private EntityManager em;
+public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRepository {
 
     private MdrStatusDao statusDao;
 
     @PostConstruct
     public void init() {
-        statusDao = new MdrStatusDao(em);
+        initEntityManager();
+        statusDao = new MdrStatusDao(getEntityManager());
     }
 
     @Override

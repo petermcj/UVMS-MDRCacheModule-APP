@@ -10,35 +10,40 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 
-import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
+import eu.europa.ec.fisheries.uvms.mdr.message.constants.ModuleQueues;
+import eu.europa.ec.fisheries.uvms.mdr.message.consumer.commonconsumers.MdrEventConsumer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrEventQueueProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueueProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.RulesEventQueueProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.RulesQueueProducer;
+import eu.europa.ec.fisheries.uvms.message.MessageException;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.Destination;
-import javax.jms.Queue;
 
 /**
  * Created by kovian on 02/12/2016.
  */
 @Slf4j
 @Stateless
-public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGenericMessageProducer {
+public class MdrMessageProducerBean implements IMdrMessageProducer {
 
-    @Resource(mappedName = MessageConstants.RULES_QUEUE)
-    private Queue rulesQueue;
+    @EJB
+    MdrEventConsumer mdrEventQueueConsumer;
 
-    @Resource(mappedName = MessageConstants.RULES_EVENT_QUEUE)
-    private Queue rulesEventQueue;
+    @EJB
+    private MdrEventQueueProducer mdrEventQueueProducer;
 
-    @Resource(mappedName = MessageConstants.ASSET_EVENT_QUEUE)
-    private Queue assetsEventQueue;
+    @EJB
+    private MdrQueueProducer mdrQueueProducer;
 
-    @Resource(mappedName = MessageConstants.MDR_QUEUE)
-    private Queue mdrQueue;
+    @EJB
+    private RulesEventQueueProducer rulesEventQueueProducer;
 
-    @Resource(mappedName = MessageConstants.MDR_EVENT_QUEUE)
-    private Queue mdrEventQueue;
+    @EJB
+    private RulesQueueProducer rulesQueueProducer;
 
     /**
      * Sends a message to Exchange Queue.
@@ -47,12 +52,12 @@ public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGe
      * @return messageID
      */
     @Override
-    public String sendRulesModuleMessage(String text) throws JmsMessageException {
+    public String sendRulesModuleMessage(String text) throws MessageException {
         log.info("Sending Request to Rules module.");
         String messageID;
         try {
-            messageID = sendModuleMessage(text, ModuleQueues.RULES_EVENT);
-        } catch (JmsMessageException e) {
+            messageID = rulesEventQueueProducer.sendModuleMessage(text, getMdrEventQueue());
+        } catch (MessageException e) {
             log.error("Error sending message to Exchange Module.", e);
             throw e;
         }
@@ -67,28 +72,27 @@ public class MdrMessageProducerBean extends MdrAbstractProducer implements MdrGe
      * @return JMSMessageID
      */
     @Override
-    public String sendModuleMessage(String text, ModuleQueues queue) throws JmsMessageException {
+    public String sendModuleMessage(String text, ModuleQueues queue) throws MessageException {
         String messageId;
         switch (queue) {
 
             case RULES:
-                messageId = sendMessage(rulesQueue, text);
+                messageId = rulesQueueProducer.sendModuleMessage(text, getMdrEventQueue());
                 break;
             case RULES_EVENT:
-                messageId = sendMessage(rulesEventQueue, text);
+                messageId = rulesEventQueueProducer.sendModuleMessage(text, getMdrEventQueue());
                 break;
             case MDR:
-                messageId = sendMessage(mdrQueue, text);
+                messageId = mdrQueueProducer.sendModuleMessage(text, getMdrEventQueue());
                 break;
             default:
-                throw new JmsMessageException("Queue not defined or implemented");
+                throw new MessageException("Queue not defined or implemented");
         }
         return messageId;
     }
 
-    @Override
-    protected Destination getJmseToReplyTo() {
-        return mdrEventQueue;
+    private Destination getMdrEventQueue(){
+        return mdrEventQueueConsumer.getDestination();
     }
 }
 

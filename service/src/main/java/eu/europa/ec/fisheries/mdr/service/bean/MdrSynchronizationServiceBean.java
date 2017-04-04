@@ -8,8 +8,8 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.MdrMappingException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
@@ -20,8 +20,8 @@ import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
 import eu.europa.ec.fisheries.mdr.util.OperationOutcome;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
-import eu.europa.ec.fisheries.uvms.exception.JmsMessageException;
-import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrGenericMessageProducer;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.IMdrMessageProducer;
+import eu.europa.ec.fisheries.uvms.message.MessageException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -47,6 +47,7 @@ import java.util.List;
 public class MdrSynchronizationServiceBean implements MdrSynchronizationService {
 
     public static final String ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM = "Error while trying to map MDRQueryType for acronym {}";
+
     @EJB
     private MdrRepository mdrRepository;
 
@@ -54,7 +55,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private MdrStatusRepository statusRepository;
 
     @EJB
-    private MdrGenericMessageProducer producer;
+    private IMdrMessageProducer producer;
 
     private static final String OBJ_DATA_ALL = "OBJ_DATA_ALL";
     private static final String OBJ_DESC     = "OBJ_DESC";
@@ -161,7 +162,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                     log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, actualAcronym, e);
                     errorContainer.addMessage("Error while trying to map MDRQueryType for acronym {} " + actualAcronym);
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate(), uuid);
-                } catch (JmsMessageException e) {
+                } catch (MessageException e) {
                     log.error("Error while trying to send message from MDR module to Rules module.", e);
                     errorContainer.addMessage("Error while trying to send message from MDR module to Rules module for acronym {} " + actualAcronym);
                     statusRepository.updateStatusAttemptForAcronym(actualAcronym, AcronymListState.FAILED, DateUtils.nowUTC().toDate(), uuid);
@@ -192,7 +193,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             }
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
-        } catch (JmsMessageException e) {
+        } catch (MessageException e) {
             log.error("Error while trying to send message from MDR module to Rules module.", e);
         }
     }
@@ -205,7 +206,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             log.info("Synchronization Request Sent for INDEX ServiceType");
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, e);
-        } catch (JmsMessageException e) {
+        } catch (MessageException e) {
             log.error("Error while trying to send message from MDR module to Rules module.", e);
         }
     }
@@ -221,7 +222,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         try {
             acronymsList = MasterDataRegistryEntityCacheFactory.getAcronymsList();
             if (!CollectionUtils.isEmpty(acronymsList)) {
-                log.info("Acronyms exctracted. \nThere were found [ " + acronymsList.size() + " ] acronyms in the MDR domain package.");
+                log.info("Acronyms exctracted. \nThere were found [ " + acronymsList.size() + " ] acronyms in the MDR entities package.");
             }
             log.info("\n---> Exctracted : " + acronymsList.size() + " acronyms!\n");
         } catch (MdrCacheInitException exC) {

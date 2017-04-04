@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.repository;
 
-import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 
 import javax.ejb.Local;

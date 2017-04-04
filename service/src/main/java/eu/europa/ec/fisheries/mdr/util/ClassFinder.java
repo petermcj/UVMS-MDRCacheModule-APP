@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.util;
 
-import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -20,7 +20,7 @@ import java.util.Set;
 
 public final class ClassFinder {
 
-	private static final String MDR_DOMAIN_PACKAGE_WOUT_DOT = "eu.europa.ec.fisheries.mdr.domain";
+	private static final String MDR_DOMAIN_PACKAGE_WOUT_DOT = "eu.europa.ec.fisheries.mdr.entities";
 
 	private ClassFinder(){}
 

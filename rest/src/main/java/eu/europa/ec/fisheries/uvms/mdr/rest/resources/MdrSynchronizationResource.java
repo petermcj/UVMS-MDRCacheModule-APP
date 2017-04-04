@@ -10,7 +10,7 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;

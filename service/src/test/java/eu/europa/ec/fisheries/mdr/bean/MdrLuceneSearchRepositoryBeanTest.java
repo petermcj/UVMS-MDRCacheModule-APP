@@ -1,7 +1,7 @@
 package eu.europa.ec.fisheries.mdr.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
-import eu.europa.ec.fisheries.mdr.domain.codelists.FaoSpecies;
+import eu.europa.ec.fisheries.mdr.entities.codelists.FaoSpecies;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
@@ -33,8 +33,8 @@ public class MdrLuceneSearchRepositoryBeanTest extends BaseMdrDaoTest {
     @SneakyThrows
     public void prepare() {
         org.hibernate.search.jpa.Search.getFullTextEntityManager(em).flushToIndexes();
-        Whitebox.setInternalState(mdrSearchingRepoBean, "em", em);
-        Whitebox.setInternalState(mdrInsertionRepoBean, "em", em);
+        Whitebox.setInternalState(mdrSearchingRepoBean, "postgres", em);
+        Whitebox.setInternalState(mdrInsertionRepoBean, "postgres", em);
         mdrSearchingRepoBean.init();
         mdrInsertionRepoBean.init();
         mdrInsertionRepoBean.insertNewData(mockSpecies());

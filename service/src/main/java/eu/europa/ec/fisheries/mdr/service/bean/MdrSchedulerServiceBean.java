@@ -9,7 +9,7 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
+import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
@@ -19,16 +19,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Collection;
 
 /**
  * @author kovian
- *
- * EJB that provides the MDR Synchronization Functionality.
- * Methods for handeling the automatic job scheduler configuration.
+ *         <p>
+ *         EJB that provides the MDR Synchronization Functionality.
+ *         Methods for handeling the automatic job scheduler configuration.
  */
 @Slf4j
 @Stateless
@@ -36,10 +34,7 @@ import java.util.Collection;
 public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
     public static final String MDR_SYNCHRONIZATION_TIMER = "MDRSynchronizationTimer";
-    private static final TimerConfig TIMER_CONFIG        = new TimerConfig(MDR_SYNCHRONIZATION_TIMER, false);
-
-    @PersistenceContext(unitName = "mdrPU")
-    private EntityManager em;
+    private static final TimerConfig TIMER_CONFIG = new TimerConfig(MDR_SYNCHRONIZATION_TIMER, false);
 
     @EJB
     private MdrRepository mdrRepository;
@@ -52,12 +47,12 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
 
     /**
-     *  Method that will be called when a timer has been set for this EJB.
-     *  When time runs up this method will trigger n requests (twoards FLUX TL, n being the nr. of available codeLists)
-     *  for the whole MDR registry update.
+     * Method that will be called when a timer has been set for this EJB.
+     * When time runs up this method will trigger n requests (twoards FLUX TL, n being the nr. of available codeLists)
+     * for the whole MDR registry update.
      */
     @Timeout
-    public void timeOut(){
+    public void timeOut() {
         log.info("\n\t---> STARTING SCHEDULED SYNCHRONIZATION OF MDR ENTITIES! \n");
         //synchBean.extractAcronymsAndUpdateMdr();
     }
@@ -69,7 +64,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
      * @return mdrSynch;
      */
     @Override
-    public String getActualSchedulerConfiguration(){
+    public String getActualSchedulerConfiguration() {
         MdrConfiguration mdrSynch = mdrRepository.getMdrSchedulerConfiguration();
         return mdrSynch.getConfigValue();
     }
@@ -95,7 +90,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
                 log.info("New MDR scheduler timer created - [{}] - and stored.", TIMER_CONFIG.getInfo());
             } catch (ServiceException e) {
                 log.error("Error while trying to save the new configuration", e);
-            } catch(IllegalArgumentException ex){
+            } catch (IllegalArgumentException ex) {
                 throw ex;
             }
         } else {
@@ -110,14 +105,15 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
      */
     @Override
     public void setUpScheduler(String schedulerExpressionStr) throws IllegalArgumentException {
-        try{
+        try {
             // Parse the Cron-Job expression;
             ScheduleExpression expression = parseExpression(schedulerExpressionStr);
             // Firstly, we need to cancel the current timer, if already exists one;
             cancelPreviousTimer();
             // Set up the new timer for this EJB;
-            timerServ.createCalendarTimer(expression, TIMER_CONFIG);;
-        } catch(IllegalArgumentException ex){
+            timerServ.createCalendarTimer(expression, TIMER_CONFIG);
+            ;
+        } catch (IllegalArgumentException ex) {
             log.warn("Error creating new scheduled synchronization timer!", ex);
             throw ex;
         }
@@ -126,11 +122,10 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
 
     /**
      * Cancels the previous set up of the timer for this bean.
-     *
      */
     private void cancelPreviousTimer() {
         Collection<Timer> allTimers = timerServ.getTimers();
-        for (Timer currentTimer: allTimers) {
+        for (Timer currentTimer : allTimers) {
             if (TIMER_CONFIG.getInfo().equals(currentTimer.getInfo())) {
                 currentTimer.cancel();
                 log.info("Current MDR scheduler timer cancelled.");

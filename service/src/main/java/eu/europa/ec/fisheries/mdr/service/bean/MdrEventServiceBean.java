@@ -17,6 +17,7 @@ import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import un.unece.uncefact.data.standard.mdr.communication.SetFLUXMDRSyncMessageResponse;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 
@@ -26,70 +27,82 @@ import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
 
 /**
- *  Observer class listening to events fired from MdrMessageConsumerBean (MDR Module).
- *  Specifically to MdrSyncMessageEvent event type.
- *  The message will contain the MDR Entity to be synchronised (As Flux XML Type at this moment).
- *  
- *  Using the MdrRepository the Entity in question will be stored in the Cache DB.
- *
+ * Observer class listening to events fired from MdrMessageConsumerBean (MDR Module).
+ * Specifically to MdrSyncMessageEvent event type.
+ * The message will contain the MDR Entity to be synchronised (As Flux XML Type at this moment).
+ * <p>
+ * Using the MdrRepository the Entity in question will be stored in the Cache DB.
  */
 @Stateless
 @Slf4j
 public class MdrEventServiceBean implements MdrEventService {
-	
-	@EJB
-	private MdrRepository mdrRepository;
-	
-	@Override
-	public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message){
-		log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
-		// Extract message from EventMessage Object
-		try {
-			FLUXMDRReturnMessage responseObject = extractMdrFluxResponseFromEventMessage(message);
-			if(responseObject == null){
-				log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
-						"Message content is as follows : "+extractMessageContent(message));
-			}
-			mdrRepository.updateMdrEntity(responseObject);
-		} catch (MdrModelMarshallException e) {
-			log.error("MdrModelMarshallException while unmarshalling message from flux ",e);
-		}
-	}
 
-	/**
-	 * ResponseType from Flux Response.
-	 * 
-	 * @param message
-	 * @return ResponseType
-	 */
-	private FLUXMDRReturnMessage extractMdrFluxResponseFromEventMessage(EventMessage message) throws MdrModelMarshallException {
-		String textMessage;
-		FLUXMDRReturnMessage respType = null;
-		try {
-			textMessage = extractMessageContent(message);
-			SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
-			respType    = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
-		} catch (MdrModelMarshallException e) {
-			log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n",e.getMessage());
-		}
-		log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
-		return respType;
-	}
+    @EJB
+    private MdrRepository mdrRepository;
 
-	/**
-	 * Extracts the message content from the EventMessage wrapper.
-	 *
-	 * @param  eventMessage
-	 * @return textMessage
-	 */
-	private String extractMessageContent(EventMessage eventMessage) {
-		String textMessage = null;
-		try {
-			textMessage = eventMessage.getJmsMessage().getText();
-		} catch (JMSException e) {
-			log.error("Error : The message is null or empty!");
-		}
-		return textMessage;
-	}
+    @Override
+    public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message) {
+        log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
+        // Extract message from EventMessage Object
+        try {
+            String messageStr = extractMessageContent(message);
+            if (isAcnowledgeMessage(messageStr)) {
+                log.info("ACKNOWLEDGE : Received Acnowledge Message. No data. Nothing is going to be persisted");
+                return;
+            }
+            FLUXMDRReturnMessage responseObject = extractMdrFluxResponseFromEventMessage(messageStr);
+            if (responseObject == null) {
+                log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
+                        "Message content is as follows : " + extractMessageContent(message));
+            }
+            mdrRepository.updateMdrEntity(responseObject);
+        } catch (MdrModelMarshallException e) {
+            log.error("MdrModelMarshallException while unmarshalling message from flux ", e);
+        }
+    }
+
+    private boolean isAcnowledgeMessage(String jmsMessage) {
+        if (StringUtils.isBlank(jmsMessage)) {
+            return false;
+        }
+        if (jmsMessage.contains("<ACK") && jmsMessage.contains("Acknowledge Of Receipt")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * ResponseType from Flux Response.
+     *
+     * @param textMessage
+     * @return ResponseType
+     */
+    private FLUXMDRReturnMessage extractMdrFluxResponseFromEventMessage(String textMessage) throws MdrModelMarshallException {
+        FLUXMDRReturnMessage respType = null;
+        try {
+            SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
+            respType = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
+        } catch (MdrModelMarshallException e) {
+            log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n", e.getMessage());
+        }
+        log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
+        return respType;
+    }
+
+    /**
+     * Extracts the message content from the EventMessage wrapper.
+     *
+     * @param eventMessage
+     * @return textMessage
+     */
+    private String extractMessageContent(EventMessage eventMessage) {
+        String textMessage = null;
+        try {
+            textMessage = eventMessage.getJmsMessage().getText();
+        } catch (JMSException e) {
+            log.error("Error : The message is null or empty!");
+        }
+        return textMessage;
+    }
 
 }

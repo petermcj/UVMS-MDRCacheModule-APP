@@ -10,10 +10,11 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.repository.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.codelists.base.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
+import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,8 +27,6 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,45 +36,45 @@ import java.util.List;
  */
 @Stateless
 @Slf4j
-public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository {
-
-    @PersistenceContext(unitName = "mdrPU")
-    private EntityManager em;
+public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuceneSearchRepository {
 
     private FullTextEntityManager fullTextEntityManager;
 
     @PostConstruct
     public void init() {
+        initEntityManager();
         fullTextEntityManager = getFullTextEntityManager();
     }
 
 
     /**
      * This method is searching for code list items for a given code list by its acronym. The search is using Hibernate Search API, which is based on Lucene indexing, for high performance.
-     * @param acronym of the code list which the method is filtering. [Mandatory parameter]
-     * @param offset is the number of the first returned element
-     * @param pageSize is the total number of items to be returned
-     * @param sortBy is a field name which will be used for searching
-     * @param isReversed is a boolean flag that defines whether the sorting is reversed
-     * @param filter is a free text string that is used for code lists search
+     *
+     * @param acronym          of the code list which the method is filtering. [Mandatory parameter]
+     * @param offset           is the number of the first returned element
+     * @param pageSize         is the total number of items to be returned
+     * @param sortBy           is a field name which will be used for searching
+     * @param isReversed       is a boolean flag that defines whether the sorting is reversed
+     * @param filter           is a free text string that is used for code lists search
      * @param searchAttributes if filter is specified, this field is mandatory. It's an array of all fields that will be used for filtering
      * @return a list of code list items (instances of MasterDataRegistry class)
      * @throws ServiceException
      */
     @Override
-    public List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter (
+    public List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(
             String acronym, Integer offset, Integer pageSize, String sortBy,
             Boolean isReversed, String filter, String... searchAttributes) throws ServiceException {
         // Build fullTextQuery;
         FullTextQuery fullTextQuery = buildLuceneMdrQuery(acronym, filter, searchAttributes);
         // SetUp the query properties and get the resultList from it;
-        return  setUpQueryProperties(offset, pageSize, sortBy, isReversed, fullTextQuery).getResultList();
+        return setUpQueryProperties(offset, pageSize, sortBy, isReversed, fullTextQuery).getResultList();
     }
 
     /**
      * This method is searching for code list items for a given code list by its acronym. The search is using Hibernate Search API, which is based on Lucene indexing, for high performance.
-     * @param acronym of the code list which the method is filtering. [Mandatory parameter]
-     * @param filter is a free text string that is used for code lists search
+     *
+     * @param acronym          of the code list which the method is filtering. [Mandatory parameter]
+     * @param filter           is a free text string that is used for code lists search
      * @param searchAttributes if filter is specified, this field is mandatory. It's an array of all fields that will be used for filtering
      * @return a the total count of search results
      * @throws ServiceException
@@ -103,23 +102,22 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
         FullTextQuery fullTextQuery;
         try {
             checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
-            Class codeListClass                         = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
+            Class codeListClass = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
-
-            QueryBuilder queryBuilder  = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
-            Query luceneQuery          = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
-            fullTextQuery              = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
+            QueryBuilder queryBuilder = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
+            Query luceneQuery = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
+            fullTextQuery = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
             log.debug("Using lucene query: {}", fullTextQuery.toString());
         } catch (MdrCacheInitException e) {
             throw new ServiceException("Unable to execute search query due to internal server error.", e);
-        } catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new ServiceException(e.getMessage(), e);
         }
         return fullTextQuery;
     }
 
     /**
-     *  To be used in the future when required search for multiple words (aka phrase search).
+     * To be used in the future when required search for multiple words (aka phrase search).
      *
      * @param acronym
      * @param filterText
@@ -139,7 +137,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
             List<Query> queryList = new LinkedList<>();
             for (String fieldName : searchAttributes) {
                 PhraseQuery phraseQuery = new PhraseQuery();
-                for(String keyWord : keyWords){
+                for (String keyWord : keyWords) {
                     phraseQuery.add(new Term(fieldName, keyWord));
                 }
                 // How many words between are tolerated.
@@ -176,7 +174,7 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
             query.setMaxResults(pageSize);
         }
         if (StringUtils.isNotBlank(sortBy)) {
-           query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
+            query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
         }
         return query;
     }
@@ -202,14 +200,16 @@ public class MdrLuceneSearchRepositoryBean implements MdrLuceneSearchRepository 
     /**
      * Convenience method to get Full Text Entity Manager.
      * Protected scope to assist mocking in Unit Tests.
+     *
      * @return Full Text Entity Manager.
      */
     protected FullTextEntityManager getFullTextEntityManager() {
-        if (fullTextEntityManager == null) {
-            fullTextEntityManager = Search.getFullTextEntityManager(em);
+        if (fullTextEntityManager == null || !fullTextEntityManager.isOpen()) {
+            fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
         }
-        return fullTextEntityManager;
+        return Search.getFullTextEntityManager(getEntityManager());
     }
+
 
     /**
      * Method to manually update the Full Text Index. This is not required if inserting entities

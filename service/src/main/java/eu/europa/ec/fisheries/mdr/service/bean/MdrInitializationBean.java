@@ -10,9 +10,9 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.domain.MdrConfiguration;
-import eu.europa.ec.fisheries.mdr.domain.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.domain.constants.AcronymListState;
+import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.MdrStatusTableException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
