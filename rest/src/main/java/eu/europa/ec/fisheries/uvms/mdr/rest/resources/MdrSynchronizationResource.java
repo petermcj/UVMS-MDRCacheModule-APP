@@ -216,24 +216,24 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     }
 
     public List<String> getMockedCodeListsList() {
-        return Arrays.asList("EFFORT_ZONE",
-                "FA_BAIT_TYPE", "FA_BFT_SIZE_CATEGORY", "FA_BR",
-                "FA_CATCH_TYPE", "FA_CHARACTERISTIC", "FA_FISHERY",
-                "FA_GEAR_CHARACTERISTIC", "FA_GEAR_PROBLEM", "FA_GEAR_RECOVERY",
-                "FA_GEAR_ROLE", "FA_QUERY_TYPE", "FA_QUERY_PARAMETER",
-                "FA_REASON_ARRIVAL", "FA_REASON_DEPARTURE", "FA_REASON_ENTRY",
-                "FA_REASON_DISCARD", "FA_VESSEL_ROLE", "FAO_AREA",
-                "FAO_SPECIES", "FARM", "FISH_FRESHNESS",
-                "FISH_PACKAGING", "FISH_PRESENTATION", "FISH_PRESERVATION",
-                "FISH_SIZE_CLASS", "FISHING_TRIP_TYPE", "FLAP_ID_TYPE",
-                "FLUX_CONTACT_ROLE", "FLUX_FA_FMC", "FLUX_FA_REPORT_TYPE",
-                "FLUX_FA_TYPE", "FLUX_GP_PARTY", "FLUX_GP_PURPOSE",
-                "FLUX_GP_RESPONSE", "FLUX_GP_VALIDATION_LEVEL",
-                "FLUX_GP_VALIDATION_TYPE", "FLUX_LOCATION_CHARACTERISTIC",
-                "FLUX_LOCATION_TYPE", "FLUX_PROCESS_TYPE", "FLUX_UNIT",
-                "GEAR_TYPE", "GFCM_GSA", "GFCM_STAT_RECTANGLE", "ICES_STAT_RECTANGLE",
-                "LOCATION", "RFMO", "TERRITORY",
-                "VESSEL_ACTIVITY", "VESSEL_STORAGE_TYPE", "WEIGHT_MEANS"
+        return Arrays.asList(
+                "FA_REASON_ENTRY", "FA_BR", "FAO_SPECIES",
+                "LOCATION", "FA_GEAR_RECOVERY", "VESSEL_STORAGE_TYPE",
+                "FISH_FRESHNESS", "WEIGHT_MEANS", "FLUX_GP_PARTY",
+                "FISH_SIZE_CLASS", "TERRITORY", "FISHING_TRIP_TYPE",
+                "FISHING_TRIP_TYPE", "FA_CHARACTERISTIC", "FAO_AREA",
+                "FLUX_CONTACT_ROLE", "FA_CATCH_TYPE", "FLUX_FA_TYPE",
+                "FA_REASON_DISCARD", "FLUX_GP_PURPOSE", "FLUX_GP_VALIDATION_LEVEL",
+                "FA_GEAR_ROLE", "FLUX_GP_RESPONSE", "FA_REASON_ARRIVAL",
+                "FISH_PACKAGING", "FISH_PRESENTATION", "FARM",
+                "FLUX_GP_VALIDATION_TYPE", "RFMO", "FA_QUERY_PARAMETER",
+                "FISH_PRESERVATION", "FA_GEAR_CHARACTERISTIC", "FLUX_UNIT",
+                "EFFORT_ZONE", "FLUX_LOCATION_CHARACTERISTIC", "FA_BAIT_TYPE",
+                "FA_GEAR_PROBLEM", "FA_FISHERY", "FLUX_FA_REPORT_TYPE",
+                "FLUX_FA_FMC", "VESSEL_ACTIVITY", "FLUX_PROCESS_TYPE",
+                "FLUX_LOCATION_TYPE", "FA_VESSEL_ROLE", "GFCM_STAT_RECTANGLE",
+                "FLAP_ID_TYPE", "FA_QUERY_TYPE", "FA_REASON_DEPARTURE",
+                "GFCM_GSA", "ICES_STAT_RECTANGLE", "FA_BFT_SIZE_CATEGORY", "GEAR_TYPE"
         );
     }
 }

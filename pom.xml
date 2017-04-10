@@ -41,7 +41,7 @@
         </sonar.exclusions>
         <!-- The MDR name is used as a common point to rename the application alias visible in USM-->
         <mdr.name>MDR Cache</mdr.name>
-        <mdr.model.version>0.5.0-SNAPSHOT</mdr.model.version>
+        <mdr.model.version>0.5.1-SNAPSHOT</mdr.model.version>
 
         <!-- Other modules dependencies -->
         <exchange.model>2.0.8</exchange.model>

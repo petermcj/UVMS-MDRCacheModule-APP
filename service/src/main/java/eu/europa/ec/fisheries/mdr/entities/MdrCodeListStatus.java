@@ -34,11 +34,11 @@ import java.util.Set;
                 query = "SELECT status " +
                         "FROM MdrCodeListStatus status " +
                         "JOIN FETCH status.versions versions " +
-                        "WHERE status.objectAcronym =:objectAcronym "),
+                        "WHERE status.objectAcronym=:objectAcronym "),
         @NamedQuery(name = MdrCodeListStatus.STATUS_FOR_UUID,
                 query = "SELECT status " +
                         "FROM MdrCodeListStatus status " +
-                        "WHERE status.referenceUuid =:uuid ")
+                        "WHERE status.referenceUuid= :uuid ")
 })
 @Entity
 @Table(name = "mdr_codelist_status")

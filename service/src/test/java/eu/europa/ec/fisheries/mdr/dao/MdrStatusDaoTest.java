@@ -126,7 +126,7 @@ public class MdrStatusDaoTest extends BaseMdrDaoTest {
         dbSetupTracker.skipNextLaunch();
         MdrCodeListStatus status = dao.findStatusByAcronym("ACTION_TYPE");
         assertNotNull(status);
-        dao.updateStatusFailedForAcronym("ACTION_TYPE");
+        dao.updateStatusForAcronym("ACTION_TYPE", AcronymListState.FAILED);
         MdrCodeListStatus status_2 = dao.findStatusByAcronym("ACTION_TYPE");
         assertEquals(status_2.getLastStatus(), AcronymListState.FAILED);
 

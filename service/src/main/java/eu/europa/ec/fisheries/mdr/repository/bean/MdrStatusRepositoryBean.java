@@ -76,7 +76,7 @@ public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRep
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void updateStatusFailedForAcronym(String acronym) {
-        statusDao.updateStatusFailedForAcronym(acronym);
+        statusDao.updateStatusForAcronym(acronym, AcronymListState.FAILED);
     }
 
     @Override

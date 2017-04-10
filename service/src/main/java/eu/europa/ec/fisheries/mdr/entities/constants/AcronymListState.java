@@ -9,6 +9,7 @@ public enum AcronymListState {
     SUCCESS("SUCCESS"),
     FAILED("FAILED"),
     NEWENTRY("NEWENTRY"),
+    EMPTY("EMPTY"),
     ACKNOWLEDGED("ACKNOWLEDGED");
 
     private String value;

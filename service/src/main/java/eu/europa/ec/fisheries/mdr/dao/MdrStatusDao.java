@@ -150,15 +150,16 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
         }
     }
 
-    public void updateStatusFailedForAcronym(String acronym) {
+    public void updateStatusForAcronym(String acronym, AcronymListState acronymState) {
         MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(acronym);
-        mdrCodeListElement.setLastStatus(AcronymListState.FAILED);
+        mdrCodeListElement.setLastStatus(acronymState);
         try {
             saveOrUpdateEntity(mdrCodeListElement);
         } catch (ServiceException e) {
             log.error(ERROR_WHILE_SAVING_STATUS,e);
         }
     }
+
 
     public void updateSchedulableForAcronym(String acronym, boolean schedulable) {
         MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(acronym);
@@ -208,7 +209,7 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     public MdrCodeListStatus getStatusForUuid(String uuid) {
         TypedQuery<MdrCodeListStatus> query = getEntityManager().createNamedQuery(MdrCodeListStatus.STATUS_FOR_UUID, MdrCodeListStatus.class);
-        query.setParameter("referenceUuid", uuid);
+        query.setParameter("uuid", uuid);
         return query.getSingleResult();
     }
 }

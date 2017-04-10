@@ -62,8 +62,8 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private static final String INDEX        = "INDEX";
 
     private static final List<String> exclusionList = new ArrayList<String>(){{
-        add("FAO_AREA");
-        add("TERRITORY");
+        add("FAO_SPECIES");
+        add("LOCATION");
         add("FA_BR");
     }};
 
