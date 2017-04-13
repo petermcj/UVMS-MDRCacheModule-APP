@@ -65,6 +65,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         add("FAO_SPECIES");
         add("LOCATION");
         add("FA_BR");
+        add("FLUX_VESSEL_ID_TYPE");
     }};
 
     /**
