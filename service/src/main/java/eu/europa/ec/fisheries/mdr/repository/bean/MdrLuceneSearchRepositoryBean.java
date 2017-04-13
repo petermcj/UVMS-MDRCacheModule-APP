@@ -64,6 +64,12 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
     public List<? extends MasterDataRegistry> findCodeListItemsByAcronymAndFilter(
             String acronym, Integer offset, Integer pageSize, String sortBy,
             Boolean isReversed, String filter, String... searchAttributes) throws ServiceException {
+
+        if(searchAttributes == null || searchAttributes.length == 0){
+            searchAttributes = new String[]{"code"};
+            log.warn("No search attributes provide. Going to consider only 'code' attribute.");
+        }
+
         // Build fullTextQuery;
         FullTextQuery fullTextQuery = buildLuceneMdrQuery(acronym, filter, searchAttributes);
         // SetUp the query properties and get the resultList from it;
@@ -101,7 +107,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
         // Check the minimum required fields for search are provided;
         FullTextQuery fullTextQuery;
         try {
-            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
+            checkAcronymFilterAndSearchTextAreProvided(acronym, filterText);
             Class codeListClass = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
             QueryBuilder queryBuilder = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
@@ -127,7 +133,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
      */
     private FullTextQuery buildLuceneMdrPhraseQuery(String acronym, String filterText, String... searchAttributes) throws ServiceException {
         // Check the minimum required fields for search are provided;
-        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText, searchAttributes);
+        checkAcronymFilterAndSearchTextAreProvided(acronym, filterText);
         FullTextQuery fullTextQuery;
         try {
 
@@ -185,13 +191,12 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
      *
      * @param acronym
      * @param filterText
-     * @param searchAttributes
      */
-    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText, String[] searchAttributes) throws IllegalArgumentException {
+    private void checkAcronymFilterAndSearchTextAreProvided(String acronym, String filterText) throws IllegalArgumentException {
         if (StringUtils.isBlank(acronym)) {
             throw new IllegalArgumentException("No acronym parameter is provided.");
         }
-        if (StringUtils.isBlank(filterText) || searchAttributes == null || searchAttributes.length == 0) {
+        if (StringUtils.isBlank(filterText)) {
             throw new IllegalArgumentException("No search attributes are provided.");
         }
     }

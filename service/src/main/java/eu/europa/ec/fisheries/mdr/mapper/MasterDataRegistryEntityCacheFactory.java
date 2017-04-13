@@ -98,6 +98,15 @@ public class MasterDataRegistryEntityCacheFactory {
 			throw new MdrCacheInitException(e);
 		}
 	}
+
+	public boolean existsAcronym(String acronym){
+		try {
+			getNewInstanceForEntity(acronym);
+		} catch (MdrCacheInitException | IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
 	
 	private static void initializeCache() throws MdrCacheInitException {
 		if(MapUtils.isEmpty(acronymsCache)){

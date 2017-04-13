@@ -23,8 +23,8 @@ import javax.ejb.Stateless;
 @LocalBean
 public class MdrQueueProducer extends AbstractProducer {
 
-@Override
-public String getDestinationName() {
+    @Override
+    public String getDestinationName() {
         return MessageConstants.QUEUE_MDR;
-        }
+    }
 }

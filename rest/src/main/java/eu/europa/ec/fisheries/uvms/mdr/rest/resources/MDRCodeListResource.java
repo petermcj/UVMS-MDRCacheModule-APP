@@ -47,6 +47,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @EJB
     private MdrLuceneSearchRepository mdrSearchRepositroy;
 
+
     @POST
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
@@ -105,6 +106,10 @@ public class MDRCodeListResource extends UnionVMSResource {
                                                             @QueryParam("searchAttributes") String[] searchAttributes) {
         log.debug("findCodeListByAcronymFilterredByFilter(acronym={}, offset={}, pageSize={}, sortBy={}, isReversed={}, filter={}, searchAttribute={})", acronym,offset,pageSize,sortBy,isReversed,filter, searchAttributes);
         try {
+            if(searchAttributes == null || searchAttributes.length == 0){
+                searchAttributes = new String[]{"code"};
+                log.warn("No search attributes provide. Going to consider only 'code' attribute.");
+            }
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             int totalCodeItemsCount = mdrSearchRepositroy.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);
             return createSuccessPaginatedResponse(mdrList, totalCodeItemsCount);

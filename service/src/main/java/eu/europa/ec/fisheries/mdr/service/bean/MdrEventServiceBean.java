@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.service.bean;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrEventService;
@@ -22,7 +23,6 @@ import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueue
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.MdrModuleMapper;
-import eu.europa.ec.fisheries.uvms.message.MessageException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +35,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import java.util.List;
 
 /**
@@ -48,10 +49,10 @@ import java.util.List;
 @Slf4j
 public class MdrEventServiceBean implements MdrEventService {
 
-    public static final String STAR = "*";
-    public static final String MDR_MODEL_MARSHALL_EXCEPTION = "MdrModelMarshallException while unmarshalling message from flux : ";
-    public static final String ERROR_GET_LIST_FOR_THE_REQUESTED_CODE = "Error while trying to get list for the requested CodeList : ";
-    public static final String ERROR_WHILE_SENDING_THE_RESPONSE_TO_MDR_QUEUE_OUT = "Error while sending the response to MdrQueue out : ";
+    private static final String STAR = "*";
+    private static final String MDR_MODEL_MARSHALL_EXCEPTION = "MdrModelMarshallException while unmarshalling message from flux : ";
+    private static final String ERROR_GET_LIST_FOR_THE_REQUESTED_CODE = "Error while trying to get list for the requested CodeList : ";
+    private static final String ACRONYM_DOESNT_EXIST = "The acronym you are searching for does not exist!";
     @EJB
     private MdrRepository mdrRepository;
 
@@ -89,7 +90,7 @@ public class MdrEventServiceBean implements MdrEventService {
     }
 
     /**
-     * Thss method serves the request of getting a list (CodeList)
+     * This method serves the request of getting a list (CodeList)
      *
      * @param message
      */
@@ -104,14 +105,23 @@ public class MdrEventServiceBean implements MdrEventService {
             if (requestObj == null || StringUtils.isEmpty(requestObj.getAcronym())) {
                 log.error("The message received is not of type MdrGetCodeListRequest so it won't be attempted to unmarshall it! " +
                         "Message content is as follows : " + extractMessageRequestString(message));
-                sendErrorMessageToMdrQueue("Request object or Acronym for the request has not been specified!");
+                sendErrorMessageToMdrQueue("Request object or Acronym for the request has not been specified!", message.getJmsMessage());
+                return;
+            }
+            // Acronym doesn't exist
+            if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())){
+                sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST, message.getJmsMessage());
                 return;
             }
             // Check query, Run query, Create response
             List<String> columnFilters = requestObj.getColumnsToFilters();
-            String[] columnFiltersArr  = null;
+            String[] columnFiltersArr;
             if(CollectionUtils.isNotEmpty(columnFilters)){
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
+            } else {
+                log.warn("No search attributes provided. Going to consider only 'code' attribute.");
+                columnFiltersArr = new String[1];
+                columnFiltersArr[0] = "code";
             }
             String filter = requestObj.getFilter();
             if(filter != null && !filter.equals(STAR)){
@@ -121,28 +131,31 @@ public class MdrEventServiceBean implements MdrEventService {
             }
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(requestObj.getAcronym(),
                     0, 100, null, false, filter, columnFiltersArr);
-            String mdrGetCodeListResponse = MdrModuleMapper.createFluxMdrGetCodeListResponse(mdrList, requestObj.getAcronym(),
-                    ValidationResultType.OK, "Validation is OK.");
-            mdrResponseQueueProducer.sendModuleMessage(mdrGetCodeListResponse, null);
+            String validationStr = "Validation is OK.";
+            ValidationResultType validation = ValidationResultType.OK;
+            if(CollectionUtils.isEmpty(mdrList)){
+                validationStr = "Codelist was found but, the search criteria returned 0 results. (Maybe the Table is empty!)";
+                validation = ValidationResultType.WOK;
+            }
+            String mdrGetCodeListResponse = MdrModuleMapper.createFluxMdrGetCodeListResponse(mdrList, requestObj.getAcronym(), validation, validationStr);
+            mdrResponseQueueProducer.sendModuleResponseMessage(message.getJmsMessage(), mdrGetCodeListResponse, "MDR");
         } catch (MdrModelMarshallException e) {
-            sendErrorMessageToMdrQueue(MDR_MODEL_MARSHALL_EXCEPTION + e);
+            sendErrorMessageToMdrQueue(MDR_MODEL_MARSHALL_EXCEPTION + e, message.getJmsMessage());
         } catch (ServiceException e) {
-            sendErrorMessageToMdrQueue(ERROR_GET_LIST_FOR_THE_REQUESTED_CODE + e);
-        } catch (MessageException e) {
-            sendErrorMessageToMdrQueue(ERROR_WHILE_SENDING_THE_RESPONSE_TO_MDR_QUEUE_OUT + e);
+            sendErrorMessageToMdrQueue(ERROR_GET_LIST_FOR_THE_REQUESTED_CODE + e, message.getJmsMessage());
         }
     }
 
     /**
      * Send an error message back to the Mdr out Queue.
      *
-     * @param message
+     * @param textMessage
      */
-    private void sendErrorMessageToMdrQueue(String message){
+    private void sendErrorMessageToMdrQueue(String textMessage, TextMessage jmsMessage){
         try {
-            log.error(message);
-            mdrResponseQueueProducer.sendModuleMessage(MdrModuleMapper.createFluxMdrGetCodeListErrorResponse(message), null);
-        } catch (MdrModelMarshallException | MessageException e) {
+            log.error(textMessage);
+            mdrResponseQueueProducer.sendModuleResponseMessage(jmsMessage, MdrModuleMapper.createFluxMdrGetCodeListErrorResponse(textMessage), "MDR");
+        } catch (MdrModelMarshallException e) {
            log.error("Something went wrong during sending of error message back to MdrQueue out! Couldn't recover anymore from this! Response will not be posted!", e);
         }
     }

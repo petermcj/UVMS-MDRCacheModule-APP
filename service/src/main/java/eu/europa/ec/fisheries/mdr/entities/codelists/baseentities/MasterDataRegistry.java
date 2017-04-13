@@ -67,10 +67,10 @@ public abstract class MasterDataRegistry implements Serializable {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String description;
 
-    protected static final String CODE_STR = ".CODE";
-    protected static final String DESCRIPTION_STR = ".DESCRIPTION";
-    protected static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
-    protected static final String VERSION_STR = ".VERSION";
+    private static final String CODE_STR = ".CODE";
+    private static final String DESCRIPTION_STR = ".DESCRIPTION";
+    private static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
+    private static final String VERSION_STR = ".VERSION";
 
     protected void populateCommonFields(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 
