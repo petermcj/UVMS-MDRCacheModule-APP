@@ -28,6 +28,11 @@
             <version>${usm4uvms.version}</version>
         </dependency>
         <dependency>
+            <groupId>eu.europa.ec.mare.usm</groupId>
+            <artifactId>jwt-handler-impl</artifactId>
+            <version>${jwt-handler-impl.version}</version>
+        </dependency>
+        <dependency>
             <groupId>eu.europa.ec.fisheries.uvms</groupId>
             <artifactId>uvms-commons</artifactId>
             <version>${uvms.commons.version}</version>

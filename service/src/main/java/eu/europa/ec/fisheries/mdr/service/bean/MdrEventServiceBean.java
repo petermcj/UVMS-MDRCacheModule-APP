@@ -36,6 +36,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -49,10 +50,6 @@ import java.util.List;
 @Slf4j
 public class MdrEventServiceBean implements MdrEventService {
 
-    private static final String STAR = "*";
-    private static final String MDR_MODEL_MARSHALL_EXCEPTION = "MdrModelMarshallException while unmarshalling message from flux : ";
-    private static final String ERROR_GET_LIST_FOR_THE_REQUESTED_CODE = "Error while trying to get list for the requested CodeList : ";
-    private static final String ACRONYM_DOESNT_EXIST = "The acronym you are searching for does not exist!";
     @EJB
     private MdrRepository mdrRepository;
 
@@ -62,6 +59,11 @@ public class MdrEventServiceBean implements MdrEventService {
 
     @EJB
     MdrQueueProducer mdrResponseQueueProducer;
+
+    private static final String STAR = "*";
+    private static final String MDR_MODEL_MARSHALL_EXCEPTION = "MdrModelMarshallException while unmarshalling message from flux : ";
+    private static final String ERROR_GET_LIST_FOR_THE_REQUESTED_CODE = "Error while trying to get list for the requested CodeList : ";
+    private static final String ACRONYM_DOESNT_EXIST = "The acronym you are searching for does not exist!";
 
     /**
      * This method saves the received codeList (from FLUX or MANUAL upload).
@@ -120,8 +122,7 @@ public class MdrEventServiceBean implements MdrEventService {
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
             } else {
                 log.warn("No search attributes provided. Going to consider only 'code' attribute.");
-                columnFiltersArr = new String[1];
-                columnFiltersArr[0] = "code";
+                columnFiltersArr = new String[]{"code"};
             }
             String filter = requestObj.getFilter();
             if(filter != null && !filter.equals(STAR)){
@@ -129,8 +130,11 @@ public class MdrEventServiceBean implements MdrEventService {
             } else {
                 filter = STAR;
             }
+            BigInteger wantedNumberOfResults = requestObj.getWantedNumberOfResults();
+            Integer nrOfResults = wantedNumberOfResults != null ? wantedNumberOfResults.intValue() : 9999999;
+
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(requestObj.getAcronym(),
-                    0, 100, null, false, filter, columnFiltersArr);
+                    0, nrOfResults, null, false, filter, columnFiltersArr);
             String validationStr = "Validation is OK.";
             ValidationResultType validation = ValidationResultType.OK;
             if(CollectionUtils.isEmpty(mdrList)){
@@ -216,7 +220,7 @@ public class MdrEventServiceBean implements MdrEventService {
         try {
             textMessage = eventMessage.getJmsMessage().getText();
         } catch (JMSException e) {
-            log.error("Error : The message is null or empty!");
+            log.error("Error : The message is null or empty!", e);
         }
         return textMessage;
     }

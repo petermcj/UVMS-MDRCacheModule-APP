@@ -17,8 +17,8 @@
 
     <properties>
 
-        <application.name>${project.parent.artifactId}</application.name>
-        <application.version>${project.parent.version}</application.version>
+        <application.name>${project.artifactId}</application.name>
+        <application.version>${project.version}</application.version>
         <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log</application.logfile>
         <application.error.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-error.log</application.error.logfile>
         <application.logfile.boot>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}-boot.log</application.logfile.boot>
@@ -58,8 +58,8 @@
         <junit.version>4.12</junit.version>
 
         <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
-        <usm4uvms.version>2.0.16</usm4uvms.version>
-        <usm_deployment_descriptor_force_update>false</usm_deployment_descriptor_force_update>
+        <usm4uvms.version>2.0.19</usm4uvms.version>
+        <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
         <maven.scm.provider.version>2.1.1</maven.scm.provider.version>
@@ -69,6 +69,7 @@
         <reasteasy.version>3.0.11.Final</reasteasy.version>
         <dom4j.version>1.6.1</dom4j.version>
         <lucene.index.directory>/app/indexes/mdr</lucene.index.directory>
+        <jwt-handler-impl.version>2.1.1</jwt-handler-impl.version>
     </properties>
 
     <dependencyManagement>

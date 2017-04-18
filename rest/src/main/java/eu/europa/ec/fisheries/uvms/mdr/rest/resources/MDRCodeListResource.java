@@ -14,8 +14,10 @@
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
 import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
@@ -23,7 +25,9 @@ import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
@@ -51,7 +55,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
     public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request, SearchRequestDto searchRequest) {
         Response response;
         Map<String, Object> criteria = searchRequest.getCriteria();
@@ -69,7 +73,7 @@ public class MDRCodeListResource extends UnionVMSResource {
                 response = this.findCodeListByAcronymFilterredByFilter(request, acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             } catch (NumberFormatException e) {
                 log.error("Internal Server Error.", e);
-                response = createErrorResponse("internal_server_error");
+                response = createErrorResponse("internal_server_error" + e);
             }
 
         } else {
@@ -93,7 +97,7 @@ public class MDRCodeListResource extends UnionVMSResource {
     @Path("/{acronym}/{offset}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
     @Interceptors(MdrExceptionInterceptor.class)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.MDR_SEARCH_CODE_LIST_ITEMS})
     public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request,
                                                             @PathParam("acronym") String acronym,
                                                             @PathParam("offset") Integer offset,
@@ -108,12 +112,18 @@ public class MDRCodeListResource extends UnionVMSResource {
                 searchAttributes = new String[]{"code"};
                 log.warn("No search attributes provide. Going to consider only 'code' attribute.");
             }
+            if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(acronym)){
+                createErrorResponse("The acronym you are searching for doesn't exist in MDR cache.");
+            }
+            if(StringUtils.isEmpty(filter)){
+                createErrorResponse("Filter attribute cannot be empty.");
+            }
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             int totalCodeItemsCount = mdrSearchRepositroy.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);
             return createSuccessPaginatedResponse(mdrList, totalCodeItemsCount);
         } catch (ServiceException e) {
             log.error("Internal Server Error.", e);
-            return createErrorResponse("internal_server_error");
+            return createErrorResponse("internal_server_error :" + e);
         }
     }
 

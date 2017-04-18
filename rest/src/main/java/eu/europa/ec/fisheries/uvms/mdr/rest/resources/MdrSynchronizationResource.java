@@ -15,9 +15,11 @@ import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -56,7 +58,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/sync/all")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response synchronizeAllAcronyms(@Context HttpServletRequest request) {
         log.info("Starting MDR Synchronization...");
         GenericOperationOutcome outcome = syncBean.manualStartMdrSynchronization();
@@ -81,7 +83,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/sync/list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response synchronizeListOfAcronyms(@Context HttpServletRequest request, Collection<String> acronymsToSynch) {
         log.info("Starting MDR Synchronization...");
         GenericOperationOutcome outcome = syncBean.updateMdrEntities((List<String>) acronymsToSynch);
@@ -97,7 +99,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/structure")
     @Produces(value = {MediaType.APPLICATION_JSON})
     @Consumes(MediaType.APPLICATION_JSON)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response sendRequestForMDRCodeListsStructure(@Context HttpServletRequest request, Collection<String> acronymsToSynch) {
         log.info("Sending MDR Lists Structure request");
         List<String> acronymsList;
@@ -114,7 +116,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/index")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response sendRequestForMDRCodeListsIndex(@Context HttpServletRequest request) {
         log.info("Sending MDR Lists Structure request");
         syncBean.sendRequestForMdrCodelistsIndex();
@@ -132,7 +134,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/acronyms/details")
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.LIST_MDR_CODE_LISTS})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.LIST_MDR_CODE_LISTS})
     public Response getAvailableMdrAcronymsStatuses(@Context HttpServletRequest request) {
         log.debug("[START] getAvailableMdrAcronymsDetails ");
         List<MdrCodeListStatus> acronymsList = mdrStatusBean.getAllAcronymsStatuses();
@@ -169,7 +171,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @GET
     @Path("/scheduler/config")
     @Produces(MediaType.APPLICATION_JSON)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
     public Response getSchedulerConfiguration(@Context HttpServletRequest request) {
         return createSuccessResponse(schedulerService.getActualSchedulerConfiguration());
     }
@@ -183,7 +185,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @PUT
     @Path("/scheduler/config/update")
     @Produces(MediaType.APPLICATION_JSON)
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CONFIGURE_MDR_SCHEDULER})
     public Response saveSchedulerConfiguration(@Context HttpServletRequest request, String cronConfigStr) {
         try {
             schedulerService.reconfigureScheduler(cronConfigStr);
@@ -206,7 +208,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @Path("/status/schedulable/update/{acronym}/{schedulable}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(value = {MediaType.APPLICATION_JSON})
-    //@IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE})
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.CODE_LISTS_ENABLE_DISABLE_SCHEDULED_UPDATE})
     public Response changeSchedulableForAcronym(@Context HttpServletRequest request,
                                                 @PathParam("acronym") String acronym,
                                                 @PathParam("schedulable") Boolean schedulable) {
