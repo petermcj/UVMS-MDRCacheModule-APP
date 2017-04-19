@@ -10,12 +10,13 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.MdrStatusTableException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
+import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
@@ -55,6 +56,9 @@ public class MdrInitializationBean {
     @EJB
     private MdrRepository mdrRepository;
 
+    @EJB
+    MdrLuceneSearchRepository mdrSearchRepository;
+
     /**
      * Method for start up Jobs of MDR module Module (Deploy phase)
      *
@@ -75,7 +79,7 @@ public class MdrInitializationBean {
         log.info("\n\n\t\t1. Initailizing acronymsCache..\n");
         MasterDataRegistryEntityCacheFactory.initialize();
 
-        // 2. Updating the acronyms status table (with eventually new added entities (acronyms)).
+        // 2. Updating the acronyms status table (with eventually new added entities (acronyms, aka. codeLists)).
         log.info("\n\n\t\t2. Updating MDR status table..\n");
         try {
             updateMdrStatusTable();
@@ -87,18 +91,24 @@ public class MdrInitializationBean {
         log.info("\n\n\t\t3. Starting up MDR Synchronization Scheduler Initialization..\n");
         // Get the scheduler config from DB;
         MdrConfiguration storedMdrSchedulerConfig = mdrRepository.getMdrSchedulerConfiguration();
-
-        // 4. Setting up the scheduler timer for MDR synchronization at start up.
         try {
             if(storedMdrSchedulerConfig != null){
-                log.info("\n\n\t\t4. Creating scheduler from cached expression.\n");
+                log.info("\n\n\t\t3.1. Creating scheduler from cached expression.\n");
                 schedulerBean.setUpScheduler(storedMdrSchedulerConfig.getConfigValue());
             } else {
-                log.info("\n\n\t\t4. Creating scheduler from fixed expression, because there was no config stored in DB..\n");
+                log.info("\n\n\t\t3.2. Creating scheduler from fixed expression, because there was no config stored in DB..\n");
                 schedulerBean.reconfigureScheduler(FIXED_SCHED_CONFIGURATION);
             }
         } catch(Exception ex){
             log.debug("\n\n\t\t Creating scheduler threw the following error : \n", ex);
+        }
+
+        // 4. Reindex lucene (this is particularly useful when the data comes from a back-up)
+        try {
+            log.info("\n\n\t\t4. Reindexing Lucene indexes.\n");
+            mdrSearchRepository.massiveUpdateFullTextIndex();
+        } catch (InterruptedException e) {
+            log.error("An error occured while calli [ MdrLuceneSearchRepository.massiveUpdateFullTextIndex ]", e);
         }
 
         log.info("[END] Finished Starting up MDR moduleModule Initialization.");

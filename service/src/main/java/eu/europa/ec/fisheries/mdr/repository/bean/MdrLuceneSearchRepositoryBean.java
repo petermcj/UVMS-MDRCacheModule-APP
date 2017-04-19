@@ -222,6 +222,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
      * data inserted using a different method (e.g. pre-existing data, or test data inserted via
      * scripts or DbUnit).
      */
+    @Override
     public void massiveUpdateFullTextIndex() throws InterruptedException {
         log.info("Updating Lucene Index for MDR module..");
         getFullTextEntityManager().createIndexer().startAndWait();
