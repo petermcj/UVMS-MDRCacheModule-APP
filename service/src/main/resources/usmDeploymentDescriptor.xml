@@ -43,5 +43,11 @@
             <group>MDR</group>
         </feature>
 
+        <feature>
+            <name>MDR_LUCENE_REINDEX</name>
+            <description>Allows the user to reindex Lucene Indexes.</description>
+            <group>MDR</group>
+        </feature>
+
     </application>
 </ns2:deployApplicationRequest>

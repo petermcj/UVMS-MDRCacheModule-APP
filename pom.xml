@@ -68,7 +68,7 @@
 
         <reasteasy.version>3.0.11.Final</reasteasy.version>
         <dom4j.version>1.6.1</dom4j.version>
-        <lucene.index.directory>./target/indexes/mdr</lucene.index.directory>
+        <lucene.index.directory>./mdr-module/luceneIndexes</lucene.index.directory>
         <jwt-handler-impl.version>2.1.1</jwt-handler-impl.version>
     </properties>
 

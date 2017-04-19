@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources.config;
 
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.MDRCodeListResource;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.MdrLuceneReindexingResource;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.MdrSynchronizationResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class RestActivator extends Application {
     public RestActivator() {
         set.add(MdrSynchronizationResource.class);
         set.add(MDRCodeListResource.class);
+        set.add(MdrLuceneReindexingResource.class);
     }
 
     @Override
