@@ -12,6 +12,7 @@ package eu.europa.ec.fisheries.mdr.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
+import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrStatusRepositoryBean;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
@@ -40,8 +41,7 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
     private MdrSynchronizationService synchBean = new MdrSynchronizationServiceBean();
     private MdrStatusRepository statusRepository = new MdrStatusRepositoryBean();
     private IMdrMessageProducer producer = new MdrMessageProducerBean();
-
-
+    private MdrLuceneSearchRepositoryBean mdrSearchRepository = new MdrLuceneSearchRepositoryBean();
     private MdrSchedulerService schedulerBean = new MdrSchedulerServiceBean();
 
     @Mock
@@ -69,21 +69,24 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
         Whitebox.setInternalState(mdrStatusRepository, "postgres", em);
         Whitebox.setInternalState(mdrRepository, "postgres", em);
+        Whitebox.setInternalState(mdrSearchRepository, "postgres", em);
 
         // initBean internal state
         Whitebox.setInternalState(initBean, "synchBean", synchBean);
         Whitebox.setInternalState(initBean, "schedulerBean", schedulerBean);
         Whitebox.setInternalState(initBean, "mdrStatusRepository", mdrStatusRepository);
         Whitebox.setInternalState(initBean, "mdrRepository", mdrRepository);
+        Whitebox.setInternalState(initBean, "mdrSearchRepository", mdrSearchRepository);
 
         mdrStatusRepository.init();
         mdrRepository.init();
+        mdrSearchRepository.init();
     }
 
     @Test
     @SneakyThrows
     public void testStartUpMdrInitializationProcess() {
-        initBean.startUpMdrInitializationProcess();
+            initBean.startUpMdrInitializationProcess();
     }
 
 }
