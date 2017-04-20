@@ -10,7 +10,9 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service;
 
+import eu.europa.ec.fisheries.mdr.exception.MdrMappingException;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
+import eu.europa.ec.fisheries.uvms.message.MessageException;
 
 import javax.ejb.Local;
 import java.util.Collection;
@@ -28,6 +30,8 @@ public interface MdrSynchronizationService {
 	GenericOperationOutcome updateMdrEntities(List<String> acronymsList);
 
     void sendRequestForMdrCodelistsStructures(Collection<String> acronym);
+
+	void sendRequestForSingleMdrCodelistsStructure(String actAcron) throws MdrMappingException, MessageException;
 
 	void sendRequestForMdrCodelistsIndex();
 

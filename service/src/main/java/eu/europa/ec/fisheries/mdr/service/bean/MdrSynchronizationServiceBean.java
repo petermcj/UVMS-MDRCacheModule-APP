@@ -189,14 +189,19 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     public void sendRequestForMdrCodelistsStructures(Collection<String> acronymsList) {
         try {
             for(String actAcron : acronymsList){
-                String strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actAcron, OBJ_DESC, java.util.UUID.randomUUID().toString());
-                producer.sendRulesModuleMessage(strReqObj);
+                sendRequestForSingleMdrCodelistsStructure(actAcron);
             }
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
         } catch (MessageException e) {
             log.error("Error while trying to send message from MDR module to Rules module.", e);
         }
+    }
+
+    @Override
+    public void sendRequestForSingleMdrCodelistsStructure(String actAcron) throws MdrMappingException, MessageException {
+        String strReqObj = MdrRequestMapper.mapMdrQueryTypeToString(actAcron, OBJ_DESC, java.util.UUID.randomUUID().toString());
+        producer.sendRulesModuleMessage(strReqObj);
     }
 
     @Override
