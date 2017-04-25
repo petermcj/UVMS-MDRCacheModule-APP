@@ -25,14 +25,15 @@ import eu.europa.ec.fisheries.uvms.message.MessageException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * @author kovian
@@ -61,12 +62,17 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private static final String OBJ_DESC     = "OBJ_DESC";
     private static final String INDEX        = "INDEX";
 
-    private static final List<String> exclusionList = new ArrayList<String>(){{
-        add("FAO_SPECIES");
-        add("LOCATION");
-        add("FA_BR");
-        add("FLUX_VESSEL_ID_TYPE");
-    }};
+    private List<String> exclusionList;
+
+
+    @PostConstruct
+    public void loadExclusionList() throws IOException {
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("exclusionList.properties");
+        Properties props = new Properties();
+        props.load(resourceAsStream);
+        List<String> propertyStr = Arrays.asList((props.getProperty("mdr.exclusion.list")));
+        exclusionList = CollectionUtils.isNotEmpty(propertyStr) ? Arrays.asList(propertyStr.get(0).split(",")) : new ArrayList<String>();
+    }
 
     /**
      * Manually startable Job for the MDR Entities synchronising.
