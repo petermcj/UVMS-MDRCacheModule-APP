@@ -14,10 +14,8 @@ import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegi
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.util.ClassFinder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import java.util.Map;
 @Slf4j
 public class MasterDataRegistryEntityCacheFactory {
 
-	public static final String FAILED_TO_INITIATE_CACHE_FACTORY = "Failed to initiate MasterDataRegistryEntityCacheFactory class.";
 	private static Map<String, MasterDataRegistry> acronymsCache;
 	private static List<String> acronymsList;
 	
@@ -42,36 +39,14 @@ public class MasterDataRegistryEntityCacheFactory {
 	private static final String ENTITIES_PACKAGE = "eu.europa.ec.fisheries.mdr.entities";
 
 	static {
-		try{
+		try {
 			initializeCache();
+			instance = new MasterDataRegistryEntityCacheFactory();
 		} catch (Exception ex){
 			log.error("Exception thrown while trying to initialize MasterDataRegistryEntityCacheFactory Entity Cache!", ex);
 		}
 	}
 
-	@PostConstruct
-	private static void initializeClass(){
-		instance = new MasterDataRegistryEntityCacheFactory();
-		try {
-			log.info("Initializing MasterDataRegistryEntityCacheFactory class.");
-			initializeCache();
-		} catch (MdrCacheInitException e) {
-			log.error(FAILED_TO_INITIATE_CACHE_FACTORY, e);
-		}
-
-	}
-
-	public static MasterDataRegistryEntityCacheFactory getInstance(){
-		if(instance == null){
-			instance = new MasterDataRegistryEntityCacheFactory();
-			try {
-				initializeCache();
-			} catch (MdrCacheInitException e) {
-				log.error(FAILED_TO_INITIATE_CACHE_FACTORY, e);
-			}
-		}
-		return instance;
-	}
 
 	/**
 	 *
@@ -85,27 +60,10 @@ public class MasterDataRegistryEntityCacheFactory {
      */
 	public MasterDataRegistry getNewInstanceForEntity(String entityAcronym) throws MdrCacheInitException {
 		try {
-			if(MapUtils.isEmpty(acronymsCache)){
-				initializeCache();
-			}
-
-			if (acronymsCache.get(entityAcronym) == null) {
-				throw new IllegalArgumentException("Code list '" + entityAcronym + "' is not recognized.");
-			}
-
 			return acronymsCache.get(entityAcronym).getClass().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new MdrCacheInitException(e);
 		}
-	}
-
-	public boolean existsAcronym(String acronym){
-		try {
-			getNewInstanceForEntity(acronym);
-		} catch (MdrCacheInitException | IllegalArgumentException e) {
-			return false;
-		}
-		return true;
 	}
 	
 	private static void initializeCache() throws MdrCacheInitException {
@@ -134,8 +92,8 @@ public class MasterDataRegistryEntityCacheFactory {
 	 * @throws MdrCacheInitException
      */
 	private static void addAcronymToCache(Class<? extends MasterDataRegistry> aClass) throws MdrCacheInitException {
-		String classAcronym   			  = null;
-		MasterDataRegistry classReference = null;
+		String classAcronym;
+		MasterDataRegistry classReference;
 		try {
             classAcronym = (String) aClass.getMethod(METHOD_ACRONYM).invoke(aClass.newInstance());
             classReference =  aClass.newInstance();
@@ -159,12 +117,15 @@ public class MasterDataRegistryEntityCacheFactory {
 	 * @throws SecurityException
 	 */
 	public static List<String> getAcronymsList() throws MdrCacheInitException {
-		if(CollectionUtils.isEmpty(acronymsList)){
-			initializeCache();
-		} else {
-			log.info("Getting acronyms from cached instance!");
-		}
 		return acronymsList;
+	}
+
+	public static MasterDataRegistryEntityCacheFactory getInstance(){
+		return instance;
+	}
+
+	public boolean existsAcronym(String acronym){
+		return acronymsCache.get(acronym) != null;
 	}
 
 	/**

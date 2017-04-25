@@ -68,7 +68,7 @@ public class MdrInitializationBean {
      *
      */
     @PostConstruct
-    public void startUpMdrInitializationProcess(){
+    public void startUpMdrInitializationProcess() throws InterruptedException {
 
         long startTime  = System.currentTimeMillis();
 
@@ -109,6 +109,7 @@ public class MdrInitializationBean {
             mdrSearchRepository.massiveUpdateFullTextIndex();
         } catch (InterruptedException e) {
             log.error("An error occured while calli [ MdrLuceneSearchRepository.massiveUpdateFullTextIndex ]", e);
+            throw e;
         }
 
         log.info("[END] Finished Starting up MDR moduleModule Initialization.");

@@ -47,7 +47,8 @@ public class RectangleCoordinates implements Serializable {
 
     public RectangleCoordinates(MDRDataNodeType mdrDataType) {
         List<MDRElementDataNodeType> fieldsToRemove  = new ArrayList<>();
-        for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
+        List<MDRElementDataNodeType> subordinateMDRElementDataNodes = mdrDataType.getSubordinateMDRElementDataNodes();
+        for(MDRElementDataNodeType field : subordinateMDRElementDataNodes){
             String fieldName  = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
             if(StringUtils.contains(fieldName, ".WEST")){
@@ -64,7 +65,7 @@ public class RectangleCoordinates implements Serializable {
                 fieldsToRemove.add(field);
             }
         }
-        fieldsToRemove.removeAll(fieldsToRemove);
+        subordinateMDRElementDataNodes.removeAll(fieldsToRemove);
     }
 
     public String getSouth() {

@@ -104,19 +104,12 @@ public class MdrEventServiceBean implements MdrEventService {
         try {
             requestObj = extractMdrGetCodeListEventMessage(extractMessageRequestString(message));
             // Request is Not OK
-            if (requestObj == null || StringUtils.isEmpty(requestObj.getAcronym())) {
-                log.error("The message received is not of type MdrGetCodeListRequest so it won't be attempted to unmarshall it! " +
-                        "Message content is as follows : " + extractMessageRequestString(message));
-                sendErrorMessageToMdrQueue("Request object or Acronym for the request has not been specified!", message.getJmsMessage());
-                return;
-            }
-            // Acronym doesn't exist
-            if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())){
-                sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST, message.getJmsMessage());
+            if (!requestIsOk(message, requestObj)) {
                 return;
             }
             // Check query, Run query, Create response
             List<String> columnFilters = requestObj.getColumnsToFilters();
+            String filter = requestObj.getFilter();
             String[] columnFiltersArr;
             if(CollectionUtils.isNotEmpty(columnFilters)){
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
@@ -124,7 +117,6 @@ public class MdrEventServiceBean implements MdrEventService {
                 log.warn("No search attributes provided. Going to consider only 'code' attribute.");
                 columnFiltersArr = new String[]{"code"};
             }
-            String filter = requestObj.getFilter();
             if(filter != null && !filter.equals(STAR)){
                 filter = new StringBuilder(STAR).append(filter).append(STAR).toString();
             } else {
@@ -148,6 +140,28 @@ public class MdrEventServiceBean implements MdrEventService {
         } catch (ServiceException e) {
             sendErrorMessageToMdrQueue(ERROR_GET_LIST_FOR_THE_REQUESTED_CODE + e, message.getJmsMessage());
         }
+    }
+
+    /**
+     * Checks if the request received for the code list has the minimum requirements.
+     *
+     * @param message
+     * @param requestObj
+     * @return
+     */
+    private boolean requestIsOk(EventMessage message, MdrGetCodeListRequest requestObj) {
+        if (requestObj == null || StringUtils.isEmpty(requestObj.getAcronym())) {
+            log.error("The message received is not of type MdrGetCodeListRequest so it won't be attempted to unmarshall it! " +
+                    "Message content is as follows : " + extractMessageRequestString(message));
+            sendErrorMessageToMdrQueue("Request object or Acronym for the request has not been specified!", message.getJmsMessage());
+            return false;
+        }
+        // Acronym doesn't exist
+        if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())){
+            sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST, message.getJmsMessage());
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -186,7 +200,7 @@ public class MdrEventServiceBean implements MdrEventService {
             SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
             respType = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
         } catch (MdrModelMarshallException e) {
-            log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n", e.getMessage());
+            log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n", e);
         }
         log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
         return respType;
@@ -203,7 +217,7 @@ public class MdrEventServiceBean implements MdrEventService {
         try {
             codelistReq = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
         } catch (MdrModelMarshallException e) {
-            log.error(">> Error while attempting to Unmarshall MdrGetCodeListRequest Object (XML MDR Request) : \n", e.getMessage());
+            log.error(">> Error while attempting to Unmarshall MdrGetCodeListRequest Object (XML MDR Request) : \n", e);
         }
         log.info("MdrGetCodeListRequest Unmarshalled successfully.. Going to validate and get the data now! /n");
         return codelistReq;

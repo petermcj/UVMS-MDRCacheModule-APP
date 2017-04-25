@@ -16,8 +16,6 @@ import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -28,15 +26,12 @@ public class MasterDataRegistryEntityCacheFactoryTest {
     @Test
     @SneakyThrows
     public void testCacheInitAndGetAcronymsList(){
-        MasterDataRegistryEntityCacheFactory.initialize();
-        List<String> acronyms = MasterDataRegistryEntityCacheFactory.getAcronymsList();
-        assertNotNull(acronyms);
+        assertNotNull( MasterDataRegistryEntityCacheFactory.getAcronymsList());
     }
 
     @Test
     @SneakyThrows
     public void testGetNewInstanceForEntity(){
-        MasterDataRegistryEntityCacheFactory.initialize();
         MasterDataRegistry fluxGpParty = null;
         try {
             fluxGpParty = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity("FLUX_GP_PARTY");

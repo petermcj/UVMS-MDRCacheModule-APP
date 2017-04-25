@@ -51,6 +51,7 @@ public class MdrLuceneReindexingResource extends UnionVMSResource {
     public Response findCodeListByAcronymFilterredByFilter(@Context HttpServletRequest request) {
         final boolean[] error = {false};
         new Thread(new Runnable() {
+            @Override
             public void run() {
                 try {
                     searchRepository.massiveUpdateFullTextIndex();

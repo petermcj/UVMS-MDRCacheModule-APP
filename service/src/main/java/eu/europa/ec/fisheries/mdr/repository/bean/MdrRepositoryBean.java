@@ -83,7 +83,7 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
     public void updateMdrEntity(FLUXMDRReturnMessage response) {
         // Response is OK
         final FLUXResponseDocumentType fluxResponseDocument = response.getFLUXResponseDocument();
-        if (!fluxResponseDocument.getResponseCode().toString().toUpperCase().equalsIgnoreCase("NOK")) {
+        if (!"NOK".equals(fluxResponseDocument.getResponseCode().toString().toUpperCase())) {
             List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
             if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
                 try {
