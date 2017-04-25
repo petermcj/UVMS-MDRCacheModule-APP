@@ -47,8 +47,6 @@ import java.util.*;
 @Transactional
 public class MdrSynchronizationServiceBean implements MdrSynchronizationService {
 
-    public static final String ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM = "Error while trying to map MDRQueryType for acronym {}";
-
     @EJB
     private MdrRepository mdrRepository;
 
@@ -61,6 +59,8 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     private static final String OBJ_DATA_ALL = "OBJ_DATA_ALL";
     private static final String OBJ_DESC     = "OBJ_DESC";
     private static final String INDEX        = "INDEX";
+    private static final String ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM = "Error while trying to map MDRQueryType for acronym {}";
+    private static final String MDR_EXCLUSION_LIST = "mdr.exclusion.list";
 
     private List<String> exclusionList;
 
@@ -70,7 +70,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("exclusionList.properties");
         Properties props = new Properties();
         props.load(resourceAsStream);
-        List<String> propertyStr = Arrays.asList((props.getProperty("mdr.exclusion.list")));
+        List<String> propertyStr = Arrays.asList((props.getProperty(MDR_EXCLUSION_LIST)));
         exclusionList = CollectionUtils.isNotEmpty(propertyStr) ? Arrays.asList(propertyStr.get(0).split(",")) : new ArrayList<String>();
     }
 
