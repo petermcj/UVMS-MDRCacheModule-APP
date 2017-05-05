@@ -27,6 +27,7 @@ import un.unece.uncefact.data.standard.mdr.response.TextType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,19 @@ public abstract class MasterDataRegistry implements Serializable {
     private static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
     private static final String VERSION_STR = ".VERSION";
 
+    // Fields that will contain [ACRONYM].[FIELD_NAME] values.
+    @Transient
+    private String APP_CODE_STR;
+    @Transient
+    private String APP_DESCRIPTION_STR;
+    @Transient
+    private String APP_EN_DESCRIPTION_STR;
+    @Transient
+    private String APP_VERSION_STR;
+
     protected void populateCommonFields(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+
+        populateDataNodeNames();
 
         // Start date end date
         final DelimitedPeriodType validityPeriod = mdrDataType.getEffectiveDelimitedPeriod();
@@ -87,14 +100,14 @@ public abstract class MasterDataRegistry implements Serializable {
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
             String fieldName = getValueFromTextType(field.getName());
             String fieldValue = getValueFromTextType(field.getValue());
-            if (StringUtils.contains(fieldName, CODE_STR)) {
+            if (StringUtils.equalsIgnoreCase(fieldName, APP_CODE_STR)) {
                 setCode(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.contains(fieldName, DESCRIPTION_STR)
-                    || StringUtils.contains(fieldName, EN_DESCRIPTION_STR)) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_DESCRIPTION_STR)
+                    || StringUtils.equalsIgnoreCase(fieldName, APP_EN_DESCRIPTION_STR)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.contains(fieldName, VERSION_STR)) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_VERSION_STR)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }
@@ -106,6 +119,24 @@ public abstract class MasterDataRegistry implements Serializable {
         subordinateMDRElementDataNodes.removeAll(fieldsToRemove);
     }
 
+    /**
+     * Populates the APP_CODE_STR ecc.
+     * In the end they will have values like ACTION_TYPE.CODE, ACTION_TYPE.DESCRIPTION ecc..
+     *
+     */
+    private void populateDataNodeNames() {
+        String acronym         = getAcronym();
+        APP_CODE_STR           = acronym + CODE_STR;
+        APP_DESCRIPTION_STR    = acronym + DESCRIPTION_STR;
+        APP_EN_DESCRIPTION_STR = acronym + EN_DESCRIPTION_STR;
+        APP_VERSION_STR        = acronym + VERSION_STR;
+    }
+
+    protected void logError(String fieldName, String className) {
+        log.error("The field '"+fieldName+"' for Codelist : "+className+" has not been mapped!");
+    }
+
+
     public abstract void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException;
 
     private String getValueFromTextType(TextType textType){
@@ -113,6 +144,7 @@ public abstract class MasterDataRegistry implements Serializable {
     }
 
     public abstract String getAcronym();
+
     public String getVersion() {
         return version;
     }

@@ -59,7 +59,7 @@ public class Rfmo extends MasterDataRegistry {
 			} else if(org.apache.commons.lang.StringUtils.contains(fieldName, "ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+				logError(fieldName, this.getClass().getSimpleName());
 			}
 		}
 	}

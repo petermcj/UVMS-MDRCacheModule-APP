@@ -58,7 +58,7 @@ public class FishPresentation extends MasterDataRegistry {
 			if(StringUtils.contains(fieldName, "ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+				logError(fieldName, this.getClass().getSimpleName());
 			}
 		}
 	}

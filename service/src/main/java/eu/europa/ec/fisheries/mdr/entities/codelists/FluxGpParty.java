@@ -61,7 +61,7 @@ public class FluxGpParty extends MasterDataRegistry {
 			} else if(StringUtils.contains(fieldName, "CODE2")){
 				this.setCode2(fieldValue);
 			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+				logError(fieldName, this.getClass().getSimpleName());
 			}
 		}
 	}

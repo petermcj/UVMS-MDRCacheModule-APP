@@ -90,7 +90,7 @@ public class FaoSpecies extends MasterDataRegistry {
             } else if(StringUtils.contains(fieldName, "TAXOCODE")){
                 this.setEnName(fieldValue);
             } else {
-                throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+                logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }

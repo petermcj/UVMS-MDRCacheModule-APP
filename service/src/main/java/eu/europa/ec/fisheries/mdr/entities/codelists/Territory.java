@@ -45,6 +45,8 @@ public class Territory extends MasterDataRegistry {
                 this.setCode2(fieldValue);
             } else if(StringUtils.contains(fieldName, "ENNAME")){
                 this.setEnName(fieldValue);
+            } else {
+                logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }

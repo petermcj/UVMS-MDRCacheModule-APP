@@ -18,7 +18,6 @@ import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 
 import javax.persistence.*;
-;
 
 /**
  * Created by georgige on 11/23/2016.

@@ -88,7 +88,7 @@ public class Farm extends MasterDataRegistry {
             } else if(StringUtils.contains(fieldName, "CONTRACTINGPARTY")){
                 this.setLegalReference(fieldValue);
             }  else {
-                throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+                logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }

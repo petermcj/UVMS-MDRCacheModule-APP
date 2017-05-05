@@ -14,7 +14,9 @@ import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegi
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
@@ -70,7 +72,7 @@ public class FaoAreaCodes extends MasterDataRegistry {
 			} else if(StringUtils.contains(fieldName, "TERMINALIND")){
 				this.setTerminalInd(fieldValue);
 			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+				logError(fieldName, this.getClass().getSimpleName());
 			}
 		}
 	}

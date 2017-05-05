@@ -115,7 +115,7 @@ public class MdrEventServiceBean implements MdrEventService {
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
             } else {
                 log.warn("No search attributes provided. Going to consider only 'code' attribute.");
-                columnFiltersArr = new String[]{"code"};
+                columnFiltersArr = new String[]{"code", "description"};
             }
             if(filter != null && !filter.equals(STAR)){
                 filter = new StringBuilder(STAR).append(filter).append(STAR).toString();

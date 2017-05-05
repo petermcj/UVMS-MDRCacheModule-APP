@@ -118,7 +118,7 @@ public class Location extends MasterDataRegistry {
             } else if (StringUtils.contains(fieldName, "UNFCTCODE")) {
                 this.setUnFunctionCode(fieldValue);
             } else {
-                throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+                logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }

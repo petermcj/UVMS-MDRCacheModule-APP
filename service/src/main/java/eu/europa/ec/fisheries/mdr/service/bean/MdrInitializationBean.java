@@ -109,7 +109,7 @@ public class MdrInitializationBean {
             mdrSearchRepository.massiveUpdateFullTextIndex();
         } catch (InterruptedException e) {
             log.error("An error occured while calli [ MdrLuceneSearchRepository.massiveUpdateFullTextIndex ]", e);
-            throw e;
+            throw  e;
         }
 
         log.info("[END] Finished Starting up MDR moduleModule Initialization.");

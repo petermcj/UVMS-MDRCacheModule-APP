@@ -55,7 +55,7 @@ public class EffortZone extends MasterDataRegistry {
             if(StringUtils.contains(fieldName, "LEGALREF")){
                 this.setLegalReference(fieldValue);
             }  else {
-                throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+                logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }

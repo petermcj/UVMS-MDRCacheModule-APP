@@ -89,7 +89,7 @@ public class FaBr extends MasterDataRegistry {
 			}else if(StringUtils.contains(fieldName, "ACTIVEIND")){
 				this.setActivationIndicator(fieldValue);
 			} else {
-				throw new FieldNotMappedException(this.getClass().getSimpleName(), fieldName);
+				logError(fieldName, this.getClass().getSimpleName());
 			}
 		}
 

@@ -109,6 +109,7 @@ public class MdrBulkOperationsDao {
         FullTextSession fullTextSession = getFullTextSession();
         Transaction tx  = fullTextSession.beginTransaction();
         try {
+            log.info("Saving all entity entries for Acronym : ", entityRows.get(0).getAcronym());
             for (MasterDataRegistry actualEnityRow : entityRows) {
                 fullTextSession.save(actualEnityRow);
             }
