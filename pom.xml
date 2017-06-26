@@ -102,6 +102,7 @@
                 <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
                 <artifactId>rules-model</artifactId>
                 <version>${rules.model}</version>
+				<classifier>date</classifier>
             </dependency>
 
             <!-- Inner dependencies -->
