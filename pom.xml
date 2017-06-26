@@ -44,7 +44,7 @@
         <mdr.model.version>0.5.1-SNAPSHOT</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>2.0.8</exchange.model>
+        <exchange.model>3.0.5-SNAPSHOT</exchange.model>
         <rules.model>2.0.7</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
@@ -58,7 +58,7 @@
         <junit.version>4.12</junit.version>
 
         <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
-        <usm4uvms.version>2.0.19</usm4uvms.version>
+        <usm4uvms.version>3.0.6-SNAPSHOT</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
