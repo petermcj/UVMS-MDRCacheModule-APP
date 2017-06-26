@@ -14,6 +14,7 @@ import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegi
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import lombok.SneakyThrows;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class MdrCacheFactoryTest {
     }
 
     @Test
+	@Ignore
     @SneakyThrows
     public void testEnlistFileEntriesInConsole(){
         String includeDeclarationEnd  = "\"/>";
