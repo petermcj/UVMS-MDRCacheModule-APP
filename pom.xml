@@ -41,15 +41,15 @@
         </sonar.exclusions>
         <!-- The MDR name is used as a common point to rename the application alias visible in USM-->
         <mdr.name>MDR Cache</mdr.name>
-        <mdr.model.version>0.5.1-SNAPSHOT</mdr.model.version>
+        <mdr.model.version>0.5.1</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>3.0.5-SNAPSHOT</exchange.model>
-        <rules.model>3.0.5-SNAPSHOT</rules.model>
+        <exchange.model>3.0.5</exchange.model>
+        <rules.model>3.0.5</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.1.2</logback.core.version>
-        <uvms.commons.version>2.0.21-SNAPSHOT</uvms.commons.version>
+        <uvms.commons.version>2.0.21</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
         <hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
@@ -58,7 +58,7 @@
         <junit.version>4.12</junit.version>
 
         <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
-        <usm4uvms.version>3.0.6-SNAPSHOT</usm4uvms.version>
+        <usm4uvms.version>3.0.6</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
@@ -439,17 +439,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven.release.plugin.version}</version>
-                <dependencies>
+               <dependencies>
                     <dependency>
-                        <groupId>com.google.code.maven-scm-provider-svnjava</groupId>
-                        <artifactId>maven-scm-provider-svnjava</artifactId>
-                        <version>${maven.scm.provider.version}</version>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>1.8.1</version>
                     </dependency>
                 </dependencies>
-                <configuration>
-                    <tagNameFormat>${project.artifactId}-${project.version}</tagNameFormat>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                </configuration>
             </plugin>
         </plugins>
     </build>
