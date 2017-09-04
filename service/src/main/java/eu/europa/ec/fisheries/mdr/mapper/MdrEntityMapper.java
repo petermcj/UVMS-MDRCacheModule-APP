@@ -9,17 +9,17 @@ details. You should have received a copy of the GNU General Public License along
 
  */
 package eu.europa.ec.fisheries.mdr.mapper;
+
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
+import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Mapper class that can be used to map entities from MDR

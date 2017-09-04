@@ -23,21 +23,26 @@ import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
 import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
 import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
+import java.util.List;
+import java.util.Map;
+import javax.ejb.EJB;
+import javax.interceptor.Interceptors;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
-
-import javax.ejb.EJB;
-import javax.interceptor.Interceptors;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by georgige on 8/22/2016.

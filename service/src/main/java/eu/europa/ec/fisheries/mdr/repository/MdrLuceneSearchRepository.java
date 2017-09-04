@@ -12,9 +12,8 @@ package eu.europa.ec.fisheries.mdr.repository;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-
-import javax.ejb.Local;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * Created by kovian on 15/12/2016.

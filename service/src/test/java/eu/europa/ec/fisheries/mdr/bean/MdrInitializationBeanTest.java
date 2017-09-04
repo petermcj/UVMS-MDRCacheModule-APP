@@ -23,13 +23,12 @@ import eu.europa.ec.fisheries.mdr.service.bean.MdrSchedulerServiceBean;
 import eu.europa.ec.fisheries.mdr.service.bean.MdrSynchronizationServiceBean;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.IMdrMessageProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrMessageProducerBean;
+import javax.ejb.TimerService;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import javax.ejb.TimerService;
 
 /**
  * Created by kovian on 06/01/2017.

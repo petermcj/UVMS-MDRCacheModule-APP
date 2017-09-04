@@ -13,15 +13,14 @@ package eu.europa.ec.fisheries.mdr.mapper;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.util.ClassFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
 
 /***
  * This class is designed to perform a scanning of the MDR Entities Package and build a cache to furtherly 

@@ -14,10 +14,9 @@ import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-
-import javax.ejb.Local;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * Created by kovian on 29/07/2016.

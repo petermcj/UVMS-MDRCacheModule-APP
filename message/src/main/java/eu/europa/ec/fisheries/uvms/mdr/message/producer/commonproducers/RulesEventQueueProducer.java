@@ -10,11 +10,10 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers;
 
-        import eu.europa.ec.fisheries.uvms.message.AbstractProducer;
-        import eu.europa.ec.fisheries.uvms.message.MessageConstants;
-
-        import javax.ejb.LocalBean;
-        import javax.ejb.Stateless;
+import eu.europa.ec.fisheries.uvms.message.AbstractProducer;
+import eu.europa.ec.fisheries.uvms.message.MessageConstants;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  * Created by kovian on 04/04/2017.

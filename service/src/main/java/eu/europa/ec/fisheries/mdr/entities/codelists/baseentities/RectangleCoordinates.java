@@ -10,16 +10,15 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.entities.codelists.baseentities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.search.annotations.Field;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("serial")
 @Embeddable
@@ -51,16 +50,16 @@ public class RectangleCoordinates implements Serializable {
         for(MDRElementDataNodeType field : subordinateMDRElementDataNodes){
             String fieldName  = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if(StringUtils.contains(fieldName, ".WEST")){
+            if(StringUtils.endsWith(fieldName, ".WEST")){
                 this.setWest(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.contains(fieldName, ".EAST")){
+            } else if(StringUtils.endsWith(fieldName, ".EAST")){
                 this.setEast(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.contains(fieldName, ".NORTH")){
+            } else if(StringUtils.endsWith(fieldName, ".NORTH")){
                 this.setNorth(fieldValue);
                 fieldsToRemove.add(field);
-            } else if(StringUtils.contains(fieldName, ".SOUTH")){
+            } else if(StringUtils.endsWith(fieldName, ".SOUTH")){
                 this.setSouth(fieldValue);
                 fieldsToRemove.add(field);
             }

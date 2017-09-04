@@ -13,7 +13,6 @@ package eu.europa.ec.fisheries.mdr.service;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
-
 import javax.ejb.Local;
 import javax.enterprise.event.Observes;
 

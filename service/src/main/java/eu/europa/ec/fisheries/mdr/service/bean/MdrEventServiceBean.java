@@ -23,6 +23,13 @@ import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueue
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.MdrModuleMapper;
+import java.math.BigInteger;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.enterprise.event.Observes;
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,14 +37,6 @@ import un.unece.uncefact.data.standard.mdr.communication.MdrGetCodeListRequest;
 import un.unece.uncefact.data.standard.mdr.communication.SetFLUXMDRSyncMessageResponse;
 import un.unece.uncefact.data.standard.mdr.communication.ValidationResultType;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.enterprise.event.Observes;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
-import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Observer class listening to events fired from MdrMessageConsumerBean (MDR Module).

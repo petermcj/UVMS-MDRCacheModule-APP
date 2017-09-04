@@ -9,8 +9,8 @@ details. You should have received a copy of the GNU General Public License along
 
 */
 package eu.europa.ec.fisheries.mdr.service.bean;
-import javax.persistence.EntityManager;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
