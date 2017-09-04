@@ -13,14 +13,14 @@
 
 package eu.europa.ec.fisheries.mdr.serviceutils;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.io.StringWriter;
 
 /**
  * Created by padhyad on 10/12/2016.

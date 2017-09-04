@@ -1,10 +1,16 @@
 package eu.europa.ec.fisheries.mdr.bean;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
-import eu.europa.ec.fisheries.mdr.entities.codelists.FaoSpecies;
+import eu.europa.ec.fisheries.mdr.entities.codelists.ers.FaoSpecies;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,11 +19,6 @@ import org.hibernate.search.Search;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by georgige on 11/15/2016.

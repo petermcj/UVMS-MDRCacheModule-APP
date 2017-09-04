@@ -14,10 +14,9 @@
 package eu.europa.ec.fisheries.mdr.serviceutils;
 
 import eu.europa.ec.fisheries.wsdl.user.types.UserFault;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by padhyad on 10/12/2016.

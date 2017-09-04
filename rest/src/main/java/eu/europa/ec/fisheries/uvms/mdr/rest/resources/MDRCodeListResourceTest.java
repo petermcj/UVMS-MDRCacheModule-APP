@@ -14,9 +14,23 @@ package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
  * Created by kovian on 16/12/2016.
  */
 
+import static org.jgroups.util.Util.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.rest.dto.*;
+import eu.europa.ec.fisheries.uvms.rest.dto.PaginatedResponse;
+import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
+import eu.europa.ec.fisheries.uvms.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
+import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,17 +38,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.jgroups.util.Util.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Created by georgige on 11/24/2016.

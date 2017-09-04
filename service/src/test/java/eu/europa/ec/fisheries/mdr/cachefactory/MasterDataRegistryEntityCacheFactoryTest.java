@@ -10,13 +10,13 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.cachefactory;
 
+import static org.junit.Assert.assertNotNull;
+
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import lombok.SneakyThrows;
 import org.junit.Test;
-
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by kovian on 06/01/2017.

@@ -10,29 +10,34 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.entities.codelists.baseentities;
 
+import static eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry.LOW_CASE_ANALYSER;
+
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilterFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 import un.unece.uncefact.data.standard.mdr.response.DelimitedPeriodType;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.TextType;
-
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import static eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry.LOW_CASE_ANALYSER;
 
 @SuppressWarnings("serial")
 @MappedSuperclass
@@ -100,14 +105,14 @@ public abstract class MasterDataRegistry implements Serializable {
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
             String fieldName = getValueFromTextType(field.getName());
             String fieldValue = getValueFromTextType(field.getValue());
-            if (StringUtils.equalsIgnoreCase(fieldName, APP_CODE_STR)) {
+            if (StringUtils.endsWith(fieldName, APP_CODE_STR)) {
                 setCode(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_DESCRIPTION_STR)
-                    || StringUtils.equalsIgnoreCase(fieldName, APP_EN_DESCRIPTION_STR)) {
+            } else if (StringUtils.endsWith(fieldName, APP_DESCRIPTION_STR)
+                    || StringUtils.endsWith(fieldName, APP_EN_DESCRIPTION_STR)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_VERSION_STR)) {
+            } else if (StringUtils.endsWith(fieldName, APP_VERSION_STR)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }
@@ -122,7 +127,6 @@ public abstract class MasterDataRegistry implements Serializable {
     /**
      * Populates the APP_CODE_STR ecc.
      * In the end they will have values like ACTION_TYPE.CODE, ACTION_TYPE.DESCRIPTION ecc..
-     *
      */
     private void populateDataNodeNames() {
         String acronym         = getAcronym();

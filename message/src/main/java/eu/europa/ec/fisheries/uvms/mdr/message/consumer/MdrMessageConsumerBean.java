@@ -17,10 +17,6 @@ import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import un.unece.uncefact.data.standard.mdr.communication.MdrModuleRequest;
-
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.TransactionAttribute;
@@ -30,6 +26,9 @@ import javax.inject.Inject;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import un.unece.uncefact.data.standard.mdr.communication.MdrModuleRequest;
 
 
 @MessageDriven(mappedName = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE, activationConfig = {

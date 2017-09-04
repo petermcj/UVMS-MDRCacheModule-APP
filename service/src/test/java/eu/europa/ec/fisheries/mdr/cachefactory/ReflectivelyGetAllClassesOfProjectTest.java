@@ -11,6 +11,13 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.cachefactory;
 
 import eu.europa.ec.fisheries.mdr.util.ClassFinder;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import lombok.SneakyThrows;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,9 +27,6 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
-
-import java.io.File;
-import java.util.*;
 
 /**
  * Created by kovian on 28/11/2016.

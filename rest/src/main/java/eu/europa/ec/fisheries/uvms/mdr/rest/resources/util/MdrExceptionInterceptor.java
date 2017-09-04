@@ -16,11 +16,10 @@ package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.rest.constants.ErrorCodes;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by padhyad on 8/8/2016.

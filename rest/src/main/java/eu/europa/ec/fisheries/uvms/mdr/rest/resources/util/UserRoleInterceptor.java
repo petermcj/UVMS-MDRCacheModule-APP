@@ -19,15 +19,14 @@ package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
 
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import eu.europa.ec.fisheries.uvms.rest.constants.ErrorCodes;
-import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
-
+import java.io.Serializable;
 import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
-import java.io.Serializable;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 @IUserRoleInterceptor
 @Interceptor

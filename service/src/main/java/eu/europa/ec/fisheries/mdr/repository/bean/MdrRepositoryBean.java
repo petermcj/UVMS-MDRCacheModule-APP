@@ -23,18 +23,17 @@ import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
 import un.unece.uncefact.data.standard.mdr.response.IDType;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
 
 @Stateless
 @Slf4j

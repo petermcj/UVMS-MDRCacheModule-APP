@@ -10,21 +10,24 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.mapper.MdrEntityMapper;
 import eu.europa.ec.fisheries.mdr.mapper.MdrRequestMapper;
 import eu.europa.ec.fisheries.mdr.util.ClassFinder;
-import lombok.SneakyThrows;
-import org.junit.Before;
-import org.junit.Test;
-import un.unece.uncefact.data.standard.mdr.response.*;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import lombok.SneakyThrows;
+import org.junit.Before;
+import org.junit.Test;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.IDType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
+import un.unece.uncefact.data.standard.mdr.response.TextType;
 
 
 public class MdrEntityMapperTest {

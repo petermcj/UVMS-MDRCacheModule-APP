@@ -17,20 +17,24 @@ import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
 import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
 import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
-
+import java.util.Collection;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 @Path("/service")
 @Slf4j
@@ -102,12 +106,7 @@ public class MdrSynchronizationResource extends UnionVMSResource {
     @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
     public Response sendRequestForMDRCodeListsStructure(@Context HttpServletRequest request, Collection<String> acronymsToSynch) {
         log.info("Sending MDR Lists Structure request");
-        List<String> acronymsList;
-        if (CollectionUtils.isEmpty(acronymsToSynch)) {
-            acronymsList = getMockedCodeListsList();
-        } else {
-            acronymsList = (List<String>) acronymsToSynch;
-        }
+        List<String> acronymsList = CollectionUtils.isEmpty(acronymsToSynch) ? syncBean.getAvailableMdrAcronyms() : (List<String>) acronymsToSynch;
         syncBean.sendRequestForMdrCodelistsStructures(acronymsList);
         log.info("Finished Sending MDR Lists Structure request");
         return createSuccessResponse();
@@ -217,25 +216,4 @@ public class MdrSynchronizationResource extends UnionVMSResource {
         return createSuccessResponse();
     }
 
-    public List<String> getMockedCodeListsList() {
-        return Arrays.asList(
-                "FA_REASON_ENTRY", "FA_BR", "FAO_SPECIES",
-                "LOCATION", "FA_GEAR_RECOVERY", "VESSEL_STORAGE_TYPE",
-                "FISH_FRESHNESS", "WEIGHT_MEANS", "FLUX_GP_PARTY",
-                "FISH_SIZE_CLASS", "TERRITORY", "FISHING_TRIP_TYPE",
-                "FISHING_TRIP_TYPE", "FA_CHARACTERISTIC", "FAO_AREA",
-                "FLUX_CONTACT_ROLE", "FA_CATCH_TYPE", "FLUX_FA_TYPE",
-                "FA_REASON_DISCARD", "FLUX_GP_PURPOSE", "FLUX_GP_VALIDATION_LEVEL",
-                "FA_GEAR_ROLE", "FLUX_GP_RESPONSE", "FA_REASON_ARRIVAL",
-                "FISH_PACKAGING", "FISH_PRESENTATION", "FARM",
-                "FLUX_GP_VALIDATION_TYPE", "RFMO", "FA_QUERY_PARAMETER",
-                "FISH_PRESERVATION", "FA_GEAR_CHARACTERISTIC", "FLUX_UNIT",
-                "EFFORT_ZONE", "FLUX_LOCATION_CHARACTERISTIC", "FA_BAIT_TYPE",
-                "FA_GEAR_PROBLEM", "FA_FISHERY", "FLUX_FA_REPORT_TYPE",
-                "FLUX_FA_FMC", "VESSEL_ACTIVITY", "FLUX_PROCESS_TYPE",
-                "FLUX_LOCATION_TYPE", "FA_VESSEL_ROLE", "GFCM_STAT_RECTANGLE",
-                "FLAP_ID_TYPE", "FA_QUERY_TYPE", "FA_REASON_DEPARTURE",
-                "GFCM_GSA", "ICES_STAT_RECTANGLE", "FA_BFT_SIZE_CATEGORY", "GEAR_TYPE"
-        );
-    }
 }

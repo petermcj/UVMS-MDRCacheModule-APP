@@ -12,7 +12,6 @@ package eu.europa.ec.fisheries.uvms.mdr.message.consumer.commonconsumers;
 
 import eu.europa.ec.fisheries.uvms.message.AbstractConsumer;
 import eu.europa.ec.fisheries.uvms.message.MessageConstants;
-
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 

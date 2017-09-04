@@ -17,13 +17,12 @@ import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
-
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by kovian on 29/07/2016.

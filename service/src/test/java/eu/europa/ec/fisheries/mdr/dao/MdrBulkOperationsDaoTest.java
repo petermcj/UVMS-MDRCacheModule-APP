@@ -10,20 +10,19 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.dao;
 
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DataSourceDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
-import eu.europa.ec.fisheries.mdr.entities.codelists.FaoSpecies;
+import eu.europa.ec.fisheries.mdr.entities.codelists.ers.FaoSpecies;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import lombok.SneakyThrows;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+import lombok.SneakyThrows;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 
 public class MdrBulkOperationsDaoTest extends BaseMdrDaoTest {

@@ -12,15 +12,14 @@ package eu.europa.ec.fisheries.mdr.dao;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import java.util.List;
+import javax.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.Search;
-
-import javax.persistence.EntityManager;
-import java.util.List;
 
 /***
  * This class is used only for bulk insertions.

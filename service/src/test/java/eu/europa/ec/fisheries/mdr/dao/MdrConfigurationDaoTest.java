@@ -10,6 +10,11 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.dao;
 
+import static com.ninja_squad.dbsetup.Operations.sequenceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.destination.DataSourceDestination;
 import com.ninja_squad.dbsetup.operation.Operation;
@@ -17,11 +22,6 @@ import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
-
-import static com.ninja_squad.dbsetup.Operations.sequenceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * Created by kovian on 06/01/2017.

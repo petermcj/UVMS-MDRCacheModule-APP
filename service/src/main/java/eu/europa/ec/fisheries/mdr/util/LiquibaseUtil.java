@@ -11,9 +11,14 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.util;
 
 import com.google.common.base.Charsets;
-import org.apache.commons.lang.StringUtils;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,6 +29,7 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by kovian on 24/11/2016.
@@ -55,7 +61,7 @@ public class LiquibaseUtil {
     }
 
     static String splitter                 = "<changeSet ";
-    static String changeLogFilePath        = "C:\\GIT Repository\\mdr-modules-repo\\uvms-mdrmodule-db\\LIQUIBASE\\postgres\\changelog\\generatedChangelog.xml";
+    static String changeLogFilePath        = "C:\\GIT Repository\\Mdr Github\\UVMS-MDRCacheModule-DB\\LIQUIBASE\\postgres\\changelog\\generatedChangelog.xml";
     static String locationForGeneratedXmls = "C:\\newLiquibaseScripts\\";
     static String filePrefix               = StringUtils.EMPTY;
     static String fileSuffix               = ".xml";
@@ -72,8 +78,11 @@ public class LiquibaseUtil {
         for (String content : filesContents) {
             content = "\t"+content;
             String fileName = getFileName(/*filePrefix, fileSuffix,*/ content/*, locationForGeneratedXmls*/);
+            if(StringUtils.isEmpty(fileName)){
+                continue;
+            }
             String filePath = new StringBuilder(locationForGeneratedXmls).append(filePrefix).append(fileName).append(fileSuffix).toString();
-            String header   = createHeader(fileName);
+            String header   = createHeaderAndSequenceSections(fileName);
             String footer   = createAddPrimaryKeyAndFooter(fileName);
             String finalContent = addAllTogether(content, header, footer);
             sequence++;
@@ -98,7 +107,7 @@ public class LiquibaseUtil {
                 "</databaseChangeLog>";
     }
 
-    private static String createHeader(String fileName) {
+    private static String createHeaderAndSequenceSections(String fileName) {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
                 "<databaseChangeLog xmlns=\"http://www.liquibase.org/xml/ns/dbchangelog\" \n" +
                 "\t\t\t\t   xmlns:ext=\"http://www.liquibase.org/xml/ns/dbchangelog-ext\" \n" +
@@ -108,7 +117,7 @@ public class LiquibaseUtil {
                 "       \n" +
                 "    <changeSet author=\"kovian\" id=\"1890672105152481"+sequence+"\">\n" +
                 "\t  <createSequence cycle=\"false\" incrementBy=\"1\" maxValue=\"9223372036854775807\" minValue=\"1\"\n" +
-                "\t\t\t\t\t  sequenceName=\""+fileName+"_seq\" startValue=\"1\"/>\n" +
+                "\t\t\t\t\t  sequenceName=\""+fileName+"_seq\" startValue=\"2000\"/>\n" +
                 "    </changeSet>  \n\n";
     }
 
@@ -128,13 +137,22 @@ public class LiquibaseUtil {
     }
 
     private static String getFileName(/*String filePrefix, String fileSuffix, */String content /*, String newLocation*/) {
-        String cutStr = StringUtils.EMPTY;
+        String cutStr;
         try {
-            cutStr = content.substring(content.indexOf("tableName=\""), content.indexOf("tableName=\"") + 100);
-        } catch(StringIndexOutOfBoundsException ex){
-            throw ex;
+            if(content.contains("addPrimaryKey")){
+                return StringUtils.EMPTY;
+            }
+            if(StringUtils.isNotEmpty(content) && content.contains("tableName")){
+                cutStr = content.substring(content.indexOf("tableName=\""), content.indexOf("tableName=\"") + 100);
+                return cutStr.substring(cutStr.indexOf("\"") + 1, cutStr.indexOf("\"", cutStr.indexOf("\"") + 1));
+            } else {
+                return StringUtils.EMPTY;
+            }
+        } catch(Exception ex){
+            System.out.println("The following script threw : " + content);
+            System.out.println(ex);
         }
-        return cutStr.substring(cutStr.indexOf("\"") + 1, cutStr.indexOf("\"", cutStr.indexOf("\"") + 1));
+        return StringUtils.EMPTY;
     }
 
 

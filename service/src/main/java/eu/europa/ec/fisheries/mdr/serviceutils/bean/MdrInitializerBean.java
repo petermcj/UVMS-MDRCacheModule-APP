@@ -11,9 +11,8 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.serviceutils.bean;
 
 import eu.europa.ec.fisheries.uvms.init.AbstractModuleInitializerBean;
-
-import javax.ejb.Singleton;
 import java.io.InputStream;
+import javax.ejb.Singleton;
 
 /**
  * Created by kovian on 5/2/2016.

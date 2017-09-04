@@ -1,7 +1,6 @@
 package eu.europa.ec.fisheries.mdr.converter;
 
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
