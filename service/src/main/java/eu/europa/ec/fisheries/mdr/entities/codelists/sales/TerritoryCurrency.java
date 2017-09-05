@@ -42,12 +42,12 @@ public class TerritoryCurrency extends MasterDataRegistry {
     private long id;
 
     @Column(name = "iso_2_Code")
-    @Field(name = "iso2Code")
+    @Field(name = "iso_2_Code")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
     @Column(name = "en_name")
-    @Field(name = "enName")
+    @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
@@ -61,13 +61,15 @@ public class TerritoryCurrency extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
-            String fieldValue = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
             if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setIso2Code(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.CODE")) {
                 this.setCode(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.ENNAME")) {
                 this.setEnName(fieldValue);
+            } else if (StringUtils.endsWith(fieldName, "DESCRIPTION")) {
+                this.setDescription(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -78,12 +80,15 @@ public class TerritoryCurrency extends MasterDataRegistry {
     public String getIso2Code() {
         return iso2Code;
     }
+
     public void setIso2Code(String iso2Code) {
         this.iso2Code = iso2Code;
     }
+
     public String getEnName() {
         return enName;
     }
+
     public void setEnName(String enName) {
         this.enName = enName;
     }

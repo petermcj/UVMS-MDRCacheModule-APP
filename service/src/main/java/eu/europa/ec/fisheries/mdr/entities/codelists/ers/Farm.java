@@ -46,27 +46,27 @@ public class Farm extends MasterDataRegistry {
     private long id;
 
     @Column(name = "iso_2_code")
-    @Field(name="iso2Code")
+    @Field(name="iso_2_code")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
     @Column(name = "en_name")
-    @Field(name="enName")
+    @Field(name="en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Column(name = "place_fk_x_key")
-    @Field(name="placeFkXKey")
+    @Field(name="place_fk_x_key")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String placeFkXKey;
 
     @Column(name = "contracting_party")
-    @Field(name="contractingParty")
+    @Field(name="contracting_party")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String contractingParty;
 
     @Column(name = "legal_reference")
-    @Field(name="legalReference")
+    @Field(name="legal_reference")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String legalReference;
 

@@ -46,32 +46,32 @@ public class FaBr extends MasterDataRegistry {
     private String field;
 
     @Column(name = "message_if_failing")
-    @Field(name = "messageIfFailing")
+    @Field(name = "message_if_failing")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String messageIfFailing;
 
     @Column(name = "sequence_order")
-    @Field(name = "sequenceOrder")
+    @Field(name = "sequence_order")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String sequenceOrder;
 
     @Column(name = "br_level_fk_x_key")
-    @Field(name = "brLevelFkXKey")
+    @Field(name = "br_level_fk_x_key")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String brLevelFkXKey;
 
     @Column(name = "br_sublevel")
-    @Field(name = "brSublevel")
+    @Field(name = "br_sublevel")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String brSublevel;
 
     @Column(name = "activation_indicator")
-    @Field(name = "activationIndicator")
+    @Field(name = "activation_indicator")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String activationIndicator;
 
     @Column(name = "error_message")
-    @Field(name = "errorMessage")
+    @Field(name = "error_message")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String errorMessage;
 
