@@ -43,12 +43,12 @@ public class MemberState extends MasterDataRegistry {
     private long id;
 
     @Column(name = "iso_2_code")
-    @Field(name = "iso2Code")
+    @Field(name = "iso_2_code")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
     @Column(name = "en_name")
-    @Field(name = "enName")
+    @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 

@@ -78,7 +78,7 @@ public abstract class MasterDataRegistry implements Serializable {
     private static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
     private static final String VERSION_STR = ".VERSION";
 
-    // Fields that will contain [ACRONYM].[FIELD_NAME] values.
+    // Fields that will contain [ACRONYM].[FIELD_NAME] values after calling populateDataNodeNames();.
     @Transient
     private String APP_CODE_STR;
     @Transient
@@ -96,7 +96,7 @@ public abstract class MasterDataRegistry implements Serializable {
         final DelimitedPeriodType validityPeriod = mdrDataType.getEffectiveDelimitedPeriod();
         if (validityPeriod != null) {
             this.setValidity(new DateRange(validityPeriod.getStartDateTime().getDateTime().toGregorianCalendar().getTime(),
-                                           validityPeriod.getEndDateTime().getDateTime().toGregorianCalendar().getTime()));
+                    validityPeriod.getEndDateTime().getDateTime().toGregorianCalendar().getTime()));
         }
 
         // Code, Description, Version
@@ -129,26 +129,25 @@ public abstract class MasterDataRegistry implements Serializable {
      * In the end they will have values like ACTION_TYPE.CODE, ACTION_TYPE.DESCRIPTION ecc..
      */
     private void populateDataNodeNames() {
-        String acronym         = getAcronym();
-        APP_CODE_STR           = acronym + CODE_STR;
-        APP_DESCRIPTION_STR    = acronym + DESCRIPTION_STR;
+        String acronym = getAcronym();
+        APP_CODE_STR = acronym + CODE_STR;
+        APP_DESCRIPTION_STR = acronym + DESCRIPTION_STR;
         APP_EN_DESCRIPTION_STR = acronym + EN_DESCRIPTION_STR;
-        APP_VERSION_STR        = acronym + VERSION_STR;
+        APP_VERSION_STR = acronym + VERSION_STR;
     }
 
     protected void logError(String fieldName, String className) {
-        log.error("The field '"+fieldName+"' for Codelist : "+className+" has not been mapped!");
+        log.error("The field '" + fieldName + "' for Codelist : " + className + " has not been mapped!");
     }
 
 
     public abstract void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException;
 
-    private String getValueFromTextType(TextType textType){
-        return textType != null ? textType.getValue() : null;
-    }
-
     public abstract String getAcronym();
 
+    private String getValueFromTextType(TextType textType) {
+        return textType != null ? textType.getValue() : null;
+    }
     public String getVersion() {
         return version;
     }

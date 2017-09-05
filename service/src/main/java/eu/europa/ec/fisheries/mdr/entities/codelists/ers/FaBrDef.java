@@ -49,17 +49,17 @@ public class FaBrDef extends MasterDataRegistry {
     private String field;
 
     @Column(name = "message_if_failing")
-    @Field(name = "messageIfFailing")
+    @Field(name = "message_if_failing")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String messageIfFailing;
 
     @Column(name = "sequence_order")
-    @Field(name = "sequenceOrder")
+    @Field(name = "sequence_order")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String sequenceOrder;
 
     @Column(name = "br_sublevel")
-    @Field(name = "brSublevel")
+    @Field(name = "br_sublevel")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String brSublevel;
 

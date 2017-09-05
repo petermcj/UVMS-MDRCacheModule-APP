@@ -45,7 +45,7 @@ public class FishPresentation extends MasterDataRegistry {
 	private long id;
 
 	@Column(name = "en_name")
-	@Field(name="enName")
+	@Field(name="en_name")
 	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String enName;
 

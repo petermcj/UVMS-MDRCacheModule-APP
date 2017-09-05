@@ -41,12 +41,12 @@ public class FluxGpParty extends MasterDataRegistry {
     private long id;
 
     @Column(name = "en_name")
-    @Field(name = "enName")
+    @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Column(name = "code_2")
-    @Field(name = "code2")
+    @Field(name = "code_2")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code2;
 

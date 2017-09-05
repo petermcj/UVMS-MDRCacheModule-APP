@@ -42,7 +42,7 @@ public class EffortZone extends MasterDataRegistry {
     private long id;
 
     @Column(name = "legal_reference")
-    @Field(name="legalReference")
+    @Field(name="legal_reference")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String legalReference;
 

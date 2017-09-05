@@ -42,7 +42,7 @@ public class FaGearCharacteristic extends MasterDataRegistry {
 	private long id;
 
 	@Column(name = "data_type")
-	@Field(name = "dataType")
+	@Field(name = "data_type")
 	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String dataType;
 
