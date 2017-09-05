@@ -46,6 +46,11 @@ public class TerritoryCurrency extends MasterDataRegistry {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
+    @Column(name = "en_name")
+    @Field(name = "enName")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String enName;
+
     @Override
     public String getAcronym() {
         return "TERRITORY_CURR";
@@ -57,8 +62,12 @@ public class TerritoryCurrency extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getName().getValue();
-            if (StringUtils.endsWith(fieldName, "TERRITORY_CURR.CODE2")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setIso2Code(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.ENNAME")) {
+                this.setEnName(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -71,5 +80,11 @@ public class TerritoryCurrency extends MasterDataRegistry {
     }
     public void setIso2Code(String iso2Code) {
         this.iso2Code = iso2Code;
+    }
+    public String getEnName() {
+        return enName;
+    }
+    public void setEnName(String enName) {
+        this.enName = enName;
     }
 }

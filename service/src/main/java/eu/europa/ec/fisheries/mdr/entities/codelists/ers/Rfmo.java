@@ -60,10 +60,10 @@ public class Rfmo extends MasterDataRegistry {
 		populateCommonFields(mdrDataType);
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "RFMO.CODE2")){
+			String fieldValue  = field.getValue().getValue();
+			if(StringUtils.equalsIgnoreCase(fieldName, "RFMO.CODE2")){
 				this.setCode2(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "RFMO.ENNAME")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "RFMO.ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());

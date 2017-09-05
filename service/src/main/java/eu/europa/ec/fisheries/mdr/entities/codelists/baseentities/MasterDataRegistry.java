@@ -105,14 +105,14 @@ public abstract class MasterDataRegistry implements Serializable {
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
             String fieldName = getValueFromTextType(field.getName());
             String fieldValue = getValueFromTextType(field.getValue());
-            if (StringUtils.endsWith(fieldName, APP_CODE_STR)) {
+            if (StringUtils.equalsIgnoreCase(fieldName, APP_CODE_STR)) {
                 setCode(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.endsWith(fieldName, APP_DESCRIPTION_STR)
-                    || StringUtils.endsWith(fieldName, APP_EN_DESCRIPTION_STR)) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_DESCRIPTION_STR)
+                    || StringUtils.equalsIgnoreCase(fieldName, APP_EN_DESCRIPTION_STR)) {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
-            } else if (StringUtils.endsWith(fieldName, APP_VERSION_STR)) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, APP_VERSION_STR)) {
                 setVersion(fieldValue);
                 fieldsToRemove.add(field);
             }

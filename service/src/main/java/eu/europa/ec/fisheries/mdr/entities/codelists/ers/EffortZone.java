@@ -56,8 +56,8 @@ public class EffortZone extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
-            String fieldValue  = field.getName().getValue();
-            if(StringUtils.endsWith(fieldName, "EFFORT_ZONE.LEGALREF")){
+            String fieldValue  = field.getValue().getValue();
+            if(StringUtils.equalsIgnoreCase(fieldName, "EFFORT_ZONE.LEGALREF")){
                 this.setLegalReference(fieldValue);
             }  else {
                 logError(fieldName, this.getClass().getSimpleName());

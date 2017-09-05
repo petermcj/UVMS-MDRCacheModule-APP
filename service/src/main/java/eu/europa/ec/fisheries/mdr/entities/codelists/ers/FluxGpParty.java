@@ -32,56 +32,61 @@ import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class FluxGpParty extends MasterDataRegistry {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_flux_gp_party_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
-	private long id;
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_flux_gp_party_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
-	@Column(name = "en_name")
-	@Field(name="enName")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String enName;
+    @Column(name = "en_name")
+    @Field(name = "enName")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String enName;
 
-	@Column(name = "code_2")
-	@Field(name="code2")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String code2;
+    @Column(name = "code_2")
+    @Field(name = "code2")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String code2;
 
-	@Override
-	public String getAcronym() {
-		return "FLUX_GP_PARTY";
-	}
+    @Override
+    public String getAcronym() {
+        return "FLUX_GP_PARTY";
+    }
 
-	@Override
-	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
-		populateCommonFields(mdrDataType);
-		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "FLUX_GP_PARTY.ENNAME")){
-				this.setEnName(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "FLUX_GP_PARTY.CODE2")){
-				this.setCode2(fieldValue);
-			} else {
-				logError(fieldName, this.getClass().getSimpleName());
-			}
-		}
-	}
+    @Override
+    public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+        populateCommonFields(mdrDataType);
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
+                this.setCode2(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
+                this.setEnName(fieldValue);
+            } else {
+                logError(fieldName, this.getClass().getSimpleName());
+            }
+        }
+    }
 
 
-	public String getEnName() {
-		return enName;
-	}
-	public void setEnName(String enName) {
-		this.enName = enName;
-	}
-	public String getCode2() {
-		return code2;
-	}
-	public void setCode2(String code2) {
-		this.code2 = code2;
-	}
+    public String getEnName() {
+        return enName;
+    }
+
+    public void setEnName(String enName) {
+        this.enName = enName;
+    }
+
+    public String getCode2() {
+        return code2;
+    }
+
+    public void setCode2(String code2) {
+        this.code2 = code2;
+    }
 }

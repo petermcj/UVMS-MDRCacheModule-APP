@@ -79,16 +79,16 @@ public class GearType extends MasterDataRegistry {
 		populateCommonFields(mdrDataType);
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "GEAR_TYPE.CATEGORY")){
+			String fieldValue  = field.getValue().getValue();
+			if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.CATEGORY")){
 				this.setCategory(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "GEAR_TYPE.SUBCATEGORY")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.SUBCATEGORY")){
 				this.setSubCategory(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "GEAR_TYPE.ICCATCODE")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.ICCATCODE")){
 				this.setIccatCode(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "GEAR_TYPE.ISSCFGCODE")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.ISSCFGCODE")){
 				this.setIssCfgCode(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "GEAR_TYPE.TARGET")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.TARGET")){
 				this.setTarget(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());

@@ -56,8 +56,8 @@ public class FaGearCharacteristic extends MasterDataRegistry {
 		populateCommonFields(mdrDataType);
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "FA_GEAR_CHARACTERISTIC.DATA_TYPE")){
+			String fieldValue  =field.getValue().getValue();
+			if(StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.CODE")){
 				this.setDataType(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());

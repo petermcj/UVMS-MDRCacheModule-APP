@@ -73,14 +73,14 @@ public class FaBrDef extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
-            String fieldValue = field.getName().getValue();
-            if (StringUtils.endsWith(fieldName, "FA_BR_DEF.FIELD")) {
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.FIELD")) {
                 this.setField(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "FA_BR_DEF.ENMESSAGE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.ENMESSAGE")) {
                 this.setMessageIfFailing(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "FA_BR_DEF.SEQORDER")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.SEQORDER")) {
                 this.setSequenceOrder(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "FA_BR_DEF.BRSUBLEVEL")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.BRSUBLEVEL")) {
                 this.setBrSublevel(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
