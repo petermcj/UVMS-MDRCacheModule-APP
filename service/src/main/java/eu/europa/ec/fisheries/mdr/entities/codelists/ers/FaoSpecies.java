@@ -77,22 +77,22 @@ public class FaoSpecies extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
-            String fieldValue  = field.getName().getValue();
-            if(StringUtils.endsWith(fieldName, "FAO_SPECIES.ISGROUP")){
+            String fieldValue  = field.getValue().getValue();
+            if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.ISGROUP")){
                 this.setIsGroup(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.SCIENTNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.SCIENTNAME")){
                 this.setScientificName(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.ENNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.ENNAME")){
                 this.setEnName(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.FRNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.FRNAME")){
                 this.setFrName(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.ESNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.ESNAME")){
                 this.setEsName(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.FAMILY")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.FAMILY")){
                 this.setFamily(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.BIOORDER")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.BIOORDER")){
                 this.setBioOrder(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FAO_SPECIES.TAXOCODE")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FAO_SPECIES.TAXOCODE")){
                 this.setEnName(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());

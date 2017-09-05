@@ -103,26 +103,26 @@ public class Location extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
-            String fieldValue = field.getName().getValue();
-            if (StringUtils.endsWith(fieldName, "LOCATION.CODE2")) {
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.CODE2")) {
                 this.setCode2(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.LATITUDE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LATITUDE")) {
                 this.setLatitude(Double.valueOf(fieldValue));
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.LONGITUDE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LONGITUDE")) {
                 this.setLongitude(Double.valueOf(fieldValue));
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.FISHINGPORTIND")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.FISHINGPORTIND")) {
                 this.setFishingPortInd(Boolean.valueOf(fieldValue));
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.LANDINGPLACEIND")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LANDINGPLACEIND")) {
                 this.setLandingPlaceInd(Boolean.valueOf(fieldValue));
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.COMMERCIALPORTIND")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COMMERCIALPORTIND")) {
                 this.setCommercialPortInd(Boolean.valueOf(fieldValue));
-            } else if(StringUtils.endsWith(fieldName, "LOCATION.ENNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "LOCATION.ENNAME")){
                 this.setEnName(fieldValue);
-            }  else if (StringUtils.endsWith(fieldName, "LOCATION.LOCODE")) {
+            }  else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
                 this.setUnloCode(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.COORDINATES")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COORDINATES")) {
                 this.setCoordinates(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "LOCATION.UNFCTCODE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.UNFCTCODE")) {
                 this.setUnFunctionCode(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());

@@ -81,16 +81,16 @@ public class Farm extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
             String fieldName  = field.getName().getValue();
-            String fieldValue  = field.getName().getValue();
-            if(StringUtils.endsWith(fieldName, "FARM.CODE2")){
+            String fieldValue  = field.getValue().getValue();
+            if(StringUtils.equalsIgnoreCase(fieldName, "FARM.CODE2")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FARM.ENNAME")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.ENNAME")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FARM.PLACEFK_X_KEY")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.PLACEFK_X_KEY")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FARM.ENDESCRIPTION")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.ENDESCRIPTION")){
                 this.setLegalReference(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "FARM.CONTRACTINGPARTY")){
+            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.CONTRACTINGPARTY")){
                 this.setLegalReference(fieldValue);
             }  else {
                 logError(fieldName, this.getClass().getSimpleName());

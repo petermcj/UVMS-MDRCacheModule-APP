@@ -32,120 +32,137 @@ import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class FaBr extends MasterDataRegistry {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_br_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
-	private long id;
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_br_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
-	@Column(name = "field")
-	@Field(name="field")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String field;
+    @Column(name = "field")
+    @Field(name = "field")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String field;
 
-	@Column(name = "message_if_failing")
-	@Field(name="messageIfFailing")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String messageIfFailing;
+    @Column(name = "message_if_failing")
+    @Field(name = "messageIfFailing")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String messageIfFailing;
 
-	@Column(name = "sequence_order")
-	@Field(name="sequenceOrder")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String sequenceOrder;
+    @Column(name = "sequence_order")
+    @Field(name = "sequenceOrder")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String sequenceOrder;
 
-	@Column(name = "br_level_fk_x_key")
-	@Field(name="brLevelFkXKey")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String brLevelFkXKey;
+    @Column(name = "br_level_fk_x_key")
+    @Field(name = "brLevelFkXKey")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String brLevelFkXKey;
 
-	@Column(name = "br_sublevel")
-	@Field(name="brSublevel")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String brSublevel;
+    @Column(name = "br_sublevel")
+    @Field(name = "brSublevel")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String brSublevel;
 
-	@Column(name = "activation_indicator")
-	@Field(name="activationIndicator")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String activationIndicator;
+    @Column(name = "activation_indicator")
+    @Field(name = "activationIndicator")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String activationIndicator;
 
-	@Column(name = "error_message")
-	@Field(name = "errorMessage")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String errorMessage;
+    @Column(name = "error_message")
+    @Field(name = "errorMessage")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String errorMessage;
 
-	@Override
-	public String getAcronym() {
-		return "FA_BR";
-	}
+    @Override
+    public String getAcronym() {
+        return "FA_BR";
+    }
 
-	@Override
-	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
-		populateCommonFields(mdrDataType);
-		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "FA_BR.FIELD")){
-				this.setField(fieldValue);
-			}else if(StringUtils.endsWith(fieldName, "FA_BR.ENMESSAGE")){
-				this.setMessageIfFailing(fieldValue);
-			}else if(StringUtils.endsWith(fieldName, "FA_BR.SEQORDER")){
-				this.setSequenceOrder(fieldValue);
-			}else if(StringUtils.endsWith(fieldName, "FA_BR.BRLEVELFK_X_KEY")){
-				this.setBrLevelFkXKey(fieldValue);
-			}else if(StringUtils.endsWith(fieldName, "FA_BR.BRSUBLEVEL")){
-				this.setBrSublevel(fieldValue);
-			}else if(StringUtils.endsWith(fieldName, "FA_BR.ACTIVEIND")){
-				this.setActivationIndicator(fieldValue);
-			} else if(StringUtils.endsWith(fieldName, "FA_BR.ERROR_MESSAGE")){
-				this.setErrorMessage(fieldValue);
-			} else {
-				logError(fieldName, this.getClass().getSimpleName());
-			}
-		}
-	}
+    @Override
+    public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+        populateCommonFields(mdrDataType);
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.ENDESCRIPTION")) {
+                this.setDescription(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.FIELD")) {
+                this.setField(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.ENMESSAGE")) {
+                this.setMessageIfFailing(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.SEQORDER")) {
+                this.setSequenceOrder(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.BRLEVELFK_X_KEY")) {
+                this.setBrLevelFkXKey(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.BRSUBLEVEL")) {
+                this.setBrSublevel(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR.ACTIVEIND")) {
+                this.setActivationIndicator(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR.ERROR_MESSAGE")) {
+                this.setErrorMessage(fieldValue);
+            } else {
+                logError(fieldName, this.getClass().getSimpleName());
+            }
+        }
+    }
 
-	public String getField() {
-		return field;
-	}
-	public void setField(String field) {
-		this.field = field;
-	}
-	public String getMessageIfFailing() {
-		return messageIfFailing;
-	}
-	public void setMessageIfFailing(String messageIfFailing) {
-		this.messageIfFailing = messageIfFailing;
-	}
-	public String getSequenceOrder() {
-		return sequenceOrder;
-	}
-	public void setSequenceOrder(String sequenceOrder) {
-		this.sequenceOrder = sequenceOrder;
-	}
-	public String getBrLevelFkXKey() {
-		return brLevelFkXKey;
-	}
-	public void setBrLevelFkXKey(String brLevelFkXKey) {
-		this.brLevelFkXKey = brLevelFkXKey;
-	}
-	public String getActivationIndicator() {
-		return activationIndicator;
-	}
-	public void setActivationIndicator(String activationIndicator) {
-		this.activationIndicator = activationIndicator;
-	}
-	public String getBrSublevel() {
-		return brSublevel;
-	}
-	public void setBrSublevel(String brSublevel) {
-		this.brSublevel = brSublevel;
-	}
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public String getMessageIfFailing() {
+        return messageIfFailing;
+    }
+
+    public void setMessageIfFailing(String messageIfFailing) {
+        this.messageIfFailing = messageIfFailing;
+    }
+
+    public String getSequenceOrder() {
+        return sequenceOrder;
+    }
+
+    public void setSequenceOrder(String sequenceOrder) {
+        this.sequenceOrder = sequenceOrder;
+    }
+
+    public String getBrLevelFkXKey() {
+        return brLevelFkXKey;
+    }
+
+    public void setBrLevelFkXKey(String brLevelFkXKey) {
+        this.brLevelFkXKey = brLevelFkXKey;
+    }
+
+    public String getActivationIndicator() {
+        return activationIndicator;
+    }
+
+    public void setActivationIndicator(String activationIndicator) {
+        this.activationIndicator = activationIndicator;
+    }
+
+    public String getBrSublevel() {
+        return brSublevel;
+    }
+
+    public void setBrSublevel(String brSublevel) {
+        this.brSublevel = brSublevel;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

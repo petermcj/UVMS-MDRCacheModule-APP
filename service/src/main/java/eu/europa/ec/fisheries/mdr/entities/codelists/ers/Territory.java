@@ -33,25 +33,29 @@ public class Territory extends MasterDataRegistry {
     private long id;
 
     @Column(name = "code_2")
-    @Field(name="code_2")
+    @Field(name = "code_2")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code2;
 
     @Column(name = "en_name")
-    @Field(name="en_name")
+    @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
         populateCommonFields(mdrDataType);
-        for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-            String fieldName  = field.getName().getValue();
-            String fieldValue  = field.getName().getValue();
-            if(StringUtils.endsWith(fieldName, "TERRITORY.CODE2")){
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setCode2(fieldValue);
-            } else if(StringUtils.endsWith(fieldName, "TERRITORY.ENNAME")){
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
                 this.setEnName(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "CR_LAND_TYPE.ENDESCRIPTION")) {
+                this.setDescription(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -66,12 +70,15 @@ public class Territory extends MasterDataRegistry {
     public String getCode2() {
         return code2;
     }
+
     public void setCode2(String code2) {
         this.code2 = code2;
     }
+
     public String getEnName() {
         return enName;
     }
+
     public void setEnName(String enName) {
         this.enName = enName;
     }

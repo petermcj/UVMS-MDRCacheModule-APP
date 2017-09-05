@@ -63,11 +63,13 @@ public class MemberState extends MasterDataRegistry {
         populateCommonFields(mdrDataType);
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
-            String fieldValue = field.getName().getValue();
-            if (StringUtils.endsWith(fieldName, "MEMBER_STATE.CODE2")) {
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setIso2Code(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "MEMBER_STATE.ENNAME")) {
-                this.setIso2Code(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
+                this.setEnName(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -77,12 +79,15 @@ public class MemberState extends MasterDataRegistry {
     public String getIso2Code() {
         return iso2Code;
     }
+
     public void setIso2Code(String iso2Code) {
         this.iso2Code = iso2Code;
     }
+
     public String getEnName() {
         return enName;
     }
+
     public void setEnName(String enName) {
         this.enName = enName;
     }

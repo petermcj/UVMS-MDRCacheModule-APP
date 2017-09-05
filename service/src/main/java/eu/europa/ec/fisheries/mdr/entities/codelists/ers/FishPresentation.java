@@ -59,8 +59,8 @@ public class FishPresentation extends MasterDataRegistry {
 		populateCommonFields(mdrDataType);
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
-			String fieldValue  = field.getName().getValue();
-			if(StringUtils.endsWith(fieldName, "FISH_PRESENTATION.ENNAME")){
+			String fieldValue  = field.getValue().getValue();
+			if(StringUtils.equalsIgnoreCase(fieldName, "FISH_PRESENTATION.ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());
