@@ -49,7 +49,7 @@
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.1.2</logback.core.version>
-        <uvms.commons.version>2.0.21</uvms.commons.version>
+        <uvms.commons.version>2.0.28-SNAPSHOT</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
         <hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
@@ -219,7 +219,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>18.0</version>
+                <version>20.0</version>
             </dependency>
 
             <dependency>
