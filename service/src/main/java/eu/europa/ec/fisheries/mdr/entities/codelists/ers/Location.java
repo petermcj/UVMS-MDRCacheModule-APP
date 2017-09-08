@@ -104,7 +104,9 @@ public class Location extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.CODE2")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+                this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setCode2(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LATITUDE")) {
                 this.setLatitude(Double.valueOf(fieldValue));
@@ -112,13 +114,13 @@ public class Location extends MasterDataRegistry {
                 this.setLongitude(Double.valueOf(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.FISHINGPORTIND")) {
                 this.setFishingPortInd(Boolean.valueOf(fieldValue));
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LANDINGPLACEIND")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LANDPLACEIND")) {
                 this.setLandingPlaceInd(Boolean.valueOf(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COMMERCIALPORTIND")) {
                 this.setCommercialPortInd(Boolean.valueOf(fieldValue));
-            } else if(StringUtils.equalsIgnoreCase(fieldName, "LOCATION.ENNAME")){
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
                 this.setEnName(fieldValue);
-            }  else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
                 this.setUnloCode(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COORDINATES")) {
                 this.setCoordinates(fieldValue);
@@ -133,60 +135,79 @@ public class Location extends MasterDataRegistry {
     public String getCode2() {
         return code2;
     }
+
     public void setCode2(String iso3CountryCode) {
         this.code2 = iso3CountryCode;
     }
+
     public Double getLatitude() {
         return latitude;
     }
+
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
+
     public Double getLongitude() {
         return longitude;
     }
+
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
     public Boolean getFishingPortInd() {
         return fishingPortInd;
     }
+
     public void setFishingPortInd(Boolean fishingPortInd) {
         this.fishingPortInd = fishingPortInd;
     }
+
     public Boolean getLandingPlaceInd() {
         return landingPlaceInd;
     }
+
     public void setLandingPlaceInd(Boolean landingPlaceInd) {
         this.landingPlaceInd = landingPlaceInd;
     }
+
     public Boolean getCommercialPortInd() {
         return commercialPortInd;
     }
+
     public void setCommercialPortInd(Boolean commercialPortInd) {
         this.commercialPortInd = commercialPortInd;
     }
+
     public String getUnloCode() {
         return unloCode;
     }
+
     public void setUnloCode(String unloCode) {
         this.unloCode = unloCode;
     }
+
     public String getCoordinates() {
         return coordinates;
     }
+
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
+
     public String getUnFunctionCode() {
         return unFunctionCode;
     }
+
     public void setUnFunctionCode(String unFunctionCode) {
         this.unFunctionCode = unFunctionCode;
     }
+
     public String getEnName() {
         return enName;
     }
+
     public void setEnName(String enName) {
         this.enName = enName;
     }
