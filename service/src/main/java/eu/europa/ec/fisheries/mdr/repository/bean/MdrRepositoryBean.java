@@ -85,6 +85,7 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         if (!"NOK".equals(fluxResponseDocument.getResponseCode().toString().toUpperCase())) {
             List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
             if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
+                log.info("START [STAT] : Received and going to save [ - "+mdrEntityRows.size()+" - ] Rows of the entity [ "+mdrEntityRows.get(0).getAcronym()+" ]");
                 try {
                     insertNewData(mdrEntityRows);
                     statusDao.updateStatusSuccessForAcronym(response.getMDRDataSet(), AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
@@ -92,6 +93,7 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
                     statusDao.updateStatusForAcronym(mdrEntityRows.get(0).getAcronym(), AcronymListState.FAILED);
                     log.error("Transaction rolled back! Couldn't persist mdr Entity : ", e);
                 }
+                log.info("END [STAT] : Succesfully saved [ - "+mdrEntityRows.size()+" - ] Rows of the entity [ "+mdrEntityRows.get(0).getAcronym()+" ]");
             } else { // List is empty
                 log.error("[[ ERROR ]] Got Message from Flux related to MDR but, the list is empty! So, nothing is going to be persisted!");
                 statusFailedOrEmptyForAcronym(fluxResponseDocument, AcronymListState.EMPTY);
