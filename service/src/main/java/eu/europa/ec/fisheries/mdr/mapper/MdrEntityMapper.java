@@ -55,7 +55,7 @@ public class MdrEntityMapper {
 	 *
 	 * @return entityList
 	 */
-	private static List<MasterDataRegistry> mapJaxbToMDRType(List<MDRDataNodeType> codeElements, String acronym) {
+	public static List<MasterDataRegistry> mapJaxbToMDRType(List<MDRDataNodeType> codeElements, String acronym) {
 		List<MasterDataRegistry> entityList = new ArrayList<>();
 		for(MDRDataNodeType actualJaxbElement : codeElements){
 			MasterDataRegistry entity = null;
@@ -75,5 +75,5 @@ public class MdrEntityMapper {
 
 	}
 
-	
+
 }

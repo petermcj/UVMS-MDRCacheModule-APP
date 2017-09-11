@@ -29,6 +29,10 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
+    void insertNewDataWithoutPurging(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
+	void deleteDataAndPurgeIndexes(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
 	void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
 
 	List<MdrConfiguration> getAllConfigurations() throws ServiceException;

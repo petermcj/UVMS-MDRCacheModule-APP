@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
@@ -35,6 +36,7 @@ import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 @Table(name = "mdr_location")
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
+@Slf4j
 public class Location extends MasterDataRegistry {
 
     @Id
@@ -109,9 +111,9 @@ public class Location extends MasterDataRegistry {
             } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
                 this.setCode2(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LATITUDE")) {
-                this.setLatitude(Double.valueOf(fieldValue));
+                this.setLatitude(getDoubleFromString(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LONGITUDE")) {
-                this.setLongitude(Double.valueOf(fieldValue));
+                this.setLongitude(getDoubleFromString(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.FISHINGPORTIND")) {
                 this.setFishingPortInd(Boolean.valueOf(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LANDPLACEIND")) {
@@ -130,6 +132,19 @@ public class Location extends MasterDataRegistry {
                 logError(fieldName, this.getClass().getSimpleName());
             }
         }
+    }
+
+    private Double getDoubleFromString(String fieldValue) {
+        if(StringUtils.isEmpty(fieldValue)){
+            return null;
+        }
+        Double doubleValue = null;
+        try {
+            doubleValue = Double.valueOf(fieldValue);
+        } catch(NumberFormatException ex){
+            log.error("The value [ "+fieldValue+" ] could not be converted to double!");
+        }
+        return doubleValue;
     }
 
     public String getCode2() {
