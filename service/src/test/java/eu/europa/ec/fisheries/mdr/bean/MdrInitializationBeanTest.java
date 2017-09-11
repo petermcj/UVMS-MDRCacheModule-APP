@@ -10,6 +10,7 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.bean;
 
+import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
@@ -27,8 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.TimerService;
 import lombok.SneakyThrows;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.internal.util.reflection.Whitebox;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.TextType;
@@ -36,7 +39,7 @@ import un.unece.uncefact.data.standard.mdr.response.TextType;
 /**
  * Created by kovian on 06/01/2017.
  */
-public class MdrInitializationBeanTest /*extends BaseMdrDaoTest*/ {
+public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
     private MdrInitializationBean initBean = new MdrInitializationBean();
 
@@ -88,7 +91,7 @@ public class MdrInitializationBeanTest /*extends BaseMdrDaoTest*/ {
     }
 
 
-/*    @Before
+    @Before
     @SneakyThrows
     public void prepare() {
         // SyncBean internal state
@@ -115,7 +118,7 @@ public class MdrInitializationBeanTest /*extends BaseMdrDaoTest*/ {
         mdrStatusRepository.init();
         mdrRepository.init();
         mdrSearchRepository.init();
-    }*/
+    }
 
     @Test
     @SneakyThrows
