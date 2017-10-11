@@ -7,6 +7,7 @@
 	<include file="\postgres\schema\tables\mdr_acronymversion.xml"/>
 	<include file="\postgres\schema\tables\mdr_codelist_status.xml"/>
 	<include file="\postgres\schema\tables\mdr_configuration.xml"/>
+	<include file="\postgres\schema\tables\code_list_structure.xml"/>
 
 	<include file="\postgres\schema\tables\mdr_conversion_factor.xml"/>
 	<include file="\postgres\schema\tables\mdr_effort_zone.xml"/>

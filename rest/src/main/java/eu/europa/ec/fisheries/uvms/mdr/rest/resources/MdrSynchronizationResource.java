@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
@@ -52,6 +53,9 @@ public class MdrSynchronizationResource extends UnionVMSResource {
 
     @EJB
     private MdrStatusRepository mdrStatusBean;
+
+    @EJB
+    private MdrRepository mdrRepository;
 
     /**
      * Requests synchronization of all "updatable" code lists.
@@ -111,6 +115,20 @@ public class MdrSynchronizationResource extends UnionVMSResource {
         log.info("Finished Sending MDR Lists Structure request");
         return createSuccessResponse();
     }
+
+
+    @POST
+    @Path("/savestructure")
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.TEXT_PLAIN)
+    @IUserRoleInterceptor(requiredUserRole = {MdrFeaturesEnum.UPDATE_MDR_CODE_LISTS})
+    public Response saveMockedResponse(@Context HttpServletRequest request, String message) {
+        log.info("Sending MDR Lists Structure request");
+        mdrRepository.saveAcronymStructureMessage(message, "EFFORT_ZONE");
+        log.info("Finished Sending MDR Lists Structure request");
+        return createSuccessResponse();
+    }
+
 
     @GET
     @Path("/index")

@@ -37,6 +37,7 @@ import un.unece.uncefact.data.standard.mdr.communication.MdrGetCodeListRequest;
 import un.unece.uncefact.data.standard.mdr.communication.SetFLUXMDRSyncMessageResponse;
 import un.unece.uncefact.data.standard.mdr.communication.ValidationResultType;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
 
 /**
  * Observer class listening to events fired from MdrMessageConsumerBean (MDR Module).
@@ -72,22 +73,39 @@ public class MdrEventServiceBean implements MdrEventService {
     @Override
     public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message) {
         log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
-        // Extract message from EventMessage Object
         try {
             String messageStr = extractMessageRequestString(message);
-            if (isAcnowledgeMessage(messageStr)) {
-                log.info("ACKNOWLEDGE : Received Acnowledge Message. No data. Nothing is going to be persisted");
-                return;
+            FLUXMDRReturnMessage responseMessage = extractMdrFluxResponseFromEventMessage(messageStr);
+            if (isDataMessage(message, messageStr, responseMessage)) {
+                mdrRepository.updateMdrEntity(responseMessage);
             }
-            FLUXMDRReturnMessage responseObject = extractMdrFluxResponseFromEventMessage(messageStr);
-            if (responseObject == null) {
-                log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
-                        "Message content is as follows : " + extractMessageRequestString(message));
-            }
-            mdrRepository.updateMdrEntity(responseObject);
         } catch (MdrModelMarshallException e) {
             log.error("MdrModelMarshallException while unmarshalling message from flux ", e);
         }
+    }
+
+    private boolean isDataMessage(EventMessage message, String messageStr, FLUXMDRReturnMessage responseMessage) {
+        boolean hasEntityToUpdate = true;
+        if (responseMessage == null) {
+            log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
+                    "Message content is as follows : " + extractMessageRequestString(message));
+            hasEntityToUpdate = false;
+        } else if (isAcnowledgeMessage(messageStr)) {
+            log.info("ACKNOWLEDGE : Received Acnowledge Message. No data. Nothing is going to be persisted");
+            hasEntityToUpdate = false;
+        } else if (isObjDescriptionMessage(responseMessage)) {
+            mdrRepository.saveAcronymStructureMessage(messageStr, responseMessage.getMDRDataSet().getID().getValue());
+            hasEntityToUpdate = false;
+        }
+        return hasEntityToUpdate;
+    }
+
+    private boolean isObjDescriptionMessage(FLUXMDRReturnMessage fluxReturnMessage) {
+        FLUXResponseDocumentType fluxResponseDocument = fluxReturnMessage.getFLUXResponseDocument();
+        if (fluxResponseDocument != null && fluxResponseDocument.getTypeCode() != null && "OBJ_DESC".equals(fluxResponseDocument.getTypeCode().getValue())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -110,13 +128,13 @@ public class MdrEventServiceBean implements MdrEventService {
             List<String> columnFilters = requestObj.getColumnsToFilters();
             String filter = requestObj.getFilter();
             String[] columnFiltersArr;
-            if(CollectionUtils.isNotEmpty(columnFilters)){
+            if (CollectionUtils.isNotEmpty(columnFilters)) {
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
             } else {
                 log.warn("No search attributes provided. Going to consider only 'code' attribute.");
                 columnFiltersArr = new String[]{"code", "description"};
             }
-            if(filter != null && !filter.equals(STAR)){
+            if (filter != null && !filter.equals(STAR)) {
                 filter = new StringBuilder(STAR).append(filter).append(STAR).toString();
             } else {
                 filter = STAR;
@@ -128,7 +146,7 @@ public class MdrEventServiceBean implements MdrEventService {
                     0, nrOfResults, null, false, filter, columnFiltersArr);
             String validationStr = "Validation is OK.";
             ValidationResultType validation = ValidationResultType.OK;
-            if(CollectionUtils.isEmpty(mdrList)){
+            if (CollectionUtils.isEmpty(mdrList)) {
                 validationStr = "Codelist was found but, the search criteria returned 0 results. (Maybe the Table is empty!)";
                 validation = ValidationResultType.WOK;
             }
@@ -156,7 +174,7 @@ public class MdrEventServiceBean implements MdrEventService {
             return false;
         }
         // Acronym doesn't exist
-        if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())){
+        if (!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())) {
             sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST, message.getJmsMessage());
             return false;
         }
@@ -168,12 +186,12 @@ public class MdrEventServiceBean implements MdrEventService {
      *
      * @param textMessage
      */
-    private void sendErrorMessageToMdrQueue(String textMessage, TextMessage jmsMessage){
+    private void sendErrorMessageToMdrQueue(String textMessage, TextMessage jmsMessage) {
         try {
             log.error(textMessage);
             mdrResponseQueueProducer.sendModuleResponseMessage(jmsMessage, MdrModuleMapper.createFluxMdrGetCodeListErrorResponse(textMessage), "MDR");
         } catch (MdrModelMarshallException e) {
-           log.error("Something went wrong during sending of error message back to MdrQueue out! Couldn't recover anymore from this! Response will not be posted!", e);
+            log.error("Something went wrong during sending of error message back to MdrQueue out! Couldn't recover anymore from this! Response will not be posted!", e);
         }
     }
 

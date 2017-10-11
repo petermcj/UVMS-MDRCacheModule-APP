@@ -41,7 +41,7 @@ public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRep
     }
 
     @Override
-    public List<MdrCodeListStatus> getAllAcronymsStatuses(){
+    public List<MdrCodeListStatus> getAllAcronymsStatuses() {
         return statusDao.getAllAcronymsStatuses();
     }
 
@@ -56,20 +56,20 @@ public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRep
     }
 
     @Override
-    public MdrCodeListStatus getStatusForAcronym(String acronym){
+    public MdrCodeListStatus getStatusForAcronym(String acronym) {
         return statusDao.getStatusForAcronym(acronym);
     }
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt, String uuid){
+    public void updateStatusAttemptForAcronym(String acronym, AcronymListState newStatus, Date lastAttempt, String uuid) {
         statusDao.updateStatusForAcronym(acronym, newStatus, lastAttempt, uuid);
     }
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void updateStatusSuccessForAcronym(String acronym, AcronymListState newStatus, Date lastSuccess) throws AcronymNotFoundException {
-            statusDao.updateStatusSuccessForAcronym(acronym, newStatus, lastSuccess);
+        statusDao.updateStatusSuccessForAcronym(acronym, newStatus, lastSuccess);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRep
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public void updateSchedulableForAcronym(String acronym, boolean schedulable){
+    public void updateSchedulableForAcronym(String acronym, boolean schedulable) {
         statusDao.updateSchedulableForAcronym(acronym, schedulable);
     }
 }

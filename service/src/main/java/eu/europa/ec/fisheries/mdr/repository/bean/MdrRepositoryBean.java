@@ -10,10 +10,12 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.repository.bean;
 
+import eu.europa.ec.fisheries.mdr.dao.CodeListStructureDao;
 import eu.europa.ec.fisheries.mdr.dao.MasterDataRegistryDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrBulkOperationsDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrConfigurationDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
+import eu.europa.ec.fisheries.mdr.entities.CodeListStructure;
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
@@ -24,6 +26,7 @@ import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
 import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import eu.europa.ec.fisheries.uvms.exception.ServiceException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -51,6 +54,8 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
 
     private MasterDataRegistryDao mdrDao;
 
+    private CodeListStructureDao structDao;
+
     @PostConstruct
     public void init() {
         initEntityManager();
@@ -58,6 +63,7 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         mdrDao = new MasterDataRegistryDao<>(getEntityManager());
         mdrConfigDao = new MdrConfigurationDao(getEntityManager());
         statusDao = new MdrStatusDao(getEntityManager());
+        structDao = new CodeListStructureDao(getEntityManager());
     }
 
     @SuppressWarnings("unchecked")
@@ -265,6 +271,12 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
     @Override
     public MdrConfiguration getMdrSchedulerConfiguration() {
         return mdrConfigDao.getMdrSchedulerConfiguration();
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void saveAcronymStructureMessage(String messageStr, String acronym) {
+        structDao.saveStructureMessage(new CodeListStructure(acronym, new Date(), messageStr));
     }
 
     /*
