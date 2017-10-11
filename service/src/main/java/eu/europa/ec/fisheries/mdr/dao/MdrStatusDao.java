@@ -117,35 +117,27 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
 
     public void updateStatusSuccessForAcronym(MDRDataSetType codeListType, AcronymListState newStatus, Date lastSuccess) {
         MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(codeListType.getID().getValue());
-        fillMetaDataForMDRStatus(codeListType, mdrCodeListElement);
         mdrCodeListElement.setLastSuccess(lastSuccess);
         mdrCodeListElement.setLastStatus(newStatus);
-        try {
-            saveOrUpdateEntity(mdrCodeListElement);
-        } catch (ServiceException e) {
-            log.error(ERROR_WHILE_SAVING_STATUS,e);
-        }
-    }
-
-    private void fillMetaDataForMDRStatus(MDRDataSetType xmlCodeListMetaData, MdrCodeListStatus codeListFromDB) {
-
-        // Filling objectSource, description and name
-        codeListFromDB.setObjectSource(xmlCodeListMetaData.getOrigin().getValue());
-        codeListFromDB.setObjectDescription(xmlCodeListMetaData.getDescription().getValue());
-        codeListFromDB.setObjectName(xmlCodeListMetaData.getName().getValue());
-
-        // Filling supported versions and Validity Ranges for each version
-        List<DataSetVersionType> specifiedDataSetVersions = xmlCodeListMetaData.getSpecifiedDataSetVersions();
+        mdrCodeListElement.setObjectSource(codeListType.getOrigin().getValue());
+        mdrCodeListElement.setObjectDescription(codeListType.getDescription().getValue());
+        mdrCodeListElement.setObjectName(codeListType.getName().getValue());
+        List<DataSetVersionType> specifiedDataSetVersions = codeListType.getSpecifiedDataSetVersions();
         if(CollectionUtils.isNotEmpty(specifiedDataSetVersions)){
             Set<AcronymVersion> acrVersions = new HashSet<>();
-            for(DataSetVersionType actVersion : xmlCodeListMetaData.getSpecifiedDataSetVersions()){
+            for(DataSetVersionType actVersion : codeListType.getSpecifiedDataSetVersions()){
                 acrVersions.add(new AcronymVersion(
                         actVersion.getName().getValue(),
                         new DateRange(actVersion.getValidityStartDateTime().getDateTime().toGregorianCalendar().getTime(),
                                 actVersion.getValidityEndDateTime().getDateTime().toGregorianCalendar().getTime())
                 ));
             }
-            codeListFromDB.setVersions(acrVersions);
+            mdrCodeListElement.setVersions(acrVersions);
+        }
+        try {
+            saveOrUpdateEntity(mdrCodeListElement);
+        } catch (ServiceException e) {
+            log.error(ERROR_WHILE_SAVING_STATUS,e);
         }
     }
 

@@ -47,4 +47,5 @@ public interface MdrRepository {
 
 	MdrConfiguration getMdrSchedulerConfiguration();
 
+    void saveAcronymStructureMessage(String messageStr, String acronym);
 }

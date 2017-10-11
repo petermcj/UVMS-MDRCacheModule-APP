@@ -115,7 +115,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             Class codeListClass = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
             QueryBuilder queryBuilder = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
-            Query luceneQuery = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
+            Query luceneQuery = queryBuilder.keyword().wildcard().onFields(searchAttributes).ignoreFieldBridge().matching(filterText.toLowerCase()).createQuery();
             fullTextQuery = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
             log.debug("Using lucene query: {}", fullTextQuery.toString());
         } catch (MdrCacheInitException e) {

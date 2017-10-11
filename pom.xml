@@ -4,7 +4,7 @@
 
     <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
     <artifactId>mdr</artifactId>
-    <version>0.5.2-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Maven project-archetype for UnionVms modules</description>
 
@@ -41,7 +41,7 @@
         </sonar.exclusions>
         <!-- The MDR name is used as a common point to rename the application alias visible in USM-->
         <mdr.name>MDR Cache</mdr.name>
-        <mdr.model.version>0.5.1</mdr.model.version>
+        <mdr.model.version>1.0.0-SNAPSHOT</mdr.model.version>
 
         <!-- Other modules dependencies -->
         <exchange.model>3.0.5</exchange.model>
@@ -49,7 +49,7 @@
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.1.2</logback.core.version>
-        <uvms.commons.version>2.0.27</uvms.commons.version>
+        <uvms.commons.version>2.0.29-SNAPSHOT</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
         <hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
