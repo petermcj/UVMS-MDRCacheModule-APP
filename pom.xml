@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>fish.focus.uvms.maven</groupId>
+        <artifactId>uvms-pom</artifactId>
+        <version>1.11</version>
+    </parent>
+
     <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
     <artifactId>mdr</artifactId>
     <version>1.0.1-SNAPSHOT</version>
@@ -16,7 +22,7 @@
     </developers>
 
     <properties>
-
+		<focus-pom.enforce.jdk.version.disabled>true</focus-pom.enforce.jdk.version.disabled>
         <application.name>${project.artifactId}</application.name>
         <application.version>${project.version}</application.version>
         <application.logfile>/app/logs/${project.parent.artifactId}/${project.parent.artifactId}.log</application.logfile>
@@ -26,45 +32,33 @@
         <!-- Core versions -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <focus-pom.java.version>1.7</focus-pom.java.version>
         <javaee.version>7.0</javaee.version>
-        <sl4j.version>1.7.12</sl4j.version>
-        <logback.version>1.1.2</logback.version>
+        <sl4j.version>1.7.25</sl4j.version>
+        <logback.version>1.2.3</logback.version>
 
-        <!-- sonar -->
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPath>${project.basedir}/target/coverage-reports/jacoco-unit.exec</sonar.jacoco.reportPath>
-        <sonar.language>java</sonar.language>
-        <sonar.exclusions>*src/main/java/eu/europa/ec/fisheries/mdr/domain/*,
-            *src/main/java/eu/europa/ec/fisheries/mdr/domain/codelists/*,
-            *src/main/java/eu/europa/ec/fisheries/mdr/domain/codelists/**/*
-        </sonar.exclusions>
         <!-- The MDR name is used as a common point to rename the application alias visible in USM-->
         <mdr.name>MDR Cache</mdr.name>
         <mdr.model.version>1.0.0</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>3.0.5</exchange.model>
-        <rules.model>3.0.5</rules.model>
+        <exchange.model>4.0.2</exchange.model>
+        <rules.model>3.0.10</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
-        <logback.core.version>1.1.2</logback.core.version>
+        <logback.core.version>1.2.3</logback.core.version>
         <uvms.commons.version>2.0.30</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
-        <hibernate-entitymanager.version>4.3.7.Final</hibernate-entitymanager.version>
         <hibernate-search-orm.version>5.3.0.Final</hibernate-search-orm.version>
 
         <junit.version>4.12</junit.version>
 
-        <infinispan-directory-provider.version>8.2.4.Final</infinispan-directory-provider.version>
-        <usm4uvms.version>3.0.6</usm4uvms.version>
+        <usm4uvms.version>3.0.8</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
-        <maven.release.plugin.version>2.5.2</maven.release.plugin.version>
-        <maven.scm.provider.version>2.1.1</maven.scm.provider.version>
         <database.dialect>oracle</database.dialect>
-        <geotools.version>14-M1</geotools.version>
+        <geotools.version>14.4</geotools.version>
 
         <reasteasy.version>3.0.11.Final</reasteasy.version>
         <dom4j.version>1.6.1</dom4j.version>
@@ -77,6 +71,37 @@
     <dependencyManagement>
 
         <dependencies>
+
+        	<dependency>
+				<groupId>fish.focus.uvms.maven</groupId>
+				<artifactId>uvms-pom-gis-deps</artifactId>
+				<version>1.11</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>fish.focus.uvms.maven</groupId>
+				<artifactId>uvms-pom-logging-deps</artifactId>
+				<version>1.11</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>fish.focus.uvms.maven</groupId>
+				<artifactId>uvms-pom-monitoring-deps</artifactId>
+				<version>1.11</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>fish.focus.uvms.maven</groupId>
+				<artifactId>uvms-pom-test-deps</artifactId>
+				<version>1.11</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>fish.focus.uvms.maven</groupId>
+				<artifactId>uvms-pom-arquillian-deps</artifactId>
+				<version>1.11</version>
+				<type>pom</type>
+			</dependency>
 
             <dependency>
                 <groupId>dom4j</groupId>
@@ -96,13 +121,17 @@
                 <groupId>eu.europa.ec.fisheries.uvms.exchange</groupId>
                 <artifactId>exchange-model</artifactId>
                 <version>${exchange.model}</version>
-				<classifier>date</classifier>
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms.rules</groupId>
                 <artifactId>rules-model</artifactId>
                 <version>${rules.model}</version>
-				<classifier>date</classifier>
+                <exclusions>
+                	<exclusion>
+                		<groupId>org.powermock</groupId>
+      					<artifactId>powermock-api-mockito</artifactId>
+                	</exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Inner dependencies -->
@@ -130,11 +159,23 @@
                 <artifactId>uvms-test</artifactId>
                 <version>${uvms.test.version}</version>
                 <scope>test</scope>
+                <exclusions>
+                	<exclusion>
+                		<groupId>commons-logging</groupId>
+                		<artifactId>commons-logging</artifactId>
+                	</exclusion>
+                </exclusions>                
             </dependency>
             <dependency>
                 <groupId>eu.europa.ec.fisheries.uvms</groupId>
                 <artifactId>usm4uvms</artifactId>
                 <version>${usm4uvms.version}</version>
+                <exclusions>
+                	<exclusion>
+                		<groupId>commons-logging</groupId>
+                		<artifactId>commons-logging</artifactId>
+                	</exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Other dependencies -->
@@ -176,31 +217,29 @@
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-core</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                		<artifactId>hibernate-entitymanager</artifactId>                    
+                    </exclusion>
                 </exclusions>
-            </dependency>
-            <!-- If using JPA, add: -->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>${hibernate-entitymanager.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.4</version>
+                <version>3.6</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </dependency>
 
             <dependency>
@@ -213,7 +252,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.12</version>
+                <version>1.16.18</version>
             </dependency>
 
             <dependency>
@@ -226,8 +265,13 @@
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxb-provider</artifactId>
                 <version>3.0.11.Final</version>
+                <exclusions>
+                	<exclusion>
+                	    <groupId>com.sun.xml.bind</groupId>
+    					<artifactId>jaxb-impl</artifactId>
+                	</exclusion>
+                </exclusions>
             </dependency>
-
             <dependency>
                 <groupId>ojdbc</groupId>
                 <artifactId>ojdbc</artifactId>
@@ -246,13 +290,6 @@
                 <artifactId>jts</artifactId>
                 <version>1.13</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <!-- Infinispan integration: -->
-            <dependency>
-                <groupId>org.infinispan</groupId>
-                <artifactId>infinispan-directory-provider</artifactId>
-                <version>${infinispan-directory-provider.version}</version>
             </dependency>
 
             <!-- Reast related dependencies -->
@@ -274,7 +311,6 @@
                 <artifactId>jaxrs-api</artifactId>
                 <version>${reasteasy.version}</version>
             </dependency>
-
         </dependencies>
 
     </dependencyManagement>
@@ -344,7 +380,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.0.4</version>
                     <executions>
                         <execution>
                             <!-- This id must match the -Prelease-profile id value or else sources will be "uploaded" twice, which causes Nexus to fail -->
@@ -374,32 +409,12 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.4</version>
                 <configuration>
                     <goalPrefix>plugin</goalPrefix>
                     <outputDirectory>target/dir</outputDirectory>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.sonar-plugins.java</groupId>
-                <artifactId>sonar-java-plugin</artifactId>
-                <version>3.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.0.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -409,43 +424,6 @@
                         <exclude>**/*ITest.java</exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
-                <configuration>
-                    <destFile>${sonar.jacoco.reportPath}</destFile>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>jacoco-initialize</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>jacoco-site</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven.release.plugin.version}</version>
-               <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>1.9.5</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

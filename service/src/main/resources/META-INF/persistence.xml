@@ -12,8 +12,7 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
             <property name="hibernate.default_schema" value="mdr"/>
-            <property name="hibernate.transaction.jta.platform"
-                      value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
 
             <!-- Decomment when generation of new SQL scripts for Mdr table creation is needed. -->
             <!--<property name="javax.persistence.schema-generation.scripts.action"        value="drop-and-create"/>-->
@@ -21,9 +20,9 @@
             <!--<property name="javax.persistence.schema-generation.create-source"         value="metadata"/>-->
             <!--<property name="javax.persistence.schema-generation.scripts.create-target" value="create-table.sql"/>-->
 
-            <property name="show_sql" value="true"/>
+            <property name="show_sql" value="false"/>
             <property name="format_sql" value="false"/>
-            <property name="use_sql_comments" value="true"/>
+            <property name="use_sql_comments" value="false"/>
 
             <!--HIBERNATE SEARCH PROPS-->
             <property name="hibernate.search.default.directory_provider" value="org.hibernate.search.store.impl.FSDirectoryProvider"/>
