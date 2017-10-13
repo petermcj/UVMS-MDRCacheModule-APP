@@ -63,7 +63,7 @@ public class MdrEventServiceBean implements MdrEventService {
     private static final String STAR = "*";
     private static final String MDR_MODEL_MARSHALL_EXCEPTION = "MdrModelMarshallException while unmarshalling message from flux : ";
     private static final String ERROR_GET_LIST_FOR_THE_REQUESTED_CODE = "Error while trying to get list for the requested CodeList : ";
-    private static final String ACRONYM_DOESNT_EXIST = "The acronym you are searching for does not exist!";
+    private static final String ACRONYM_DOESNT_EXIST = "The acronym you are searching for does not exist! Acronym ::: ";
 
     /**
      * This method saves the received codeList (from FLUX or MANUAL upload).
@@ -175,7 +175,7 @@ public class MdrEventServiceBean implements MdrEventService {
         }
         // Acronym doesn't exist
         if (!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(requestObj.getAcronym())) {
-            sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST, message.getJmsMessage());
+            sendErrorMessageToMdrQueue(ACRONYM_DOESNT_EXIST + requestObj.getAcronym(), message.getJmsMessage());
             return false;
         }
         return true;

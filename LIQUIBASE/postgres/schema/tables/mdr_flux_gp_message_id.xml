@@ -6,11 +6,11 @@
 
     <changeSet author="kovian" id="1890672155152481">
         <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
-                        sequenceName="mdr_flux_gp_message_id_seq" startValue="2000"/>
+                        sequenceName="mdr_flux_gp_msg_id_seq" startValue="2000"/>
     </changeSet>
 
     <changeSet author="kovian (generated)" id="1504278870571-674" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
-        <createTable tableName="mdr_flux_gp_message_id">
+        <createTable tableName="mdr_flux_gp_msg_id">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -23,15 +23,15 @@
     </changeSet>
 
     <changeSet author="kovian (generated)" id="1490280409454-24" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
-        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_message_id_pkey" tableName="mdr_flux_gp_message_id"/>
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_msg_id_pkey" tableName="mdr_flux_gp_msg_id"/>
     </changeSet>
 
     <changeSet author="kovian" id="76817789687171-24" dbms="postgresql">
         <addDefaultValue
                 columnDataType="BIGINT"
                 columnName="id"
-                defaultValueSequenceNext="mdr_flux_gp_message_id_seq"
-                tableName="mdr_flux_gp_message_id"/>
+                defaultValueSequenceNext="mdr_flux_gp_msg_id_seq"
+                tableName="mdr_flux_gp_msg_id"/>
     </changeSet>
 
 </databaseChangeLog>
