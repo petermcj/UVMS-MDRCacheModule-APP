@@ -184,7 +184,12 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             query.setMaxResults(pageSize);
         }
         if (StringUtils.isNotBlank(sortBy)) {
-            query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
+            SortField.Type sortType = SortField.Type.STRING;
+            if("validity.startDate".equalsIgnoreCase(sortBy) || "validity.endDate".equalsIgnoreCase(sortBy)){
+                log.info("[INFO] Sorting by date...");
+                sortType = SortField.Type.LONG;
+            }
+            query.setSort(new Sort(new SortField(sortBy, sortType, isReversed)));
         }
         return query;
     }
