@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 @Local
 public interface MdrRepository {
@@ -39,7 +40,9 @@ public interface MdrRepository {
 
 	MdrConfiguration getConfigurationByName(String vonfigName);
 
-	List<MdrCodeListStatus> findAllStatuses() throws ServiceException;
+    void updateMetaDataForAcronym(MDRDataSetType metaData);
+
+    List<MdrCodeListStatus> findAllStatuses() throws ServiceException;
 
 	MdrCodeListStatus findStatusByAcronym(String acronym);
 

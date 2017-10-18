@@ -58,6 +58,34 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
     private BaseMdrBean baseBean;
 
+    @Before
+    @SneakyThrows
+    public void prepare() {
+        // SyncBean internal state
+        Whitebox.setInternalState(synchBean, "mdrRepository", mdrRepository);
+        Whitebox.setInternalState(synchBean, "statusRepository", statusRepository);
+        Whitebox.setInternalState(synchBean, "producer", producer);
+
+        // SchedulerBean internal state
+        Whitebox.setInternalState(schedulerBean, "mdrRepository", mdrRepository);
+        Whitebox.setInternalState(schedulerBean, "synchBean", synchBean);
+        Whitebox.setInternalState(schedulerBean, "timerServ", timerServ);
+
+        Whitebox.setInternalState(mdrStatusRepository, "postgres", em);
+        Whitebox.setInternalState(mdrRepository, "postgres", em);
+        Whitebox.setInternalState(mdrSearchRepository, "postgres", em);
+
+        // initBean internal state
+        Whitebox.setInternalState(initBean, "schedulerBean", schedulerBean);
+        Whitebox.setInternalState(initBean, "mdrStatusRepository", mdrStatusRepository);
+        Whitebox.setInternalState(initBean, "mdrRepository", mdrRepository);
+        Whitebox.setInternalState(initBean, "mdrSearchRepository", mdrSearchRepository);
+
+        mdrStatusRepository.init();
+        mdrRepository.init();
+        mdrSearchRepository.init();
+    }
+
     @Test
     public void testChnkingOperation(){
         int initCap = 1000000;
@@ -90,35 +118,6 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
         return new MDRDataNodeType(null, null, null, null, props);
     }
 
-
-    @Before
-    @SneakyThrows
-    public void prepare() {
-        // SyncBean internal state
-        Whitebox.setInternalState(synchBean, "mdrRepository", mdrRepository);
-        Whitebox.setInternalState(synchBean, "statusRepository", statusRepository);
-        Whitebox.setInternalState(synchBean, "producer", producer);
-
-        // SchedulerBean internal state
-        Whitebox.setInternalState(schedulerBean, "mdrRepository", mdrRepository);
-        Whitebox.setInternalState(schedulerBean, "synchBean", synchBean);
-        Whitebox.setInternalState(schedulerBean, "timerServ", timerServ);
-
-        Whitebox.setInternalState(mdrStatusRepository, "postgres", em);
-        Whitebox.setInternalState(mdrRepository, "postgres", em);
-        Whitebox.setInternalState(mdrSearchRepository, "postgres", em);
-
-        // initBean internal state
-        Whitebox.setInternalState(initBean, "synchBean", synchBean);
-        Whitebox.setInternalState(initBean, "schedulerBean", schedulerBean);
-        Whitebox.setInternalState(initBean, "mdrStatusRepository", mdrStatusRepository);
-        Whitebox.setInternalState(initBean, "mdrRepository", mdrRepository);
-        Whitebox.setInternalState(initBean, "mdrSearchRepository", mdrSearchRepository);
-
-        mdrStatusRepository.init();
-        mdrRepository.init();
-        mdrSearchRepository.init();
-    }
 
     @Test
     @SneakyThrows

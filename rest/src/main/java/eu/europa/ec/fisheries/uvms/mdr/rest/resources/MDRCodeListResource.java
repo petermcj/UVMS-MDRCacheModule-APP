@@ -71,7 +71,7 @@ public class MDRCodeListResource extends UnionVMSResource {
             int pageSize             = pagination!=null?pagination.getPageSize():Integer.MAX_VALUE;
             SortingDto sorting       = searchRequest.getSorting();
             String sortBy            = sorting!=null? sorting.getSortBy():null;
-            boolean isReversed       = sorting!=null? sorting.isReversed():false;
+            boolean isReversed       = sorting!=null && sorting.isReversed();
             String filter            = (String) criteria.get("filter");
             String[] searchAttributes = getSearchAttributesAsArray(criteria.get("searchAttribute"));
             try {
@@ -118,10 +118,10 @@ public class MDRCodeListResource extends UnionVMSResource {
                 log.warn("No search attributes provide. Going to consider only 'code' attribute.");
             }
             if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(acronym)){
-                createErrorResponse("The acronym you are searching for doesn't exist in MDR cache.");
+                return createErrorResponse("The acronym you are searching for doesn't exist in MDR cache.");
             }
             if(StringUtils.isEmpty(filter)){
-                createErrorResponse("Filter attribute cannot be empty.");
+                return createErrorResponse("Filter attribute cannot be empty.");
             }
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             int totalCodeItemsCount = mdrSearchRepositroy.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);
