@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.service.bean;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
@@ -23,13 +24,16 @@ import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueue
 import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import eu.europa.ec.fisheries.uvms.mdr.model.mapper.MdrModuleMapper;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
+import javax.persistence.Column;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +76,7 @@ public class MdrEventServiceBean implements MdrEventService {
      */
     @Override
     public void recievedSyncMdrEntityMessage(@Observes @MdrSyncMessageEvent EventMessage message) {
-        log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
+        log.info("[INFO] Recieved message from FLUX related to MDR Entity Synchronization.");
         try {
             String messageStr = extractMessageRequestString(message);
             FLUXMDRReturnMessage responseMessage = extractMdrFluxResponseFromEventMessage(messageStr);
@@ -80,24 +84,24 @@ public class MdrEventServiceBean implements MdrEventService {
                 mdrRepository.updateMdrEntity(responseMessage);
             }
         } catch (MdrModelMarshallException e) {
-            log.error("MdrModelMarshallException while unmarshalling message from flux ", e);
+            log.error("[ERROR] MdrModelMarshallException while unmarshalling message from flux ", e);
         }
     }
 
     private boolean isDataMessage(EventMessage message, String messageStr, FLUXMDRReturnMessage responseMessage) {
-        boolean hasEntityToUpdate = true;
+        boolean isDataMessage = true;
         if (responseMessage == null) {
-            log.error("The message received is not of type SetFLUXMDRSyncMessageResponse so it won't be attempted to save it! " +
-                    "Message content is as follows : " + extractMessageRequestString(message));
-            hasEntityToUpdate = false;
+            log.error("[ERROR] The message received is not of type <<FLUXMDRReturnMessage>> so it won't be attempted to save it! Message content is as follows : " + extractMessageRequestString(message));
+            isDataMessage = false;
         } else if (isAcnowledgeMessage(messageStr)) {
-            log.info("ACKNOWLEDGE : Received Acnowledge Message. No data. Nothing is going to be persisted");
-            hasEntityToUpdate = false;
+            log.info("[ACKNOWLEDGE] : Received Acnowledge Message for a prevoius request sent to FLUX. No data so nothing is going to be persisted in MDR.");
+            isDataMessage = false;
         } else if (isObjDescriptionMessage(responseMessage)) {
             mdrRepository.saveAcronymStructureMessage(messageStr, responseMessage.getMDRDataSet().getID().getValue());
-            hasEntityToUpdate = false;
+            mdrRepository.updateMetaDataForAcronym(responseMessage.getMDRDataSet());
+            isDataMessage = false;
         }
-        return hasEntityToUpdate;
+        return isDataMessage;
     }
 
     private boolean isObjDescriptionMessage(FLUXMDRReturnMessage fluxReturnMessage) {
@@ -109,7 +113,7 @@ public class MdrEventServiceBean implements MdrEventService {
     }
 
     /**
-     * This method serves the request of getting a list (CodeList)
+     * This method serves the request of getting a CodeList and returning it as a jmsMessage.
      *
      * @param message
      */
@@ -131,8 +135,8 @@ public class MdrEventServiceBean implements MdrEventService {
             if (CollectionUtils.isNotEmpty(columnFilters)) {
                 columnFiltersArr = columnFilters.toArray(new String[columnFilters.size()]);
             } else {
-                log.warn("No search attributes provided. Going to consider only 'code' attribute.");
-                columnFiltersArr = new String[]{"code", "description"};
+                log.warn("No search attributes provided. Going to consider all 'code' and 'description' attributes.");
+                columnFiltersArr = new String[]{"code", "description"}; //getAllFieldsForAcronym(requestObj.getAcronym());
             }
             if (filter != null && !filter.equals(STAR)) {
                 filter = new StringBuilder(STAR).append(filter).append(STAR).toString();
@@ -157,6 +161,24 @@ public class MdrEventServiceBean implements MdrEventService {
         } catch (ServiceException e) {
             sendErrorMessageToMdrQueue(ERROR_GET_LIST_FOR_THE_REQUESTED_CODE + e, message.getJmsMessage());
         }
+    }
+
+    private String[] getAllFieldsForAcronym(String acronym) {
+        Field[] fields = null;
+        List<String> fieldsList = new ArrayList<String>(){{add("code");add("description");}};
+        try {
+            MasterDataRegistry newInstanceForEntity = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym);
+            fields = newInstanceForEntity.getClass().getDeclaredFields();
+        } catch (MdrCacheInitException e) {
+            log.error("[ERROR] Error while trying to get instance for acronym : " + acronym);
+        }
+        for(Field field : fields){
+            if(field.isAnnotationPresent(Column.class) && !"id".equals(field.getName())){
+                fieldsList.add(field.getName());
+            }
+        }
+        String[] ausArr = new String[fieldsList.size()];
+        return fieldsList.toArray(ausArr);
     }
 
     /**
@@ -217,7 +239,7 @@ public class MdrEventServiceBean implements MdrEventService {
             SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
             respType = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
         } catch (MdrModelMarshallException e) {
-            log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity) : \n", e);
+            log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity)! Maybe not a FLUXMDRReturnMessage!!");
         }
         log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
         return respType;

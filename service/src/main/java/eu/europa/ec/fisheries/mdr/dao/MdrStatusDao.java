@@ -115,10 +115,22 @@ public class MdrStatusDao extends AbstractDAO<MdrCodeListStatus> {
         }
     }
 
-    public void updateStatusSuccessForAcronym(MDRDataSetType codeListType, AcronymListState newStatus, Date lastSuccess) {
-        MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(codeListType.getID().getValue());
+    public void updateStatusSuccessForAcronym(MDRDataSetType dataSetType, AcronymListState newStatus, Date lastSuccess) {
+        MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(dataSetType.getID().getValue());
         mdrCodeListElement.setLastSuccess(lastSuccess);
         mdrCodeListElement.setLastStatus(newStatus);
+        mdrCodeListElement.setObjectSource(dataSetType.getOrigin().getValue());
+        mdrCodeListElement.setObjectDescription(dataSetType.getDescription().getValue());
+        mdrCodeListElement.setObjectName(dataSetType.getName().getValue());
+        try {
+            saveOrUpdateEntity(mdrCodeListElement);
+        } catch (ServiceException e) {
+            log.error(ERROR_WHILE_SAVING_STATUS,e);
+        }
+    }
+
+    public void updateMetadataForAcronym(MDRDataSetType codeListType){
+        MdrCodeListStatus mdrCodeListElement = findStatusByAcronym(codeListType.getID().getValue());
         mdrCodeListElement.setObjectSource(codeListType.getOrigin().getValue());
         mdrCodeListElement.setObjectDescription(codeListType.getDescription().getValue());
         mdrCodeListElement.setObjectName(codeListType.getName().getValue());

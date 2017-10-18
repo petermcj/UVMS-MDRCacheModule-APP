@@ -279,6 +279,12 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         structDao.saveStructureMessage(new CodeListStructure(acronym, new Date(), messageStr));
     }
 
+
+    @Override
+    public void updateMetaDataForAcronym(MDRDataSetType metaData) {
+        statusDao.updateMetadataForAcronym(metaData);
+    }
+
     /*
      * MDR Acronym's statuses.
      */

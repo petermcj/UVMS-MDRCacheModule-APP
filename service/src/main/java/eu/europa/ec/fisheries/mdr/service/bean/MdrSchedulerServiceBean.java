@@ -151,6 +151,6 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
         if (args.length != 5) {
             throw new IllegalArgumentException("Invalid scheduler expression: " + schedulerExpressionStr);
         }
-        return expression.minute(args[0]).hour(args[1]).dayOfMonth(args[2]).month(args[3]).year(args[4]);
+        return expression.minute(args[0]).hour(args[1]).dayOfMonth(args[2]).month(args[3]).dayOfWeek(args[4]);
     }
 }

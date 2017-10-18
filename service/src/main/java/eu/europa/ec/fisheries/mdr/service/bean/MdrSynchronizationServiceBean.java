@@ -156,9 +156,10 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             log.error("Error while trying to get acronymsList from cache", e);
             return new GenericOperationOutcome(OperationOutcome.NOK, "Error while trying to get acronymsList from cache");
         }
-
+        // 1. Send update request (data)
         for (String actualAcronym : acronymsList) {
             log.info("Preparing Request Object for " + actualAcronym + " and sending message to Rules queue.");
+
             // Create request object and send message to exchange module
             if (existingAcronymsList.contains(actualAcronym) && !acronymIsInExclusionList(actualAcronym)) {// Acronym exists
                 String strReqObj;
@@ -183,6 +184,9 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                 errorContainer.addMessage("The following acronym doesn't exist (or is excluded) in the cacheFactory : " + actualAcronym);
             }
         }
+
+        // 2. Send Object description requests (structure)
+        sendRequestForMdrCodelistsStructures(acronymsList);
         return errorContainer;
     }
 
@@ -203,7 +207,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
         } catch (MessageException e) {
-            log.error("Error while trying to send message from MDR module to Rules module.", e);
+            log.error("Error while trying to send OBJ_DESC message from MDR module to Rules module.", e);
         }
     }
 

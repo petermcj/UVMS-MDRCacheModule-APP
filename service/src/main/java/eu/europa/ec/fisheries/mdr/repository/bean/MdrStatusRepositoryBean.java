@@ -51,13 +51,14 @@ public class MdrStatusRepositoryBean extends BaseMdrBean implements MdrStatusRep
     }
 
     @Override
-    public void saveAcronymsStatusList(List<MdrCodeListStatus> diffList) throws ServiceException {
-        statusDao.saveAcronymsStatusList(diffList);
+    public MdrCodeListStatus getStatusForAcronym(String acronym) {
+        return statusDao.getStatusForAcronym(acronym);
     }
 
     @Override
-    public MdrCodeListStatus getStatusForAcronym(String acronym) {
-        return statusDao.getStatusForAcronym(acronym);
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void saveAcronymsStatusList(List<MdrCodeListStatus> diffList) throws ServiceException {
+        statusDao.saveAcronymsStatusList(diffList);
     }
 
     @Override

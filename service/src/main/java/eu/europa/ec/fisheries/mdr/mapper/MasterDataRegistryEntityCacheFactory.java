@@ -88,6 +88,7 @@ public class MasterDataRegistryEntityCacheFactory {
 	 * Adds the given Entity (aka CodeList) to the cache.
 	 *
 	 * @param aClass
+	 *
 	 * @throws MdrCacheInitException
      */
 	private static void addAcronymToCache(Class<? extends MasterDataRegistry> aClass) throws MdrCacheInitException {
@@ -108,12 +109,8 @@ public class MasterDataRegistryEntityCacheFactory {
 	 * Returns the List of all available Acronyms fro MDR.
 	 * 
 	 * @return acronymsList
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
+	 *
+	 * @throws MdrCacheInitException
 	 */
 	public static List<String> getAcronymsList() throws MdrCacheInitException {
 		return acronymsList;
@@ -129,7 +126,6 @@ public class MasterDataRegistryEntityCacheFactory {
 
 	/**
 	 * Initializes the cache.
-	 *
 	 */
 	public static void initialize() {
 		try {
