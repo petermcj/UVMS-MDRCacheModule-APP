@@ -138,7 +138,7 @@ public class MdrEventServiceBean implements MdrEventService {
                 log.warn("No search attributes provided. Going to consider all 'code' and 'description' attributes.");
                 columnFiltersArr = new String[]{"code", "description"}; //getAllFieldsForAcronym(requestObj.getAcronym());
             }
-            if (filter != null && !filter.equals(STAR)) {
+            if (StringUtils.isNotEmpty(filter) && !filter.equals(STAR)) {
                 filter = new StringBuilder(STAR).append(filter).append(STAR).toString();
             } else {
                 filter = STAR;

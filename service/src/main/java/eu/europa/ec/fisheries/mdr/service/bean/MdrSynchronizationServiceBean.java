@@ -185,8 +185,6 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             }
         }
 
-        // 2. Send Object description requests (structure)
-        sendRequestForMdrCodelistsStructures(acronymsList);
         return errorContainer;
     }
 
