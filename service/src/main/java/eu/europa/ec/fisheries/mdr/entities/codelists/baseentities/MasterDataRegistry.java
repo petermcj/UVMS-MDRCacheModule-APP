@@ -13,7 +13,6 @@ package eu.europa.ec.fisheries.mdr.entities.codelists.baseentities;
 import static eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry.LOW_CASE_ANALYSER;
 
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
-import eu.europa.ec.fisheries.uvms.common.DateUtils;
 import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,8 +77,7 @@ public abstract class MasterDataRegistry implements Serializable {
     private static final String DESCRIPTION_STR = ".DESCRIPTION";
     private static final String EN_DESCRIPTION_STR = ".ENDESCRIPTION";
     private static final String VERSION_STR = ".VERSION";
-    private static final String STARTDATE = "STARTDATE";
-    private static final String ENDDATE = "ENDDATE";
+    private static final String COMMA = ",";
 
     // Fields that will contain [ACRONYM].[FIELD_NAME] values after calling populateDataNodeNames();.
     @Transient
@@ -90,10 +88,6 @@ public abstract class MasterDataRegistry implements Serializable {
     private String APP_EN_DESCRIPTION_STR;
     @Transient
     private String APP_VERSION_STR;
-    @Transient
-    private String STARTDATE_STR;
-    @Transient
-    private String ENDDATE_STR;
 
     protected void populateCommonFields(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
 
@@ -101,14 +95,15 @@ public abstract class MasterDataRegistry implements Serializable {
 
         validity = new DateRange();
 
-        // Start date end date
-        final DelimitedPeriodType validityPeriod = mdrDataType.getEffectiveDelimitedPeriod();
+        // Start date end date (validity)
+        DelimitedPeriodType validityPeriod = mdrDataType.getEffectiveDelimitedPeriod();
         if (validityPeriod != null) {
             validity.setStartDate(validityPeriod.getStartDateTime().getDateTime().toGregorianCalendar().getTime());
             validity.setEndDate(validityPeriod.getEndDateTime().getDateTime().toGregorianCalendar().getTime());
         }
 
-        // Code, Description, Version, Start/End date(overriding if available)
+        // Code, Description, Version
+        StringBuilder versionsStrBuff = new StringBuilder();
         List<MDRElementDataNodeType> fieldsToRemove = new ArrayList<>();
         final List<MDRElementDataNodeType> subordinateMDRElementDataNodes = mdrDataType.getSubordinateMDRElementDataNodes();
         for (MDRElementDataNodeType field : subordinateMDRElementDataNodes) {
@@ -122,16 +117,18 @@ public abstract class MasterDataRegistry implements Serializable {
                 setDescription(fieldValue);
                 fieldsToRemove.add(field);
             } else if (StringUtils.equalsIgnoreCase(fieldName, APP_VERSION_STR)) {
-                setVersion(fieldValue);
-                fieldsToRemove.add(field);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, STARTDATE_STR)){
-                validity.setStartDate(DateUtils.parseToUTCDate(fieldValue, DateUtils.FORMAT));
-                fieldsToRemove.add(field);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, ENDDATE_STR)){
-                validity.setEndDate(DateUtils.parseToUTCDate(fieldValue, DateUtils.FORMAT));
+                versionsStrBuff.append(COMMA).append(fieldValue);
                 fieldsToRemove.add(field);
             }
         }
+
+        if(versionsStrBuff.length() != 0){
+            versionsStrBuff.delete(0,1);
+            setVersion(versionsStrBuff.toString());
+        } else {
+            log.warn("[[WARNING]] No Version has been provided for this row of the entity.");
+        }
+
         // If we are inside here it means that code and description have to be both set, otherwise we have attributes missing.
         if (StringUtils.isEmpty(code) || StringUtils.isEmpty(description)) {
             log.warn("[[WARNING]] Code or Description missing.");
@@ -149,8 +146,6 @@ public abstract class MasterDataRegistry implements Serializable {
         APP_DESCRIPTION_STR = acronym + DESCRIPTION_STR;
         APP_EN_DESCRIPTION_STR = acronym + EN_DESCRIPTION_STR;
         APP_VERSION_STR = acronym + VERSION_STR;
-        STARTDATE_STR = acronym + STARTDATE;
-        ENDDATE_STR = acronym + ENDDATE;
     }
 
     protected void logError(String fieldName, String className) {

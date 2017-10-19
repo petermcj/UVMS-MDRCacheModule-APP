@@ -70,7 +70,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             Boolean isReversed, String filter, String... searchAttributes) throws ServiceException {
 
         if(searchAttributes == null || searchAttributes.length == 0){
-            searchAttributes = new String[]{"code"};
+            searchAttributes = new String[]{"code", "description"};
             log.warn("No search attributes provide. Going to consider only 'code' attribute.");
         }
 
