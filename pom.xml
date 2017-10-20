@@ -47,7 +47,7 @@
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.2.3</logback.core.version>
-        <uvms.commons.version>2.0.31-SNAPSHOT</uvms.commons.version>
+        <uvms.commons.version>2.0.31</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
         <hibernate-search-orm.version>5.3.0.Final</hibernate-search-orm.version>
