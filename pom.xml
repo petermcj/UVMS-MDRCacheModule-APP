@@ -42,8 +42,8 @@
         <mdr.model.version>1.0.0</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>4.0.2</exchange.model>
-        <rules.model>3.0.10</rules.model>
+        <exchange.model>4.0.3</exchange.model>
+        <rules.model>3.0.11</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.2.3</logback.core.version>
