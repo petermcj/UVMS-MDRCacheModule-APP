@@ -25,7 +25,7 @@ import org.junit.Test;
 @Ignore
 public class MdrCacheFactoryTest {
 
-    String filesPath              = "C:\\GIT Repository\\Mdr Github\\UVMS-MDRCacheModule-DB\\LIQUIBASE\\postgres\\schema\\tables";
+    String filesPath              = "C:\\GIT Repository\\Mdr Github\\UVMS-MDRCacheModule-APP\\LIQUIBASE\\postgres\\schema\\tables";
     String includeDeclarationInit = "<include file=\"\\postgres\\schema\\tables\\";
 
     @Test

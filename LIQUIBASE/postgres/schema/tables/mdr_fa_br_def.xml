@@ -9,7 +9,7 @@
 					  sequenceName="mdr_fa_br_def_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-72" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-76">
         <createTable tableName="mdr_fa_br_def">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -21,6 +21,8 @@
             <column name="version" type="VARCHAR(255)"/>
             <column name="br_sublevel" type="VARCHAR(255)"/>
             <column name="field" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
             <column name="message_if_failing" type="VARCHAR(255)"/>
             <column name="sequence_order" type="VARCHAR(255)"/>
         </createTable>

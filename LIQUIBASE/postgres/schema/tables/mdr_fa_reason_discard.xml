@@ -9,7 +9,7 @@
 					  sequenceName="mdr_fa_reason_discard_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-84" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-88">
         <createTable tableName="mdr_fa_reason_discard">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>

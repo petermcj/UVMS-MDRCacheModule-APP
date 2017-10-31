@@ -9,7 +9,7 @@
 					  sequenceName="mdr_farm_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-89" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-93">
         <createTable tableName="mdr_farm">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -24,6 +24,10 @@
             <column name="iso_2_code" type="VARCHAR(255)"/>
             <column name="legal_reference" type="VARCHAR(255)"/>
             <column name="place_fk_x_key" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_code2" type="VARCHAR(255)"/>
+            <column name="rfmo_code" type="VARCHAR(255)"/>
+            <column name="rfmo_en_description" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     

@@ -9,7 +9,7 @@
 					  sequenceName="mdr_conversion_factor_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-67" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-71">
         <createTable tableName="mdr_conversion_factor">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -19,6 +19,23 @@
             <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="version" type="VARCHAR(255)"/>
+            <column name="bioorder" type="VARCHAR(255)"/>
+            <column name="collective" type="VARCHAR(255)"/>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="es_name" type="VARCHAR(255)"/>
+            <column name="factor" type="VARCHAR(255)"/>
+            <column name="family" type="VARCHAR(255)"/>
+            <column name="fr_name" type="VARCHAR(255)"/>
+            <column name="is_group" type="VARCHAR(255)"/>
+            <column name="legal_source" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_code2" type="VARCHAR(255)"/>
+            <column name="places_enname" type="VARCHAR(255)"/>
+            <column name="presentation" type="VARCHAR(255)"/>
+            <column name="scient_name" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(255)"/>
+            <column name="taxocode" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     

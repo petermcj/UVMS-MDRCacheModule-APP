@@ -4,13 +4,13 @@
 				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
        
-    <changeSet author="kovian" id="189067210515248150">
+    <changeSet author="kovian" id="189067210515248137">
 	  <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
-					  sequenceName="mdr_flux_sales_type_seq" startValue="2000"/>
+					  sequenceName="mdr_flux_gp_msg_id_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1509379254114-119">
-        <createTable tableName="mdr_flux_sales_type">
+	<changeSet author="kovian (generated)" id="1509379254114-106">
+        <createTable tableName="mdr_flux_gp_msg_id">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -22,16 +22,16 @@
         </createTable>
     </changeSet>
     
-	<changeSet author="kovian (generated)" id="1490280409454-50" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
-        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_type_pkey" tableName="mdr_flux_sales_type"/>
+	<changeSet author="kovian (generated)" id="1490280409454-37" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_msg_id_pkey" tableName="mdr_flux_gp_msg_id"/>
     </changeSet>
 	
-	<changeSet author="kovian" id="76817789687171-50" dbms="postgresql">
+	<changeSet author="kovian" id="76817789687171-37" dbms="postgresql">
 		<addDefaultValue 
 				columnDataType="BIGINT"
 				columnName="id"
-				defaultValueSequenceNext="mdr_flux_sales_type_seq"
-				tableName="mdr_flux_sales_type"/>
+				defaultValueSequenceNext="mdr_flux_gp_msg_id_seq"
+				tableName="mdr_flux_gp_msg_id"/>
 	</changeSet>	
 	
 </databaseChangeLog>

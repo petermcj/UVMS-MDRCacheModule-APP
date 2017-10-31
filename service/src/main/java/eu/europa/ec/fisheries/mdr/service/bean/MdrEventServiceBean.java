@@ -241,7 +241,7 @@ public class MdrEventServiceBean implements MdrEventService {
         } catch (MdrModelMarshallException e) {
             log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity)! Maybe not a FLUXMDRReturnMessage!!");
         }
-        log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! /n");
+        log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! \n");
         return respType;
     }
 

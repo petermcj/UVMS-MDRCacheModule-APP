@@ -33,42 +33,55 @@ import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
 public class FaGearCharacteristic extends MasterDataRegistry {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_gear_characteristic_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
-	private long id;
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_gear_characteristic_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+    private long id;
 
-	@Column(name = "data_type")
-	@Field(name = "data_type")
-	@Analyzer(definition = LOW_CASE_ANALYSER)
-	private String dataType;
+    @Column(name = "data_type")
+    @Field(name = "data_type")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String dataType;
 
-	@Override
-	public String getAcronym() {
-		return "FA_GEAR_CHARACTERISTIC";
-	}
+    @Column(name = "data_type_desc")
+    @Field(name = "data_type_desc")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String dataTypeDesc;
 
-	@Override
-	public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
-		populateCommonFields(mdrDataType);
-		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-			String fieldName  = field.getName().getValue();
-			String fieldValue  =field.getValue().getValue();
-			if(StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.CODE")){
-				this.setDataType(fieldValue);
-			} else {
-				logError(fieldName, this.getClass().getSimpleName());
-			}
-		}
-	}
+    @Override
+    public String getAcronym() {
+        return "FA_GEAR_CHARACTERISTIC";
+    }
 
-	public String getDataType() {
-		return dataType;
-	}
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
-	}
+    @Override
+    public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
+        populateCommonFields(mdrDataType);
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.CODE")) {
+                this.setDataType(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.ENDESCRIPTION")) {
+                this.setDataTypeDesc(fieldValue);
+            } else {
+                logError(fieldName, this.getClass().getSimpleName());
+            }
+        }
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
+    public String getDataTypeDesc() {
+        return dataTypeDesc;
+    }
+    public void setDataTypeDesc(String dataTypeDesc) {
+        this.dataTypeDesc = dataTypeDesc;
+    }
 }

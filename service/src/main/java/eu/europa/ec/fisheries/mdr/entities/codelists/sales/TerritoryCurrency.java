@@ -46,10 +46,21 @@ public class TerritoryCurrency extends MasterDataRegistry {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
+    @Column(name = "places_code")
+    @Field(name = "places_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String placesCode;
+
     @Column(name = "en_name")
     @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
+
+    @Column(name = "places_en_name")
+    @Field(name = "places_en_name")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String placesEnName;
+
 
     @Override
     public String getAcronym() {
@@ -62,13 +73,17 @@ public class TerritoryCurrency extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
-                this.setIso2Code(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.CODE")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.CODE")) {
                 this.setCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")) {
+                this.setPlacesCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")) {
+                this.setIso2Code(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "CURRENCY.ENNAME")) {
                 this.setEnName(fieldValue);
-            } else if (StringUtils.endsWith(fieldName, "DESCRIPTION")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")) {
+                this.setPlacesEnName(fieldValue);
+            }else if (StringUtils.endsWith(fieldName, "DESCRIPTION")) {
                 this.setDescription(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
@@ -80,16 +95,25 @@ public class TerritoryCurrency extends MasterDataRegistry {
     public String getIso2Code() {
         return iso2Code;
     }
-
     public void setIso2Code(String iso2Code) {
         this.iso2Code = iso2Code;
     }
-
     public String getEnName() {
         return enName;
     }
-
     public void setEnName(String enName) {
         this.enName = enName;
+    }
+    public String getPlacesCode() {
+        return placesCode;
+    }
+    public void setPlacesCode(String placesCode) {
+        this.placesCode = placesCode;
+    }
+    public String getPlacesEnName() {
+        return placesEnName;
+    }
+    public void setPlacesEnName(String placesEnName) {
+        this.placesEnName = placesEnName;
     }
 }

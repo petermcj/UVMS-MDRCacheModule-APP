@@ -9,7 +9,7 @@
 					  sequenceName="mdr_fishing_trip_type_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-96" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-100">
         <createTable tableName="mdr_fishing_trip_type">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>

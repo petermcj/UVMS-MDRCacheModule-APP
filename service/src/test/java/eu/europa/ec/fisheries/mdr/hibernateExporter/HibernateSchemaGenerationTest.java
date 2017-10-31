@@ -20,11 +20,13 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Formatter;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.Dialect;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.reflections.Reflections;
 
@@ -33,7 +35,7 @@ import org.reflections.Reflections;
 /**
  * Created by kovian on 01/09/2017.
  */
-public class HibernateExporterTest {
+public class HibernateSchemaGenerationTest {
 
     String createAcronymVersion = "create table mdr.mdr_acronymversion (id bigint not null, end_date timestamp, start_date timestamp, version_name varchar(255), status_ref_id bigint not null, primary key (id));\n";
     String createStatusTable = "create table mdr.mdr_codelist_status (id bigint not null, last_attempt timestamp, last_status varchar(255), last_success timestamp, object_acronym varchar(255), object_description varchar(255), object_name varchar(255), object_source varchar(255), schedulable varchar(1), end_date timestamp, start_date timestamp, primary key (id));\n";
@@ -48,15 +50,14 @@ public class HibernateExporterTest {
     PrintWriter sqlFileWritter;
 
     @Test
-    public void exportTest() {
+    //@Ignore
+    public void createCreationScriptTest() {
         prepareFilesAndDirs();
-        HibernateExporter exporter = new HibernateExporter("org.hibernate.spatial.dialect.postgis.PostgisDialect", "eu.europa.ec.fisheries.mdr.entities.codelists");
+        HibernateSchemaGeneration exporter = new HibernateSchemaGeneration("org.hibernate.spatial.dialect.postgis.PostgisDialect", "eu.europa.ec.fisheries.mdr.entities.codelists");
         System.out.println("\n\n Generated Script : \n\n");
         exporter.exportToConsole();
-        System.out.println("Done...");
+        System.out.println("\n\n Done... All the scripts requested were correctly generated.");
     }
-
-
 
     private void prepareFilesAndDirs() {
         String filePath = new File(sqlScriptGenerationDir).getAbsolutePath();
@@ -82,21 +83,25 @@ public class HibernateExporterTest {
 
     }
 
-    private class HibernateExporter {
+    /**
+     *
+     * Class needed for the Generation of the schema creation sql scripts.
+     * @see HibernateSchemaGeneration.exportToConsole() method.
+     *
+     * It print in the console and you can get your files also under sqlScriptGenerationDir = (if you didn't change this) "target/DDLscripts"
+     *
+     */
+    public class HibernateSchemaGeneration {
 
         private String dialect;
         private String entityPackage;
-
         private boolean generateCreateQueries = true;
         private boolean generateDropQueries = false;
-
         private Configuration hibernateConfiguration;
 
-        public HibernateExporter(String dialect, String entityPackage) {
-
+        public HibernateSchemaGeneration(String dialect, String entityPackage) {
             this.dialect = dialect;
             this.entityPackage = entityPackage;
-
             hibernateConfiguration = createHibernateConfig();
         }
 
@@ -111,24 +116,25 @@ public class HibernateExporterTest {
         public void export(OutputStream out, boolean generateCreateQueries, boolean generateDropQueries) {
             Dialect hibDialect = Dialect.getDialect(hibernateConfiguration.getProperties());
             try {
-                PrintWriter writer = new PrintWriter(out);
+                PrintWriter outWritter = new PrintWriter(out);
                 if (generateCreateQueries) {
                     String[] createSQL = hibernateConfiguration.generateSchemaCreationScript(hibDialect);
-                    write(writer, createSQL, new Formatter());
+                    write(outWritter, createSQL, new Formatter());
                 }
                 if (generateDropQueries) {
                     String[] dropSQL = hibernateConfiguration.generateDropSchemaScript(hibDialect);
-                    write(writer, dropSQL, new Formatter());
+                    write(outWritter, dropSQL, new Formatter());
                 }
             } catch (Exception ex) {
                 System.out.println("Exception occurred.." + ex);
-                ex.printStackTrace();
             }
         }
 
         private void write(PrintWriter writer, String[] lines, Formatter formatter) {
+            sqlFileWritter.write("\n -- *** Non code-lists ***\n");
             sqlFileWritter.write(createAcronymVersion);
             sqlFileWritter.write(createStatusTable);
+            sqlFileWritter.write("\n -- *** Code-lists ***\n");
             for (String creationScript : lines) {
                 String finalCreationScript;
                 if (creationScript.contains("_seq")) {
@@ -142,6 +148,7 @@ public class HibernateExporterTest {
                 System.out.println(finalScript + ";");
                 sqlFileWritter.write(finalScript + ";\n");
             }
+            sqlFileWritter.write("\n");
             sqlFileWritter.write(addVersionToStatus);
             sqlFileWritter.write(statusSquence);
             sqlFileWritter.close();
@@ -150,36 +157,23 @@ public class HibernateExporterTest {
         }
 
         private Configuration createHibernateConfig() {
-
             hibernateConfiguration = new Configuration();
-
             final Reflections reflections = new Reflections(entityPackage);
             for (Class<?> cl : reflections.getTypesAnnotatedWith(MappedSuperclass.class)) {
                 hibernateConfiguration.addAnnotatedClass(cl);
                 System.out.println("Mapped = " + cl.getName());
             }
-            for (Class<?> cl : reflections.getTypesAnnotatedWith(Entity.class)) {
+            int numberOfClasses = 0;
+            final Set<Class<?>> entities = reflections.getTypesAnnotatedWith(Entity.class);
+            System.out.println("\n\n************************************\nGoing to map a total of [ "+entities.size()+" ] Entities!\n************************************\n");
+            for (Class<?> cl : entities) {
                 hibernateConfiguration.addAnnotatedClass(cl);
                 System.out.println("Mapped = " + cl.getName());
+                numberOfClasses++;
             }
+            System.out.println("\n\n************************************\nMapped a total of [ "+numberOfClasses+" ] Entities!\n************************************\n");
             hibernateConfiguration.setProperty(AvailableSettings.DIALECT, dialect);
             return hibernateConfiguration;
-        }
-
-        public boolean isGenerateDropQueries() {
-            return generateDropQueries;
-        }
-
-        public void setGenerateDropQueries(boolean generateDropQueries) {
-            this.generateDropQueries = generateDropQueries;
-        }
-
-        public Configuration getHibernateConfiguration() {
-            return hibernateConfiguration;
-        }
-
-        public void setHibernateConfiguration(Configuration hibernateConfiguration) {
-            this.hibernateConfiguration = hibernateConfiguration;
         }
 
         public void writeToFile(String filename, int[] x) throws IOException {
@@ -191,6 +185,19 @@ public class HibernateExporterTest {
             }
             outputWriter.flush();
             outputWriter.close();
+        }
+
+        public Configuration getHibernateConfiguration() {
+            return hibernateConfiguration;
+        }
+        public void setHibernateConfiguration(Configuration hibernateConfiguration) {
+            this.hibernateConfiguration = hibernateConfiguration;
+        }
+        public boolean isGenerateDropQueries() {
+            return generateDropQueries;
+        }
+        public void setGenerateDropQueries(boolean generateDropQueries) {
+            this.generateDropQueries = generateDropQueries;
         }
     }
 }

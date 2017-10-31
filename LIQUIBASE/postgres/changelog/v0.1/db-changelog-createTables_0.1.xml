@@ -6,6 +6,7 @@
 
 	<include file="\postgres\schema\tables\mdr_acronymversion.xml"/>
 	<include file="\postgres\schema\tables\mdr_codelist_status.xml"/>
+
 	<include file="\postgres\schema\tables\mdr_configuration.xml"/>
 	<include file="\postgres\schema\tables\code_list_structure.xml"/>
 
@@ -44,6 +45,7 @@
 	<include file="\postgres\schema\tables\mdr_flux_fa_fcm.xml"/>
 	<include file="\postgres\schema\tables\mdr_flux_fa_report_type.xml"/>
 	<include file="\postgres\schema\tables\mdr_flux_fa_type.xml"/>
+	<include file="\postgres\schema\tables\mdr_flux_gp_msg_id.xml"/>
 	<include file="\postgres\schema\tables\mdr_flux_gp_party.xml"/>
 	<include file="\postgres\schema\tables\mdr_flux_gp_purpose.xml"/>
 	<include file="\postgres\schema\tables\mdr_flux_gp_response.xml"/>
@@ -67,12 +69,13 @@
 	<include file="\postgres\schema\tables\mdr_member_state.xml"/>
 	<include file="\postgres\schema\tables\mdr_prod_usage.xml"/>
 	<include file="\postgres\schema\tables\mdr_rfmo_codes.xml"/>
+	<include file="\postgres\schema\tables\mdr_sale_br.xml"/>
+	<include file="\postgres\schema\tables\mdr_sale_br_def.xml"/>
+	<include file="\postgres\schema\tables\mdr_statistical_rectangle.xml"/>
 	<include file="\postgres\schema\tables\mdr_territory.xml"/>
 	<include file="\postgres\schema\tables\mdr_territory_curr.xml"/>
 	<include file="\postgres\schema\tables\mdr_vessel_activity.xml"/>
 	<include file="\postgres\schema\tables\mdr_vessel_storage_type.xml"/>
 	<include file="\postgres\schema\tables\mdr_weight_means.xml"/>
-	<include file="\postgres\schema\tables\mdr_flux_gp_message_id.xml"/>
-	<include file="\postgres\schema\tables\mdr_sale_br.xml"/>
 
 </databaseChangeLog>

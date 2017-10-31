@@ -9,7 +9,7 @@
 					  sequenceName="mdr_flux_contact_role_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-98" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-102">
         <createTable tableName="mdr_flux_contact_role">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>

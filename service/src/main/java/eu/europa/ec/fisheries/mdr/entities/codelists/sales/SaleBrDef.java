@@ -8,7 +8,7 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
 */
-package eu.europa.ec.fisheries.mdr.entities.codelists.ers;
+package eu.europa.ec.fisheries.mdr.entities.codelists.sales;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
@@ -28,18 +28,21 @@ import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
 /**
+ * Created by kovian on 24/10/2017.
+ */
+/**
  * Created by kovian on 31/08/2017.
  */
 @Entity
-@Table(name = "mdr_fa_br_def")
+@Table(name = "mdr_sale_br_def")
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
-public class FaBrDef extends MasterDataRegistry {
+public class SaleBrDef extends MasterDataRegistry {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_br_def_seq", allocationSize = 1)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_sale_br_def_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
     private long id;
 
@@ -74,23 +77,18 @@ public class FaBrDef extends MasterDataRegistry {
     private String fluxGpValidationEnDescr;
 
     @Override
-    public String getAcronym() {
-        return "FA_BR_DEF";
-    }
-
-    @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
         populateCommonFields(mdrDataType);
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.FIELD")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "SALE_BR_DEF.FIELD")) {
                 this.setField(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.ENMESSAGE")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "SALE_BR_DEF.ENMESSAGE")) {
                 this.setMessageIfFailing(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.SEQORDER")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "SALE_BR_DEF.SEQORDER")) {
                 this.setSequenceOrder(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "FA_BR_DEF.BRSUBLEVEL")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "SALE_BR_DEF.BRSUBLEVEL")) {
                 this.setBrSublevel(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "FLUX_GP_VALIDATION_TYPE.ENDESCRIPTION")) {
                 this.setFluxGpValidationEnDescr(fieldValue);
@@ -102,6 +100,10 @@ public class FaBrDef extends MasterDataRegistry {
         }
     }
 
+    @Override
+    public String getAcronym() {
+        return "SALE_BR_DEF";
+    }
 
     public String getField() {
         return field;

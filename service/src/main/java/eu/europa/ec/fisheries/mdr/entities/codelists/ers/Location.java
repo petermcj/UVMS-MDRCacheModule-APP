@@ -50,6 +50,11 @@ public class Location extends MasterDataRegistry {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code2;
 
+    @Column(name = "places_code")
+    @Field(name = "places_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String placesCode;
+
     @Column(name = "en_name")
     @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
@@ -106,10 +111,16 @@ public class Location extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
-                this.setCode(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "PLACE.CODE")) {
+                this.setPlacesCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACE.CODE2")) {
                 this.setCode2(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
+                this.setUnloCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.UNFCTCODE")) {
+                this.setUnFunctionCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COORDINATES")) {
+                this.setCoordinates(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LATITUDE")) {
                 this.setLatitude(getDoubleFromString(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LONGITUDE")) {
@@ -120,14 +131,8 @@ public class Location extends MasterDataRegistry {
                 this.setLandingPlaceInd(Boolean.valueOf(fieldValue));
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COMMERCIALPORTIND")) {
                 this.setCommercialPortInd(Boolean.valueOf(fieldValue));
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")) {
                 this.setEnName(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
-                this.setUnloCode(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.COORDINATES")) {
-                this.setCoordinates(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.UNFCTCODE")) {
-                this.setUnFunctionCode(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -135,17 +140,18 @@ public class Location extends MasterDataRegistry {
     }
 
     private Double getDoubleFromString(String fieldValue) {
-        if(StringUtils.isEmpty(fieldValue)){
+        if (StringUtils.isEmpty(fieldValue)) {
             return null;
         }
         Double doubleValue = null;
         try {
             doubleValue = Double.valueOf(fieldValue);
-        } catch(NumberFormatException ex){
-            log.error("The value [ "+fieldValue+" ] could not be converted to double!");
+        } catch (NumberFormatException ex) {
+            log.error("The value [ " + fieldValue + " ] could not be converted to double!");
         }
         return doubleValue;
     }
+
 
     public String getCode2() {
         return code2;
@@ -227,4 +233,11 @@ public class Location extends MasterDataRegistry {
         this.enName = enName;
     }
 
+    public String getPlacesCode() {
+        return placesCode;
+    }
+
+    public void setPlacesCode(String placesCode) {
+        this.placesCode = placesCode;
+    }
 }
