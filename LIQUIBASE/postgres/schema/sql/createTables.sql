@@ -1,7 +1,7 @@
 
  -- *** Non code-lists ***
 create table mdr.mdr_acronymversion (id bigint not null, end_date timestamp, start_date timestamp, version_name varchar(255), status_ref_id bigint not null, primary key (id));
-create table mdr.mdr_codelist_status (id bigint not null, last_attempt timestamp, last_status varchar(255), last_success timestamp, object_acronym varchar(255), object_description varchar(255), object_name varchar(255), object_source varchar(255), schedulable varchar(1), end_date timestamp, start_date timestamp, primary key (id));
+create table mdr.mdr_codelist_status (id bigint not null, last_attempt timestamp, last_status varchar(255), last_success timestamp, object_acronym varchar(255), object_description varchar(255), object_name varchar(255), object_source varchar(255), schedulable varchar(1), start_date timestamp, end_date timestamp, reference_uuid varchar(255), primary key (id));
 
  -- *** Code-lists ***
 create table mdr.mdr_conversion_factor (id int8 not null, code varchar(255), description varchar(255), end_date timestamp, start_date timestamp, version varchar(255), bioorder varchar(255), collective varchar(255), comment varchar(255), en_name varchar(255), es_name varchar(255), factor varchar(255), family varchar(255), fr_name varchar(255), is_group varchar(255), legal_source varchar(255), places_code varchar(255), places_code2 varchar(255), places_enname varchar(255), presentation varchar(255), scient_name varchar(255), state varchar(255), taxocode varchar(255), primary key (id));

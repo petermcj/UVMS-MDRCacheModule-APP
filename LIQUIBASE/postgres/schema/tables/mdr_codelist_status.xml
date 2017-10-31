@@ -22,6 +22,7 @@
             <column name="object_name" type="VARCHAR(255)"/>
             <column name="object_source" type="VARCHAR(255)"/>
             <column name="schedulable" type="VARCHAR(1)"/>
+            <column name="reference_uuid" type="VARCHAR(255)"/>
             <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
         </createTable>
