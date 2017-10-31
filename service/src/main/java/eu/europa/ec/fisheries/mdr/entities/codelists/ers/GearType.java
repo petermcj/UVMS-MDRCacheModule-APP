@@ -68,6 +68,16 @@ public class GearType extends MasterDataRegistry {
 	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String target;
 
+	@Column(name = "gear_activity_code")
+	@Field(name="gear_activity_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
+	private String gearActivityCode;
+
+	@Column(name = "gear_activity_description")
+	@Field(name="gear_activity_description")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
+	private String gearActivityDescription;
+
 	@Override
 	public String getAcronym() {
 		return "GEAR_TYPE";
@@ -90,6 +100,10 @@ public class GearType extends MasterDataRegistry {
 				this.setIssCfgCode(fieldValue);
 			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_TYPE.TARGET")){
 				this.setTarget(fieldValue);
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_ACTIVITY.CODE")){
+				this.setGearActivityCode(fieldValue);
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "GEAR_ACTIVITY.ENDESCRIPTION")){
+				this.setGearActivityDescription(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());
 			}
@@ -126,5 +140,17 @@ public class GearType extends MasterDataRegistry {
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	public String getGearActivityCode() {
+		return gearActivityCode;
+	}
+	public void setGearActivityCode(String gearActivityCode) {
+		this.gearActivityCode = gearActivityCode;
+	}
+	public String getGearActivityDescription() {
+		return gearActivityDescription;
+	}
+	public void setGearActivityDescription(String gearActivityDescription) {
+		this.gearActivityDescription = gearActivityDescription;
 	}
 }

@@ -126,12 +126,12 @@ public abstract class MasterDataRegistry implements Serializable {
             versionsStrBuff.delete(0,1);
             setVersion(versionsStrBuff.toString());
         } else {
-            log.warn("[[WARNING]] No Version has been provided for this row of the entity.");
+            log.warn("[[WARNING]] No Version has been provided for this record of the entity.");
         }
 
         // If we are inside here it means that code and description have to be both set, otherwise we have attributes missing.
         if (StringUtils.isEmpty(code) || StringUtils.isEmpty(description)) {
-            log.warn("[[WARNING]] Code or Description missing.");
+            log.warn("[[WARNING]] Code or Description missing on this record of the entity!");
         }
         subordinateMDRElementDataNodes.removeAll(fieldsToRemove);
     }

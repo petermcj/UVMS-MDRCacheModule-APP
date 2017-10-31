@@ -65,5 +65,4 @@ public class IcesStatisticalRectangles extends MasterDataRegistry {
 		this.rectangle = rectangle;
 	}
 
-
 }

@@ -46,27 +46,47 @@ public class Farm extends MasterDataRegistry {
     private long id;
 
     @Column(name = "iso_2_code")
-    @Field(name="iso_2_code")
+    @Field(name = "iso_2_code")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String iso2Code;
 
+    @Column(name = "rfmo_code")
+    @Field(name = "rfmo_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String rfmoCode;
+
+    @Column(name = "places_code")
+    @Field(name = "places_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String placesCode;
+
+    @Column(name = "places_code2")
+    @Field(name = "places_code2")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String placesCode2;
+
+    @Column(name = "rfmo_en_description")
+    @Field(name = "rfmo_en_description")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String rfmoEnDescription;
+
     @Column(name = "en_name")
-    @Field(name="en_name")
+    @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
 
     @Column(name = "place_fk_x_key")
-    @Field(name="place_fk_x_key")
+    @Field(name = "place_fk_x_key")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String placeFkXKey;
 
     @Column(name = "contracting_party")
-    @Field(name="contracting_party")
+    @Field(name = "contracting_party")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String contractingParty;
 
     @Column(name = "legal_reference")
-    @Field(name="legal_reference")
+    @Field(name = "legal_reference")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String legalReference;
 
@@ -79,20 +99,24 @@ public class Farm extends MasterDataRegistry {
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
         populateCommonFields(mdrDataType);
-        for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
-            String fieldName  = field.getName().getValue();
-            String fieldValue  = field.getValue().getValue();
-            if(StringUtils.equalsIgnoreCase(fieldName, "FARM.CODE2")){
-                this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.ENNAME")){
-                this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.PLACEFK_X_KEY")){
-                this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.ENDESCRIPTION")){
-                this.setLegalReference(fieldValue);
-            } else if(StringUtils.equalsIgnoreCase(fieldName, "FARM.CONTRACTINGPARTY")){
-                this.setLegalReference(fieldValue);
-            }  else {
+        for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
+            String fieldName = field.getName().getValue();
+            String fieldValue = field.getValue().getValue();
+            if (StringUtils.equalsIgnoreCase(fieldName, "RFMO.CODE")) {
+                this.setRfmoCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")) {
+                this.setPlacesCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")) {
+                this.setPlacesCode2(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")) {
+                this.setEnName(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "RFMO.PLACEFK_X_KEY")) {
+                this.setPlaceFkXKey(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "RFMO.ENDESCRIPTION")) {
+                this.setRfmoEnDescription(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FARM.CONTRACTINGPARTY")) {
+                this.setContractingParty(fieldValue);
+            } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
         }
@@ -127,6 +151,30 @@ public class Farm extends MasterDataRegistry {
     }
     public void setLegalReference(String legalReference) {
         this.legalReference = legalReference;
+    }
+    public String getRfmoCode() {
+        return rfmoCode;
+    }
+    public void setRfmoCode(String rfmoCode) {
+        this.rfmoCode = rfmoCode;
+    }
+    public String getPlacesCode() {
+        return placesCode;
+    }
+    public void setPlacesCode(String placesCode) {
+        this.placesCode = placesCode;
+    }
+    public String getPlacesCode2() {
+        return placesCode2;
+    }
+    public void setPlacesCode2(String placesCode2) {
+        this.placesCode2 = placesCode2;
+    }
+    public String getRfmoEnDescription() {
+        return rfmoEnDescription;
+    }
+    public void setRfmoEnDescription(String rfmoEnDescription) {
+        this.rfmoEnDescription = rfmoEnDescription;
     }
 }
 

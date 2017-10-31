@@ -45,6 +45,11 @@ public class Rfmo extends MasterDataRegistry {
 	@Analyzer(definition = LOW_CASE_ANALYSER)
 	private String code2;
 
+	@Column(name = "places_code")
+	@Field(name="places_code")
+	@Analyzer(definition = LOW_CASE_ANALYSER)
+	private String placesCode;
+
 	@Column(name = "en_name")
 	@Field(name = "en_name")
 	@Analyzer(definition = LOW_CASE_ANALYSER)
@@ -61,9 +66,11 @@ public class Rfmo extends MasterDataRegistry {
 		for(MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()){
 			String fieldName  = field.getName().getValue();
 			String fieldValue  = field.getValue().getValue();
-			if(StringUtils.equalsIgnoreCase(fieldName, "RFMO.CODE2")){
+			if(StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")){
+				this.setPlacesCode(fieldValue);
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")){
 				this.setCode2(fieldValue);
-			} else if(StringUtils.equalsIgnoreCase(fieldName, "RFMO.ENNAME")){
+			} else if(StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")){
 				this.setEnName(fieldValue);
 			} else {
 				logError(fieldName, this.getClass().getSimpleName());
@@ -82,5 +89,11 @@ public class Rfmo extends MasterDataRegistry {
 	}
 	public void setEnName(String enName) {
 		this.enName = enName;
+	}
+	public String getPlacesCode() {
+		return placesCode;
+	}
+	public void setPlacesCode(String placesCode) {
+		this.placesCode = placesCode;
 	}
 }

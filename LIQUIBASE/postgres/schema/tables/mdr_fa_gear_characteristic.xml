@@ -9,7 +9,7 @@
 					  sequenceName="mdr_fa_gear_characteristic_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-76" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-80">
         <createTable tableName="mdr_fa_gear_characteristic">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -20,6 +20,7 @@
             <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
             <column name="version" type="VARCHAR(255)"/>
             <column name="data_type" type="VARCHAR(255)"/>
+            <column name="data_type_desc" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     

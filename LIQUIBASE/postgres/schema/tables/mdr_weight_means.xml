@@ -4,12 +4,12 @@
 				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
        
-    <changeSet author="kovian" id="189067210515248164">
+    <changeSet author="kovian" id="189067210515248168">
 	  <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
 					  sequenceName="mdr_weight_means_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-129" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-137">
         <createTable tableName="mdr_weight_means">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -22,11 +22,11 @@
         </createTable>
     </changeSet>
     
-	<changeSet author="kovian (generated)" id="1490280409454-64" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1490280409454-68" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
         <addPrimaryKey columnNames="id" constraintName="mdr_weight_means_pkey" tableName="mdr_weight_means"/>
     </changeSet>
 	
-	<changeSet author="kovian" id="76817789687171-64" dbms="postgresql">
+	<changeSet author="kovian" id="76817789687171-68" dbms="postgresql">
 		<addDefaultValue 
 				columnDataType="BIGINT"
 				columnName="id"

@@ -4,12 +4,12 @@
 				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
        
-    <changeSet author="kovian" id="189067210515248142">
+    <changeSet author="kovian" id="189067210515248143">
 	  <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
 					  sequenceName="mdr_flux_location_characteristic_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-107" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-112">
         <createTable tableName="mdr_flux_location_characteristic">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -22,11 +22,11 @@
         </createTable>
     </changeSet>
     
-	<changeSet author="kovian (generated)" id="1490280409454-42" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1490280409454-43" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
         <addPrimaryKey columnNames="id" constraintName="mdr_flux_location_characteristic_pkey" tableName="mdr_flux_location_characteristic"/>
     </changeSet>
 	
-	<changeSet author="kovian" id="76817789687171-42" dbms="postgresql">
+	<changeSet author="kovian" id="76817789687171-43" dbms="postgresql">
 		<addDefaultValue 
 				columnDataType="BIGINT"
 				columnName="id"

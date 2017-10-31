@@ -4,12 +4,12 @@
 				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
        
-    <changeSet author="kovian" id="189067210515248151">
+    <changeSet author="kovian" id="189067210515248152">
 	  <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
 					  sequenceName="mdr_flux_vessel_id_type_seq" startValue="2000"/>
     </changeSet>  
 
-	<changeSet author="kovian (generated)" id="1504278870571-116" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1509379254114-121">
         <createTable tableName="mdr_flux_vessel_id_type">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -22,11 +22,11 @@
         </createTable>
     </changeSet>
     
-	<changeSet author="kovian (generated)" id="1490280409454-51" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+	<changeSet author="kovian (generated)" id="1490280409454-52" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
         <addPrimaryKey columnNames="id" constraintName="mdr_flux_vessel_id_type_pkey" tableName="mdr_flux_vessel_id_type"/>
     </changeSet>
 	
-	<changeSet author="kovian" id="76817789687171-51" dbms="postgresql">
+	<changeSet author="kovian" id="76817789687171-52" dbms="postgresql">
 		<addDefaultValue 
 				columnDataType="BIGINT"
 				columnName="id"

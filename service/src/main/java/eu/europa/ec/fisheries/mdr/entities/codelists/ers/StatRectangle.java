@@ -7,13 +7,14 @@ the License, or any later version. The IFDM Suite is distributed in the hope tha
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
 details. You should have received a copy of the GNU General Public License along with the IFDM Suite. If not, see <http://www.gnu.org/licenses/>.
 
- */
+*/
 package eu.europa.ec.fisheries.mdr.entities.codelists.ers;
 
-
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.RectangleCoordinates;
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,63 +26,69 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
 import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
 
+/**
+ * Created by kovian on 24/10/2017.
+ */
 @Entity
-@Table(name = "mdr_fa_characteristic")
+@Table(name = "mdr_statistical_rectangle")
 @Indexed
 @Analyzer(impl = StandardAnalyzer.class)
-public class FaCharacteristic extends MasterDataRegistry {
+public class StatRectangle extends MasterDataRegistry {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_fa_characteristic_seq", allocationSize = 1)
+    @SequenceGenerator(name = "SEQ_GEN", sequenceName = "mdr_statistical_rectangle_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
     private long id;
 
-    @Column(name = "data_type")
-    @Field(name = "data_type")
+    @Embedded
+    @IndexedEmbedded
     @Analyzer(definition = LOW_CASE_ANALYSER)
-    private String dataType;
+    private RectangleCoordinates rectangle;
 
-    @Column(name = "data_type_desc")
-    @Field(name = "data_type_desc")
+
+    @Column(name = "source")
+    @Field(name = "source")
     @Analyzer(definition = LOW_CASE_ANALYSER)
-    private String dataTypeDesc;
+    private String source;
 
-    @Override
-    public String getAcronym() {
-        return "FA_CHARACTERISTIC";
-    }
 
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
         populateCommonFields(mdrDataType);
+        setRectangle(new RectangleCoordinates(mdrDataType));
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.CODE")) {
-                this.setDataType(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "UN_DATA_TYPE.ENDESCRIPTION")) {
-                this.setDataTypeDesc(fieldValue);
-            } else {
+            if (StringUtils.equalsIgnoreCase(fieldName, "STAT_RECTANGLE.SOURCE")) {
+                this.setSource(fieldValue);
+            }  else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
         }
     }
 
-    public String getDataType() {
-        return dataType;
+    @Override
+    public String getAcronym() {
+        return "STAT_RECTANGLE";
     }
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
+
+    public RectangleCoordinates getRectangle() {
+        return rectangle;
     }
-    public String getDataTypeDesc() {
-        return dataTypeDesc;
+    public void setRectangle(RectangleCoordinates rectangle) {
+        this.rectangle = rectangle;
     }
-    public void setDataTypeDesc(String dataTypeDesc) {
-        this.dataTypeDesc = dataTypeDesc;
+    public String getSource() {
+        return source;
+    }
+    public void setSource(String source) {
+        this.source = source;
     }
 }

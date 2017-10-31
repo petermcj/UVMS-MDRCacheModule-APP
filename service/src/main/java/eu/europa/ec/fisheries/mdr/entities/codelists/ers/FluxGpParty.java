@@ -61,11 +61,11 @@ public class FluxGpParty extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")) {
                 this.setCode(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")) {
                 this.setCode2(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")) {
                 this.setEnName(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());

@@ -37,10 +37,20 @@ public class Territory extends MasterDataRegistry {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String code2;
 
+    @Column(name = "land_type_code")
+    @Field(name = "land_type_code")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String landTypeCode;
+
     @Column(name = "en_name")
     @Field(name = "en_name")
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String enName;
+
+    @Column(name = "land_lock_ind")
+    @Field(name = "land_lock_ind")
+    @Analyzer(definition = LOW_CASE_ANALYSER)
+    private String landLockInd;
 
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
@@ -48,12 +58,16 @@ public class Territory extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE2")) {
-                this.setCode2(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.CODE")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")) {
                 this.setCode(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "THEMATIC_PLACE.ENNAME")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")) {
+                this.setCode2(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "CR_LAND_TYPE.CODE")) {
+                this.setLandTypeCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.ENNAME")) {
                 this.setEnName(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "TERRITORY.LANDLOCKIND")) {
+                this.setLandLockInd(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "CR_LAND_TYPE.ENDESCRIPTION")) {
                 this.setDescription(fieldValue);
             } else {
@@ -70,16 +84,25 @@ public class Territory extends MasterDataRegistry {
     public String getCode2() {
         return code2;
     }
-
     public void setCode2(String code2) {
         this.code2 = code2;
     }
-
     public String getEnName() {
         return enName;
     }
-
     public void setEnName(String enName) {
         this.enName = enName;
+    }
+    public String getLandLockInd() {
+        return landLockInd;
+    }
+    public void setLandLockInd(String landLockInd) {
+        this.landLockInd = landLockInd;
+    }
+    public String getLandTypeCode() {
+        return landTypeCode;
+    }
+    public void setLandTypeCode(String landTypeCode) {
+        this.landTypeCode = landTypeCode;
     }
 }
