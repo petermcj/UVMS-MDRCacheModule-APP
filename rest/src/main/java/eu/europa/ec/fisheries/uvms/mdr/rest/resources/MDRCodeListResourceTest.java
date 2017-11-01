@@ -10,23 +10,18 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.rest.dto.PaginatedResponse;
-import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
-import eu.europa.ec.fisheries.uvms.rest.dto.ResponseDto;
-import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
-import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +29,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.util.reflection.Whitebox;
+
+import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.PaginatedResponse;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.PaginationDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.ResponseDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.SearchRequestDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.SortingDto;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
 
 /**
  * Created by kovian on 16/12/2016.

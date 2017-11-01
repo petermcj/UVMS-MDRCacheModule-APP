@@ -8,7 +8,7 @@ import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
 import eu.europa.ec.fisheries.mdr.entities.codelists.ers.FaoSpecies;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.SneakyThrows;

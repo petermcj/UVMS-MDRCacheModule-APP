@@ -11,7 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 
 import eu.europa.ec.fisheries.uvms.mdr.message.constants.ModuleQueues;
-import eu.europa.ec.fisheries.uvms.message.MessageException;
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
 
 /**
  * Created by kovian on 02/12/2016.

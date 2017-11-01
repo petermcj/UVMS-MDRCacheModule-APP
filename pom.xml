@@ -47,14 +47,14 @@
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.2.3</logback.core.version>
-        <uvms.commons.version>2.0.31</uvms.commons.version>
+        <uvms.commons.version>3.0.0-SNAPSHOT</uvms.commons.version>
         <uvms.test.version>0.0.4</uvms.test.version>
 
         <hibernate-search-orm.version>5.3.0.Final</hibernate-search-orm.version>
 
         <junit.version>4.12</junit.version>
 
-        <usm4uvms.version>3.0.8</usm4uvms.version>
+        <usm4uvms.version>4.0.0-SNAPSHOT</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <database.dialect>oracle</database.dialect>
@@ -150,8 +150,8 @@
             <!-- Common libraries dependencies -->
 
             <dependency>
-                <groupId>eu.europa.ec.fisheries.uvms</groupId>
-                <artifactId>uvms-commons</artifactId>
+	            <groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+	            <artifactId>uvms-commons-message</artifactId>
                 <version>${uvms.commons.version}</version>
             </dependency>
             <dependency>
