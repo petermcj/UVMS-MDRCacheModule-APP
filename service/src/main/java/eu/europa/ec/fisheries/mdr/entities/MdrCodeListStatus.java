@@ -12,8 +12,9 @@ package eu.europa.ec.fisheries.mdr.entities;
 
 import eu.europa.ec.fisheries.mdr.converter.CharAcronymListStateConverter;
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
-import eu.europa.ec.fisheries.uvms.domain.CharBooleanConverter;
-import eu.europa.ec.fisheries.uvms.domain.DateRange;
+import eu.europa.ec.fisheries.uvms.commons.domain.CharBooleanConverter;
+import eu.europa.ec.fisheries.uvms.commons.domain.DateRange;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;

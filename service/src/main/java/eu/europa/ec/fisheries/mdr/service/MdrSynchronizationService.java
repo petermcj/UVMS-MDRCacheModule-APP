@@ -12,7 +12,8 @@ package eu.europa.ec.fisheries.mdr.service;
 
 import eu.europa.ec.fisheries.mdr.exception.MdrMappingException;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
-import eu.europa.ec.fisheries.uvms.message.MessageException;
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
+
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Local;

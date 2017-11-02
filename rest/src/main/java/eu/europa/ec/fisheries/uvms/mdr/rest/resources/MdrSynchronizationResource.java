@@ -10,16 +10,9 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
-import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
-import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
-import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
-import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
-import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
-import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
 import java.util.Collection;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +26,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.collections.CollectionUtils;
+
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
+import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
+import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
+import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
+import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
+import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
+import eu.europa.ec.fisheries.uvms.commons.rest.resource.UnionVMSResource;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
+import lombok.extern.slf4j.Slf4j;
 import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 @Path("/service")

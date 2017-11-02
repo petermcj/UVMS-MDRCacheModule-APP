@@ -1,6 +1,5 @@
 package eu.europa.ec.fisheries.mdr.entities;
 
-import eu.europa.ec.fisheries.uvms.domain.DateRange;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -13,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import eu.europa.ec.fisheries.uvms.commons.domain.DateRange;
 
 /**
  * Created by kovian on 10/11/2016.

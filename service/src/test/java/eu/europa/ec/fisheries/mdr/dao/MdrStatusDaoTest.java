@@ -23,7 +23,7 @@ import eu.europa.ec.fisheries.mdr.entities.AcronymVersion;
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.exception.AcronymNotFoundException;
-import eu.europa.ec.fisheries.uvms.common.DateUtils;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;

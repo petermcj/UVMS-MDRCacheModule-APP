@@ -13,7 +13,8 @@ package eu.europa.ec.fisheries.mdr.entities.codelists.baseentities;
 import static eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry.LOW_CASE_ANALYSER;
 
 import eu.europa.ec.fisheries.mdr.exception.FieldNotMappedException;
-import eu.europa.ec.fisheries.uvms.domain.DateRange;
+import eu.europa.ec.fisheries.uvms.commons.domain.DateRange;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
