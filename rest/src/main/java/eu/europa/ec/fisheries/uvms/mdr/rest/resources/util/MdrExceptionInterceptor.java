@@ -32,7 +32,6 @@ public class MdrExceptionInterceptor extends UnionVMSResource {
 
     @AroundInvoke
     public Object createResponse(final InvocationContext ic) {
-        log.info("ExceptionInterceptor received");
         try {
             return ic.proceed();
         } catch (IllegalArgumentException e) {

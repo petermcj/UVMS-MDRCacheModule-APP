@@ -5,6 +5,5 @@
                    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="postgres\changelog\testdata\testData.xml" context="test"/>
-    <include file="postgres\changelog\testdata\testDataBigLists.xml" context="test"/>
 
 </databaseChangeLog>

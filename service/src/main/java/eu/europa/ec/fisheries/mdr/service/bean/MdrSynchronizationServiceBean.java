@@ -84,7 +84,6 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public GenericOperationOutcome manualStartMdrSynchronization() {
-        log.info("\n\t\t--->>> STARTING MDR SYNCHRONIZATION \n");
         return extractAcronymsAndUpdateMdr();
     }
 
@@ -96,9 +95,10 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
      */
     @Override
     public GenericOperationOutcome extractAcronymsAndUpdateMdr() {
+        log.info("\n\t\t[START] Starting sending code-lists synchronization requests.\n");
         List<String> updatableAcronyms = extractUpdatableAcronyms(getAvailableMdrAcronyms());
         GenericOperationOutcome errorContainer = updateMdrEntities(updatableAcronyms);
-        log.info("\n\t\t---> SYNCHRONIZATION OF MDR ENTITIES FINISHED!\n\n");
+        log.info("\n\n\t\t[END] Sending of synchronization requests finished! (Sent : [ "+updatableAcronyms.size()+" ] code-lists synch requests in total!) \n\n");
         return errorContainer;
     }
 
