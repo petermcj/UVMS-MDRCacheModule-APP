@@ -80,7 +80,7 @@ public class MdrEventServiceBean implements MdrEventService {
         try {
             String messageStr = extractMessageRequestString(message);
             FLUXMDRReturnMessage responseMessage = extractMdrFluxResponseFromEventMessage(messageStr);
-            if (isDataMessage(message, messageStr, responseMessage)) {
+            if (isDataMessage(messageStr, responseMessage)) {
                 mdrRepository.updateMdrEntity(responseMessage);
             }
         } catch (MdrModelMarshallException e) {
@@ -88,10 +88,10 @@ public class MdrEventServiceBean implements MdrEventService {
         }
     }
 
-    private boolean isDataMessage(EventMessage message, String messageStr, FLUXMDRReturnMessage responseMessage) {
+    private boolean isDataMessage(String messageStr, FLUXMDRReturnMessage responseMessage) {
         boolean isDataMessage = true;
-        if (responseMessage == null) {
-            log.error("[ERROR] The message received is not of type <<FLUXMDRReturnMessage>> so it won't be attempted to save it! Message content is as follows : " + extractMessageRequestString(message));
+        if (StringUtils.isEmpty(messageStr)) {
+            log.error("[ERROR] The message received is not of type <<FLUXMDRReturnMessage>> so it won't be attempted to save it! Message content is as follows : " + messageStr);
             isDataMessage = false;
         } else if (isAcnowledgeMessage(messageStr)) {
             log.info("[ACKNOWLEDGE] : Received Acnowledge Message for a prevoius request sent to FLUX. No data so nothing is going to be persisted in MDR.");

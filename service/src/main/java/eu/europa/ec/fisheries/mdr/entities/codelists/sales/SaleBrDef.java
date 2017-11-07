@@ -66,15 +66,15 @@ public class SaleBrDef extends MasterDataRegistry {
     @Analyzer(definition = LOW_CASE_ANALYSER)
     private String brSublevel;
 
-    @Column(name = "flux_gp_validation_type_code")
-    @Field(name = "flux_gp_validation_type_code")
+    @Column(name = "flux_gp_validation_level_code")
+    @Field(name = "flux_gp_validation_level_code")
     @Analyzer(definition = LOW_CASE_ANALYSER)
-    private String fluxGpValidationTypeCode;
+    private String fluxGpValidationLevelCode;
 
-    @Column(name = "flux_gp_validation_en_descr")
-    @Field(name = "flux_gp_validation_en_descr")
+    @Column(name = "flux_gp_validation_level_en_descr")
+    @Field(name = "flux_gp_validation_level_en_descr")
     @Analyzer(definition = LOW_CASE_ANALYSER)
-    private String fluxGpValidationEnDescr;
+    private String fluxGpValidationLevelEnDescr;
 
     @Override
     public void populate(MDRDataNodeType mdrDataType) throws FieldNotMappedException {
@@ -90,10 +90,10 @@ public class SaleBrDef extends MasterDataRegistry {
                 this.setSequenceOrder(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "SALE_BR_DEF.BRSUBLEVEL")) {
                 this.setBrSublevel(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "FLUX_GP_VALIDATION_TYPE.ENDESCRIPTION")) {
-                this.setFluxGpValidationEnDescr(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "FLUX_GP_VALIDATION_TYPE.CODE")) {
-                this.setFluxGpValidationTypeCode(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FLUX_GP_VALIDATION_LEVEL.ENDESCRIPTION")) {
+                this.setFluxGpValidationLevelEnDescr(fieldValue);
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "FLUX_GP_VALIDATION_LEVEL.CODE")) {
+                this.setFluxGpValidationLevelCode(fieldValue);
             } else {
                 logError(fieldName, this.getClass().getSimpleName());
             }
@@ -129,16 +129,16 @@ public class SaleBrDef extends MasterDataRegistry {
     public void setBrSublevel(String brSublevel) {
         this.brSublevel = brSublevel;
     }
-    public String getFluxGpValidationTypeCode() {
-        return fluxGpValidationTypeCode;
+    public String getFluxGpValidationLevelCode() {
+        return fluxGpValidationLevelCode;
     }
-    public void setFluxGpValidationTypeCode(String fluxGpValidationTypeCode) {
-        this.fluxGpValidationTypeCode = fluxGpValidationTypeCode;
+    public void setFluxGpValidationLevelCode(String fluxGpValidationLevelCode) {
+        this.fluxGpValidationLevelCode = fluxGpValidationLevelCode;
     }
-    public String getFluxGpValidationEnDescr() {
-        return fluxGpValidationEnDescr;
+    public String getFluxGpValidationLevelEnDescr() {
+        return fluxGpValidationLevelEnDescr;
     }
-    public void setFluxGpValidationEnDescr(String fluxGpValidationEnDescr) {
-        this.fluxGpValidationEnDescr = fluxGpValidationEnDescr;
+    public void setFluxGpValidationLevelEnDescr(String fluxGpValidationLevelEnDescr) {
+        this.fluxGpValidationLevelEnDescr = fluxGpValidationLevelEnDescr;
     }
 }

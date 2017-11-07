@@ -149,7 +149,7 @@ public abstract class MasterDataRegistry implements Serializable {
     }
 
     protected void logError(String fieldName, String className) {
-        log.error("The field '" + fieldName + "' for Codelist : " + className + " has not been mapped!");
+        log.error("The field '" + fieldName + "' for Codelist : [- " + className + " -] has not been mapped!");
     }
 
 

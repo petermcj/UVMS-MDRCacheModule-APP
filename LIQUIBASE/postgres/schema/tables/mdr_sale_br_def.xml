@@ -21,8 +21,8 @@
             <column name="version" type="VARCHAR(255)"/>
             <column name="br_sublevel" type="VARCHAR(255)"/>
             <column name="field" type="VARCHAR(255)"/>
-            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
-            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_level_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_level_code" type="VARCHAR(255)"/>
             <column name="message_if_failing" type="VARCHAR(255)"/>
             <column name="sequence_order" type="VARCHAR(255)"/>
         </createTable>

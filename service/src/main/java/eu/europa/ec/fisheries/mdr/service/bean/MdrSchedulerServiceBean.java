@@ -92,7 +92,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
                 setUpScheduler(schedulerExpressionStrClean);
                 // Persist the new config into DB;
                 mdrRepository.changeMdrSchedulerConfiguration(schedulerExpressionStrClean);
-                log.info("New MDR scheduler timer created - [{}] - and stored.", TIMER_CONFIG.getInfo());
+                log.info("[END] New MDR scheduler timer created - [{}] - and stored.", TIMER_CONFIG.getInfo());
             } catch (ServiceException e) {
                 log.error("Error while trying to save the new configuration", e);
             } catch (IllegalArgumentException ex) {

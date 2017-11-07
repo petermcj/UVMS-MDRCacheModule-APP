@@ -111,9 +111,9 @@ public class Location extends MasterDataRegistry {
         for (MDRElementDataNodeType field : mdrDataType.getSubordinateMDRElementDataNodes()) {
             String fieldName = field.getName().getValue();
             String fieldValue = field.getValue().getValue();
-            if (StringUtils.equalsIgnoreCase(fieldName, "PLACE.CODE")) {
+            if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE")) {
                 this.setPlacesCode(fieldValue);
-            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACE.CODE2")) {
+            } else if (StringUtils.equalsIgnoreCase(fieldName, "PLACES.CODE2")) {
                 this.setCode2(fieldValue);
             } else if (StringUtils.equalsIgnoreCase(fieldName, "LOCATION.LOCODE")) {
                 this.setUnloCode(fieldValue);
