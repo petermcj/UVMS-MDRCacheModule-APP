@@ -11,21 +11,23 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.message.consumer;
 
 
-import eu.europa.ec.fisheries.uvms.mdr.message.constants.MdrMessageConstants;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
-import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
-import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import javax.xml.bind.JAXBException;
+
+import eu.europa.ec.fisheries.uvms.commons.message.impl.JAXBUtils;
+import eu.europa.ec.fisheries.uvms.mdr.message.constants.MdrMessageConstants;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import un.unece.uncefact.data.standard.mdr.communication.MdrModuleRequest;
@@ -55,7 +57,7 @@ public class MdrMessageConsumerBean implements MessageListener {
         try {
             TextMessage textMessage = (TextMessage) message;
             LOG.info("Message received in MDR module");
-            MdrModuleRequest request = JAXBMarshaller.unmarshallTextMessage(textMessage, MdrModuleRequest.class);
+            MdrModuleRequest request = JAXBUtils.unMarshallMessage(textMessage.getText(), MdrModuleRequest.class);
             LOG.info("Message unmarshalled successfully in MDR module");
             if(request==null){
                 LOG.error("[ Request is null ]");
@@ -76,7 +78,7 @@ public class MdrMessageConsumerBean implements MessageListener {
                     LOG.error("[ Request method {} is not implemented ]", request.getMethod().name());
                    // errorEvent.fire(new EventMessage(textMessage, "[ Request method " + request.getMethod().name() + "  is not implemented ]"));
             }
-        } catch (MdrModelMarshallException | NullPointerException | ClassCastException e) {
+        } catch (JMSException | JAXBException | NullPointerException | ClassCastException e) {
             LOG.error("[ Error when receiving message in MDR module: ] {}", e);
            // errorEvent.fire(new EventMessage(textMessage, "Error when receiving message in movement: " + e.getMessage()));
         }
