@@ -42,7 +42,7 @@
         <mdr.model.version>1.0.1</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>4.0.4</exchange.model>
+        <exchange.model>4.0.4-SNAPSHOT</exchange.model>
         <rules.model>3.0.11</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
