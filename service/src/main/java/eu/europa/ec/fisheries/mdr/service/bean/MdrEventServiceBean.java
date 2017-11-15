@@ -10,30 +10,32 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
-import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
-import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
-import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
-import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
-import eu.europa.ec.fisheries.mdr.service.MdrEventService;
-import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
-import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueueProducer;
-import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
-import eu.europa.ec.fisheries.uvms.mdr.model.mapper.JAXBMarshaller;
-import eu.europa.ec.fisheries.uvms.mdr.model.mapper.MdrModuleMapper;
-import java.lang.reflect.Field;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 import javax.persistence.Column;
+import javax.xml.bind.JAXBException;
+import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
+import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
+import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
+import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
+import eu.europa.ec.fisheries.mdr.service.MdrEventService;
+import eu.europa.ec.fisheries.uvms.commons.message.impl.JAXBUtils;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
+import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueueProducer;
+import eu.europa.ec.fisheries.uvms.mdr.model.exception.MdrModelMarshallException;
+import eu.europa.ec.fisheries.uvms.mdr.model.mapper.MdrModuleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -236,9 +238,9 @@ public class MdrEventServiceBean implements MdrEventService {
     private FLUXMDRReturnMessage extractMdrFluxResponseFromEventMessage(String textMessage) throws MdrModelMarshallException {
         FLUXMDRReturnMessage respType = null;
         try {
-            SetFLUXMDRSyncMessageResponse mdrResp = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
-            respType = JAXBMarshaller.unmarshallTextMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
-        } catch (MdrModelMarshallException e) {
+            SetFLUXMDRSyncMessageResponse mdrResp = JAXBUtils.unMarshallMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
+            respType = JAXBUtils.unMarshallMessage(mdrResp.getRequest(), FLUXMDRReturnMessage.class);
+        } catch (JAXBException e) {
             log.error(">> Error while attempting to Unmarshall Flux Response Object (XML MDR Entity)! Maybe not a FLUXMDRReturnMessage!!");
         }
         log.info("FluxMdrReturnMessage Unmarshalled successfully.. Going to save the data received! \n");
@@ -254,8 +256,8 @@ public class MdrEventServiceBean implements MdrEventService {
     private MdrGetCodeListRequest extractMdrGetCodeListEventMessage(String textMessage) throws MdrModelMarshallException {
         MdrGetCodeListRequest codelistReq = null;
         try {
-            codelistReq = JAXBMarshaller.unmarshallTextMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
-        } catch (MdrModelMarshallException e) {
+            codelistReq = JAXBUtils.unMarshallMessage(textMessage, SetFLUXMDRSyncMessageResponse.class);
+        } catch (JAXBException e) {
             log.error(">> Error while attempting to Unmarshall MdrGetCodeListRequest Object (XML MDR Request) : \n", e);
         }
         log.info("MdrGetCodeListRequest Unmarshalled successfully.. Going to validate and get the data now! /n");
