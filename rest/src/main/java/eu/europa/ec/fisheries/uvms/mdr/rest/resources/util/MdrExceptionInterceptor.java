@@ -13,14 +13,13 @@
 
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources.util;
 
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.rest.constants.ErrorCodes;
-import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
-import lombok.extern.slf4j.Slf4j;
-
+import eu.europa.ec.fisheries.uvms.commons.rest.constants.ErrorCodes;
+import eu.europa.ec.fisheries.uvms.commons.rest.resource.UnionVMSResource;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by padhyad on 8/8/2016.
@@ -33,7 +32,6 @@ public class MdrExceptionInterceptor extends UnionVMSResource {
 
     @AroundInvoke
     public Object createResponse(final InvocationContext ic) {
-        log.info("ExceptionInterceptor received");
         try {
             return ic.proceed();
         } catch (IllegalArgumentException e) {

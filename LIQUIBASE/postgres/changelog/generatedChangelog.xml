@@ -1,0 +1,1371 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="kovian (generated)" id="1509379254114-1">
+        <createSequence sequenceName="mdr_codelist_status_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-2">
+        <createSequence sequenceName="mdr_conversion_factor_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-3">
+        <createSequence sequenceName="mdr_effort_zone_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-4">
+        <createSequence sequenceName="mdr_fa_bait_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-5">
+        <createSequence sequenceName="mdr_fa_bft_size_category_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-6">
+        <createSequence sequenceName="mdr_fa_br_def_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-7">
+        <createSequence sequenceName="mdr_fa_br_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-8">
+        <createSequence sequenceName="mdr_fa_catch_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-9">
+        <createSequence sequenceName="mdr_fa_characteristic_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-10">
+        <createSequence sequenceName="mdr_fa_fishery_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-11">
+        <createSequence sequenceName="mdr_fa_gear_characteristic_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-12">
+        <createSequence sequenceName="mdr_fa_gear_problem_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-13">
+        <createSequence sequenceName="mdr_fa_gear_recovery_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-14">
+        <createSequence sequenceName="mdr_fa_gear_role_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-15">
+        <createSequence sequenceName="mdr_fa_query_parameter_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-16">
+        <createSequence sequenceName="mdr_fa_query_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-17">
+        <createSequence sequenceName="mdr_fa_reason_arrival_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-18">
+        <createSequence sequenceName="mdr_fa_reason_departure_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-19">
+        <createSequence sequenceName="mdr_fa_reason_discard_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-20">
+        <createSequence sequenceName="mdr_fa_reason_entry_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-21">
+        <createSequence sequenceName="mdr_fa_vessel_role_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-22">
+        <createSequence sequenceName="mdr_fao_area_codes_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-23">
+        <createSequence sequenceName="mdr_fao_species_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-24">
+        <createSequence sequenceName="mdr_farm_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-25">
+        <createSequence sequenceName="mdr_fish_freshness_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-26">
+        <createSequence sequenceName="mdr_fish_packaging_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-27">
+        <createSequence sequenceName="mdr_fish_presentation_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-28">
+        <createSequence sequenceName="mdr_fish_preservation_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-29">
+        <createSequence sequenceName="mdr_fish_size_category_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-30">
+        <createSequence sequenceName="mdr_fish_size_class_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-31">
+        <createSequence sequenceName="mdr_fishing_trip_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-32">
+        <createSequence sequenceName="mdr_flap_id_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-33">
+        <createSequence sequenceName="mdr_flux_contact_role_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-34">
+        <createSequence sequenceName="mdr_flux_fa_fcm_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-35">
+        <createSequence sequenceName="mdr_flux_fa_report_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-36">
+        <createSequence sequenceName="mdr_flux_fa_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-37">
+        <createSequence sequenceName="mdr_flux_gp_msg_id_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-38">
+        <createSequence sequenceName="mdr_flux_gp_party_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-39">
+        <createSequence sequenceName="mdr_flux_gp_purpose_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-40">
+        <createSequence sequenceName="mdr_flux_gp_response_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-41">
+        <createSequence sequenceName="mdr_flux_gp_validation_level_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-42">
+        <createSequence sequenceName="mdr_flux_gp_validation_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-43">
+        <createSequence sequenceName="mdr_flux_location_characteristic_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-44">
+        <createSequence sequenceName="mdr_flux_location_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-45">
+        <createSequence sequenceName="mdr_flux_process_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-46">
+        <createSequence sequenceName="mdr_flux_sales_party_id_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-47">
+        <createSequence sequenceName="mdr_flux_sales_party_role_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-48">
+        <createSequence sequenceName="mdr_flux_sales_query_param_role_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-49">
+        <createSequence sequenceName="mdr_flux_sales_query_param_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-50">
+        <createSequence sequenceName="mdr_flux_sales_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-51">
+        <createSequence sequenceName="mdr_flux_unit_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-52">
+        <createSequence sequenceName="mdr_flux_vessel_id_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-53">
+        <createSequence sequenceName="mdr_gear_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-54">
+        <createSequence sequenceName="mdr_gfcm_gsa_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-55">
+        <createSequence sequenceName="mdr_gfcm_statistical_rectangles_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-56">
+        <createSequence sequenceName="mdr_ices_statistical_rectangles_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-57">
+        <createSequence sequenceName="mdr_location_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-58">
+        <createSequence sequenceName="mdr_member_state_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-59">
+        <createSequence sequenceName="mdr_prod_usage_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-60">
+        <createSequence sequenceName="mdr_rfmo_codes_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-61">
+        <createSequence sequenceName="mdr_sale_br_def_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-62">
+        <createSequence sequenceName="mdr_sale_br_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-63">
+        <createSequence sequenceName="mdr_statistical_rectangle_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-64">
+        <createSequence sequenceName="mdr_territory_curr_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-65">
+        <createSequence sequenceName="mdr_territory_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-66">
+        <createSequence sequenceName="mdr_vessel_activity_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-67">
+        <createSequence sequenceName="mdr_vessel_storage_type_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-68">
+        <createSequence sequenceName="mdr_weight_means_seq"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-69">
+        <createTable tableName="mdr_acronymversion">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version_name" type="VARCHAR(255)"/>
+            <column name="status_ref_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-70">
+        <createTable tableName="mdr_codelist_status">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_attempt" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="last_status" type="VARCHAR(255)"/>
+            <column name="last_success" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="object_acronym" type="VARCHAR(255)"/>
+            <column name="object_description" type="VARCHAR(255)"/>
+            <column name="object_name" type="VARCHAR(255)"/>
+            <column name="object_source" type="VARCHAR(255)"/>
+            <column name="schedulable" type="VARCHAR(1)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-71">
+        <createTable tableName="mdr_conversion_factor">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="bioorder" type="VARCHAR(255)"/>
+            <column name="collective" type="VARCHAR(255)"/>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="es_name" type="VARCHAR(255)"/>
+            <column name="factor" type="VARCHAR(255)"/>
+            <column name="family" type="VARCHAR(255)"/>
+            <column name="fr_name" type="VARCHAR(255)"/>
+            <column name="is_group" type="VARCHAR(255)"/>
+            <column name="legal_source" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_code2" type="VARCHAR(255)"/>
+            <column name="places_enname" type="VARCHAR(255)"/>
+            <column name="presentation" type="VARCHAR(255)"/>
+            <column name="scient_name" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(255)"/>
+            <column name="taxocode" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-72">
+        <createTable tableName="mdr_effort_zone">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="legal_reference" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-73">
+        <createTable tableName="mdr_fa_bait_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-74">
+        <createTable tableName="mdr_fa_bft_size_category">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-75">
+        <createTable tableName="mdr_fa_br">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="activation_indicator" type="VARCHAR(255)"/>
+            <column name="br_level_fk_x_key" type="VARCHAR(255)"/>
+            <column name="br_sublevel" type="VARCHAR(255)"/>
+            <column name="context" type="VARCHAR(255)"/>
+            <column name="error_message" type="VARCHAR(255)"/>
+            <column name="field" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
+            <column name="message_if_failing" type="VARCHAR(255)"/>
+            <column name="sequence_order" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-76">
+        <createTable tableName="mdr_fa_br_def">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="br_sublevel" type="VARCHAR(255)"/>
+            <column name="field" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
+            <column name="message_if_failing" type="VARCHAR(255)"/>
+            <column name="sequence_order" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-77">
+        <createTable tableName="mdr_fa_catch_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-78">
+        <createTable tableName="mdr_fa_characteristic">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="data_type" type="VARCHAR(255)"/>
+            <column name="data_type_desc" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-79">
+        <createTable tableName="mdr_fa_fishery">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-80">
+        <createTable tableName="mdr_fa_gear_characteristic">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="data_type" type="VARCHAR(255)"/>
+            <column name="data_type_desc" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-81">
+        <createTable tableName="mdr_fa_gear_problem">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-82">
+        <createTable tableName="mdr_fa_gear_recovery">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-83">
+        <createTable tableName="mdr_fa_gear_role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-84">
+        <createTable tableName="mdr_fa_query_parameter">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-85">
+        <createTable tableName="mdr_fa_query_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-86">
+        <createTable tableName="mdr_fa_reason_arrival">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-87">
+        <createTable tableName="mdr_fa_reason_departure">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-88">
+        <createTable tableName="mdr_fa_reason_discard">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-89">
+        <createTable tableName="mdr_fa_reason_entry">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-90">
+        <createTable tableName="mdr_fa_vessel_role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-91">
+        <createTable tableName="mdr_fao_area_codes">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="en_level_name" type="VARCHAR(255)"/>
+            <column name="level" type="VARCHAR(255)"/>
+            <column name="terminal_ind" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-92">
+        <createTable tableName="mdr_fao_species">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="bio_order" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="es_name" type="VARCHAR(255)"/>
+            <column name="family" type="VARCHAR(255)"/>
+            <column name="fr_name" type="VARCHAR(255)"/>
+            <column name="is_group" type="VARCHAR(255)"/>
+            <column name="scientific_name" type="VARCHAR(255)"/>
+            <column name="taxo_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-93">
+        <createTable tableName="mdr_farm">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="contracting_party" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="iso_2_code" type="VARCHAR(255)"/>
+            <column name="legal_reference" type="VARCHAR(255)"/>
+            <column name="place_fk_x_key" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_code2" type="VARCHAR(255)"/>
+            <column name="rfmo_code" type="VARCHAR(255)"/>
+            <column name="rfmo_en_description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-94">
+        <createTable tableName="mdr_fish_freshness">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-95">
+        <createTable tableName="mdr_fish_packaging">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-96">
+        <createTable tableName="mdr_fish_presentation">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-97">
+        <createTable tableName="mdr_fish_preservation">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-98">
+        <createTable tableName="mdr_fish_size_category">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-99">
+        <createTable tableName="mdr_fish_size_class">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-100">
+        <createTable tableName="mdr_fishing_trip_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-101">
+        <createTable tableName="mdr_flap_id_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-102">
+        <createTable tableName="mdr_flux_contact_role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-103">
+        <createTable tableName="mdr_flux_fa_fcm">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-104">
+        <createTable tableName="mdr_flux_fa_report_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-105">
+        <createTable tableName="mdr_flux_fa_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-106">
+        <createTable tableName="mdr_flux_gp_msg_id">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-107">
+        <createTable tableName="mdr_flux_gp_party">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="code_2" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-108">
+        <createTable tableName="mdr_flux_gp_purpose">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-109">
+        <createTable tableName="mdr_flux_gp_response">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-110">
+        <createTable tableName="mdr_flux_gp_validation_level">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-111">
+        <createTable tableName="mdr_flux_gp_validation_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-112">
+        <createTable tableName="mdr_flux_location_characteristic">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-113">
+        <createTable tableName="mdr_flux_location_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-114">
+        <createTable tableName="mdr_flux_process_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-115">
+        <createTable tableName="mdr_flux_sales_party_id_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-116">
+        <createTable tableName="mdr_flux_sales_party_role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-117">
+        <createTable tableName="mdr_flux_sales_query_param">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-118">
+        <createTable tableName="mdr_flux_sales_query_param_role">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-119">
+        <createTable tableName="mdr_flux_sales_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-120">
+        <createTable tableName="mdr_flux_unit">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-121">
+        <createTable tableName="mdr_flux_vessel_id_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-122">
+        <createTable tableName="mdr_gear_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="group_name" type="VARCHAR(255)"/>
+            <column name="gear_activity_code" type="VARCHAR(255)"/>
+            <column name="gear_activity_description" type="VARCHAR(255)"/>
+            <column name="iccat_code" type="VARCHAR(255)"/>
+            <column name="iss_cfg_code" type="VARCHAR(255)"/>
+            <column name="sub_group_name" type="VARCHAR(255)"/>
+            <column name="target" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-123">
+        <createTable tableName="mdr_gfcm_gsa">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-124">
+        <createTable tableName="mdr_gfcm_statistical_rectangles">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="east" type="VARCHAR(255)"/>
+            <column name="north" type="VARCHAR(255)"/>
+            <column name="south" type="VARCHAR(255)"/>
+            <column name="west" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-125">
+        <createTable tableName="mdr_ices_statistical_rectangles">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="east" type="VARCHAR(255)"/>
+            <column name="north" type="VARCHAR(255)"/>
+            <column name="south" type="VARCHAR(255)"/>
+            <column name="west" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-126">
+        <createTable tableName="mdr_location">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="code_2" type="VARCHAR(255)"/>
+            <column name="commercial_port_ind" type="BOOLEAN"/>
+            <column name="coordinates" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="fishing_port_ind" type="BOOLEAN"/>
+            <column name="landing_place_ind" type="BOOLEAN"/>
+            <column name="latitude" type="FLOAT8"/>
+            <column name="longitude" type="FLOAT8"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="un_function_code" type="VARCHAR(255)"/>
+            <column name="unlo_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-127">
+        <createTable tableName="mdr_member_state">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="iso_2_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-128">
+        <createTable tableName="mdr_prod_usage">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-129">
+        <createTable tableName="mdr_rfmo_codes">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="code_2" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-130">
+        <createTable tableName="mdr_sale_br">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="activation_indicator" type="VARCHAR(255)"/>
+            <column name="br_level_fk_x_key" type="VARCHAR(255)"/>
+            <column name="br_sublevel" type="VARCHAR(255)"/>
+            <column name="context" type="VARCHAR(255)"/>
+            <column name="field" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
+            <column name="message_if_failing" type="VARCHAR(255)"/>
+            <column name="sequence_order" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-131">
+        <createTable tableName="mdr_sale_br_def">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="br_sublevel" type="VARCHAR(255)"/>
+            <column name="field" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_en_descr" type="VARCHAR(255)"/>
+            <column name="flux_gp_validation_type_code" type="VARCHAR(255)"/>
+            <column name="message_if_failing" type="VARCHAR(255)"/>
+            <column name="sequence_order" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-132">
+        <createTable tableName="mdr_statistical_rectangle">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="east" type="VARCHAR(255)"/>
+            <column name="north" type="VARCHAR(255)"/>
+            <column name="south" type="VARCHAR(255)"/>
+            <column name="west" type="VARCHAR(255)"/>
+            <column name="source" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-133">
+        <createTable tableName="mdr_territory">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="code_2" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="land_lock_ind" type="VARCHAR(255)"/>
+            <column name="land_type_code" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-134">
+        <createTable tableName="mdr_territory_curr">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="iso_2_code" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_en_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-135">
+        <createTable tableName="mdr_vessel_activity">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-136">
+        <createTable tableName="mdr_vessel_storage_type">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-137">
+        <createTable tableName="mdr_weight_means">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-138">
+        <addPrimaryKey columnNames="id" constraintName="mdr_acronymversion_pkey" tableName="mdr_acronymversion"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-139">
+        <addPrimaryKey columnNames="id" constraintName="mdr_codelist_status_pkey" tableName="mdr_codelist_status"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-140">
+        <addPrimaryKey columnNames="id" constraintName="mdr_conversion_factor_pkey" tableName="mdr_conversion_factor"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-141">
+        <addPrimaryKey columnNames="id" constraintName="mdr_effort_zone_pkey" tableName="mdr_effort_zone"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-142">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_bait_type_pkey" tableName="mdr_fa_bait_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-143">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_bft_size_category_pkey" tableName="mdr_fa_bft_size_category"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-144">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_br_def_pkey" tableName="mdr_fa_br_def"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-145">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_br_pkey" tableName="mdr_fa_br"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-146">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_catch_type_pkey" tableName="mdr_fa_catch_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-147">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_characteristic_pkey" tableName="mdr_fa_characteristic"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-148">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_fishery_pkey" tableName="mdr_fa_fishery"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-149">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_gear_characteristic_pkey" tableName="mdr_fa_gear_characteristic"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-150">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_gear_problem_pkey" tableName="mdr_fa_gear_problem"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-151">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_gear_recovery_pkey" tableName="mdr_fa_gear_recovery"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-152">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_gear_role_pkey" tableName="mdr_fa_gear_role"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-153">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_query_parameter_pkey" tableName="mdr_fa_query_parameter"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-154">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_query_type_pkey" tableName="mdr_fa_query_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-155">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_reason_arrival_pkey" tableName="mdr_fa_reason_arrival"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-156">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_reason_departure_pkey" tableName="mdr_fa_reason_departure"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-157">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_reason_discard_pkey" tableName="mdr_fa_reason_discard"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-158">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_reason_entry_pkey" tableName="mdr_fa_reason_entry"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-159">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fa_vessel_role_pkey" tableName="mdr_fa_vessel_role"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-160">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fao_area_codes_pkey" tableName="mdr_fao_area_codes"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-161">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fao_species_pkey" tableName="mdr_fao_species"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-162">
+        <addPrimaryKey columnNames="id" constraintName="mdr_farm_pkey" tableName="mdr_farm"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-163">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_freshness_pkey" tableName="mdr_fish_freshness"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-164">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_packaging_pkey" tableName="mdr_fish_packaging"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-165">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_presentation_pkey" tableName="mdr_fish_presentation"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-166">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_preservation_pkey" tableName="mdr_fish_preservation"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-167">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_size_category_pkey" tableName="mdr_fish_size_category"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-168">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fish_size_class_pkey" tableName="mdr_fish_size_class"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-169">
+        <addPrimaryKey columnNames="id" constraintName="mdr_fishing_trip_type_pkey" tableName="mdr_fishing_trip_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-170">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flap_id_type_pkey" tableName="mdr_flap_id_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-171">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_contact_role_pkey" tableName="mdr_flux_contact_role"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-172">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_fa_fcm_pkey" tableName="mdr_flux_fa_fcm"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-173">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_fa_report_type_pkey" tableName="mdr_flux_fa_report_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-174">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_fa_type_pkey" tableName="mdr_flux_fa_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-175">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_msg_id_pkey" tableName="mdr_flux_gp_msg_id"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-176">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_party_pkey" tableName="mdr_flux_gp_party"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-177">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_purpose_pkey" tableName="mdr_flux_gp_purpose"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-178">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_response_pkey" tableName="mdr_flux_gp_response"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-179">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_validation_level_pkey" tableName="mdr_flux_gp_validation_level"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-180">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_gp_validation_type_pkey" tableName="mdr_flux_gp_validation_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-181">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_location_characteristic_pkey" tableName="mdr_flux_location_characteristic"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-182">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_location_type_pkey" tableName="mdr_flux_location_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-183">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_process_type_pkey" tableName="mdr_flux_process_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-184">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_party_id_type_pkey" tableName="mdr_flux_sales_party_id_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-185">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_party_role_pkey" tableName="mdr_flux_sales_party_role"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-186">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_query_param_pkey" tableName="mdr_flux_sales_query_param"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-187">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_query_param_role_pkey" tableName="mdr_flux_sales_query_param_role"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-188">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_sales_type_pkey" tableName="mdr_flux_sales_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-189">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_unit_pkey" tableName="mdr_flux_unit"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-190">
+        <addPrimaryKey columnNames="id" constraintName="mdr_flux_vessel_id_type_pkey" tableName="mdr_flux_vessel_id_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-191">
+        <addPrimaryKey columnNames="id" constraintName="mdr_gear_type_pkey" tableName="mdr_gear_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-192">
+        <addPrimaryKey columnNames="id" constraintName="mdr_gfcm_gsa_pkey" tableName="mdr_gfcm_gsa"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-193">
+        <addPrimaryKey columnNames="id" constraintName="mdr_gfcm_statistical_rectangles_pkey" tableName="mdr_gfcm_statistical_rectangles"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-194">
+        <addPrimaryKey columnNames="id" constraintName="mdr_ices_statistical_rectangles_pkey" tableName="mdr_ices_statistical_rectangles"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-195">
+        <addPrimaryKey columnNames="id" constraintName="mdr_location_pkey" tableName="mdr_location"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-196">
+        <addPrimaryKey columnNames="id" constraintName="mdr_member_state_pkey" tableName="mdr_member_state"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-197">
+        <addPrimaryKey columnNames="id" constraintName="mdr_prod_usage_pkey" tableName="mdr_prod_usage"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-198">
+        <addPrimaryKey columnNames="id" constraintName="mdr_rfmo_codes_pkey" tableName="mdr_rfmo_codes"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-199">
+        <addPrimaryKey columnNames="id" constraintName="mdr_sale_br_def_pkey" tableName="mdr_sale_br_def"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-200">
+        <addPrimaryKey columnNames="id" constraintName="mdr_sale_br_pkey" tableName="mdr_sale_br"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-201">
+        <addPrimaryKey columnNames="id" constraintName="mdr_statistical_rectangle_pkey" tableName="mdr_statistical_rectangle"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-202">
+        <addPrimaryKey columnNames="id" constraintName="mdr_territory_curr_pkey" tableName="mdr_territory_curr"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-203">
+        <addPrimaryKey columnNames="id" constraintName="mdr_territory_pkey" tableName="mdr_territory"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-204">
+        <addPrimaryKey columnNames="id" constraintName="mdr_vessel_activity_pkey" tableName="mdr_vessel_activity"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-205">
+        <addPrimaryKey columnNames="id" constraintName="mdr_vessel_storage_type_pkey" tableName="mdr_vessel_storage_type"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-206">
+        <addPrimaryKey columnNames="id" constraintName="mdr_weight_means_pkey" tableName="mdr_weight_means"/>
+    </changeSet>
+    <changeSet author="kovian (generated)" id="1509379254114-207">
+        <addForeignKeyConstraint baseColumnNames="status_ref_id" baseTableName="mdr_acronymversion" constraintName="fk_322iyjopmjhfv4uw0jpcfguug" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="mdr_codelist_status"/>
+    </changeSet>
+</databaseChangeLog>

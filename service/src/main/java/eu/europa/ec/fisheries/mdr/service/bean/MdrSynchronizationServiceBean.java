@@ -19,21 +19,24 @@ import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
 import eu.europa.ec.fisheries.mdr.util.GenericOperationOutcome;
 import eu.europa.ec.fisheries.mdr.util.OperationOutcome;
-import eu.europa.ec.fisheries.uvms.common.DateUtils;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.IMdrMessageProducer;
-import eu.europa.ec.fisheries.uvms.message.MessageException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author kovian
@@ -81,7 +84,6 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public GenericOperationOutcome manualStartMdrSynchronization() {
-        log.info("\n\t\t--->>> STARTING MDR SYNCHRONIZATION \n");
         return extractAcronymsAndUpdateMdr();
     }
 
@@ -93,9 +95,10 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
      */
     @Override
     public GenericOperationOutcome extractAcronymsAndUpdateMdr() {
+        log.info("\n\t\t[START] Starting sending code-lists synchronization requests.\n");
         List<String> updatableAcronyms = extractUpdatableAcronyms(getAvailableMdrAcronyms());
         GenericOperationOutcome errorContainer = updateMdrEntities(updatableAcronyms);
-        log.info("\n\t\t---> SYNCHRONIZATION OF MDR ENTITIES FINISHED!\n\n");
+        log.info("\n\n\t\t[END] Sending of synchronization requests finished! (Sent : [ "+updatableAcronyms.size()+" ] code-lists synch requests in total!) \n\n");
         return errorContainer;
     }
 
@@ -153,9 +156,10 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
             log.error("Error while trying to get acronymsList from cache", e);
             return new GenericOperationOutcome(OperationOutcome.NOK, "Error while trying to get acronymsList from cache");
         }
-
+        // 1. Send update request (data)
         for (String actualAcronym : acronymsList) {
             log.info("Preparing Request Object for " + actualAcronym + " and sending message to Rules queue.");
+
             // Create request object and send message to exchange module
             if (existingAcronymsList.contains(actualAcronym) && !acronymIsInExclusionList(actualAcronym)) {// Acronym exists
                 String strReqObj;
@@ -180,6 +184,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
                 errorContainer.addMessage("The following acronym doesn't exist (or is excluded) in the cacheFactory : " + actualAcronym);
             }
         }
+
         return errorContainer;
     }
 
@@ -200,7 +205,7 @@ public class MdrSynchronizationServiceBean implements MdrSynchronizationService 
         } catch (MdrMappingException e) {
             log.error(ERROR_WHILE_TRYING_TO_MAP_MDRQUERY_TYPE_FOR_ACRONYM, acronymsList, e);
         } catch (MessageException e) {
-            log.error("Error while trying to send message from MDR module to Rules module.", e);
+            log.error("Error while trying to send OBJ_DESC message from MDR module to Rules module.", e);
         }
     }
 

@@ -11,6 +11,7 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.bean;
 
 import eu.europa.ec.fisheries.mdr.dao.BaseMdrDaoTest;
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrLuceneSearchRepositoryBean;
 import eu.europa.ec.fisheries.mdr.repository.bean.MdrRepositoryBean;
@@ -23,13 +24,17 @@ import eu.europa.ec.fisheries.mdr.service.bean.MdrSchedulerServiceBean;
 import eu.europa.ec.fisheries.mdr.service.bean.MdrSynchronizationServiceBean;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.IMdrMessageProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.MdrMessageProducerBean;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.TimerService;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.internal.util.reflection.Whitebox;
-
-import javax.ejb.TimerService;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRElementDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.TextType;
 
 /**
  * Created by kovian on 06/01/2017.
@@ -53,7 +58,6 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
 
     private BaseMdrBean baseBean;
 
-
     @Before
     @SneakyThrows
     public void prepare() {
@@ -72,7 +76,6 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
         Whitebox.setInternalState(mdrSearchRepository, "postgres", em);
 
         // initBean internal state
-        Whitebox.setInternalState(initBean, "synchBean", synchBean);
         Whitebox.setInternalState(initBean, "schedulerBean", schedulerBean);
         Whitebox.setInternalState(initBean, "mdrStatusRepository", mdrStatusRepository);
         Whitebox.setInternalState(initBean, "mdrRepository", mdrRepository);
@@ -82,6 +85,39 @@ public class MdrInitializationBeanTest extends BaseMdrDaoTest {
         mdrRepository.init();
         mdrSearchRepository.init();
     }
+
+    @Test
+    public void testChnkingOperation(){
+        int initCap = 1000000;
+        final long start = System.currentTimeMillis();
+        List<MDRDataNodeType> containedMDRDataNodes = new ArrayList<>(initCap);
+        for(int i = 0; i < initCap; i++){
+            containedMDRDataNodes.add(prepareMock());
+        }
+        final List<List<MasterDataRegistry>> dataNodesAsChunks = mdrRepository.getDataNodesAsChunks(containedMDRDataNodes, "FLUX_GP_RESPONSE", 500);
+        final long end = System.currentTimeMillis() - start;
+        System.out.print("FINISHED.. It took : " + end / 1000 + " seconds");
+    }
+
+    private MDRDataNodeType prepareMock() {
+        List<MDRElementDataNodeType> props = new ArrayList<>();
+        MDRElementDataNodeType dataNode = new MDRElementDataNodeType();
+        dataNode.setName(new TextType("FLUX_GP_RESPONSE.CODE", null, null));
+        dataNode.setValue(new TextType("CODE", null, null));
+
+        MDRElementDataNodeType dataNode1 = new MDRElementDataNodeType();
+        dataNode1.setName(new TextType("FLUX_GP_RESPONSE.DESCRIPTION", null, null));
+        dataNode1.setValue(new TextType("DESCRIPTION", null, null));
+
+        MDRElementDataNodeType dataNode2 = new MDRElementDataNodeType();
+        dataNode2.setName(new TextType("FLUX_GP_RESPONSE.VERSION", null, null));
+        dataNode2.setValue(new TextType("VERSION", null, null));
+
+        props.add(dataNode);props.add(dataNode1);props.add(dataNode2);
+
+        return new MDRDataNodeType(null, null, null, null, props);
+    }
+
 
     @Test
     @SneakyThrows

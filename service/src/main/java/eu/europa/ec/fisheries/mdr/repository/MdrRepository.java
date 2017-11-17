@@ -10,15 +10,16 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.repository;
 
+import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
 
-import javax.ejb.Local;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.Local;
+import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 @Local
 public interface MdrRepository {
@@ -30,13 +31,19 @@ public interface MdrRepository {
 
     void updateMdrEntity(FLUXMDRReturnMessage response);
 
+    void insertNewDataWithoutPurging(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
+	void deleteDataAndPurgeIndexes(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
+
 	void insertNewData(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException;
 
 	List<MdrConfiguration> getAllConfigurations() throws ServiceException;
 
 	MdrConfiguration getConfigurationByName(String vonfigName);
 
-	List<MdrCodeListStatus> findAllStatuses() throws ServiceException;
+    void updateMetaDataForAcronym(MDRDataSetType metaData);
+
+    List<MdrCodeListStatus> findAllStatuses() throws ServiceException;
 
 	MdrCodeListStatus findStatusByAcronym(String acronym);
 
@@ -44,4 +51,5 @@ public interface MdrRepository {
 
 	MdrConfiguration getMdrSchedulerConfiguration();
 
+    void saveAcronymStructureMessage(String messageStr, String acronym);
 }

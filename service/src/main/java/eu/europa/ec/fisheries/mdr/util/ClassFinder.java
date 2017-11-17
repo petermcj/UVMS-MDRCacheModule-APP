@@ -11,12 +11,11 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.mdr.util;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 public final class ClassFinder {
 

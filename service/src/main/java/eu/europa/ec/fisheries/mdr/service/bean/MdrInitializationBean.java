@@ -10,6 +10,8 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
+import static javax.ejb.ConcurrencyManagementType.BEAN;
+
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
@@ -20,17 +22,19 @@ import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.repository.MdrStatusRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
-import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.*;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.ejb.ConcurrencyManagementType.BEAN;
+import javax.annotation.PostConstruct;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.DependsOn;
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * Created by kovian on 29/07/2016.
@@ -39,13 +43,10 @@ import static javax.ejb.ConcurrencyManagementType.BEAN;
 @Singleton
 @Startup
 @ConcurrencyManagement(BEAN)
-@DependsOn(value = {"MdrSynchronizationServiceBean", "MdrStatusRepositoryBean", "MdrRepositoryBean", "MdrSchedulerServiceBean"})
+@DependsOn(value = {"MdrStatusRepositoryBean", "MdrRepositoryBean", "MdrSchedulerServiceBean"})
 public class MdrInitializationBean {
 
     private static final String FIXED_SCHED_CONFIGURATION = "0 1 20 * *";
-
-    @EJB
-    private MdrSynchronizationService synchBean;
 
     @EJB
     private MdrSchedulerService schedulerBean;
@@ -57,7 +58,7 @@ public class MdrInitializationBean {
     private MdrRepository mdrRepository;
 
     @EJB
-    MdrLuceneSearchRepository mdrSearchRepository;
+    private MdrLuceneSearchRepository mdrSearchRepository;
 
     /**
      * Method for start up Jobs of MDR module Module (Deploy phase)
@@ -116,6 +117,12 @@ public class MdrInitializationBean {
         log.debug("\n\n -- It Took " + (System.currentTimeMillis() - startTime) + " milliseconds for startUp activities to finish.. -- \n\n");
     }
 
+    /**
+     * Updates the Code List Status table when MDR module initializes.
+     * It stores all the new Lists if there are such.
+     *
+     * @throws MdrStatusTableException
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     private void updateMdrStatusTable() throws MdrStatusTableException {
         List<String> acronymsFromCache;

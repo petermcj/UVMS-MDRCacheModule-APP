@@ -15,21 +15,25 @@ import eu.europa.ec.fisheries.mdr.exception.MdrCacheInitException;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
 import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
 import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by kovian on 15/12/2016.
@@ -66,7 +70,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             Boolean isReversed, String filter, String... searchAttributes) throws ServiceException {
 
         if(searchAttributes == null || searchAttributes.length == 0){
-            searchAttributes = new String[]{"code"};
+            searchAttributes = new String[]{"code", "description"};
             log.warn("No search attributes provide. Going to consider only 'code' attribute.");
         }
 
@@ -111,7 +115,7 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             Class codeListClass = MasterDataRegistryEntityCacheFactory.getInstance().getNewInstanceForEntity(acronym).getClass();
             FullTextEntityManager ftEntityManager = getFullTextEntityManager();
             QueryBuilder queryBuilder = ftEntityManager.getSearchFactory().buildQueryBuilder().forEntity(codeListClass).get();
-            Query luceneQuery = queryBuilder.keyword().wildcard().onFields(searchAttributes).matching(filterText.toLowerCase()).createQuery();
+            Query luceneQuery = queryBuilder.keyword().wildcard().onFields(searchAttributes).ignoreFieldBridge().matching(filterText.toLowerCase()).createQuery();
             fullTextQuery = ftEntityManager.createFullTextQuery(luceneQuery, codeListClass);
             log.debug("Using lucene query: {}", fullTextQuery.toString());
         } catch (MdrCacheInitException e) {
@@ -180,7 +184,12 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
             query.setMaxResults(pageSize);
         }
         if (StringUtils.isNotBlank(sortBy)) {
-            query.setSort(new Sort(new SortField(sortBy, SortField.Type.STRING, isReversed)));
+            SortField.Type sortType = SortField.Type.STRING;
+            if("validity.startDate".equalsIgnoreCase(sortBy) || "validity.endDate".equalsIgnoreCase(sortBy)){
+                log.info("[INFO] Sorting by date...");
+                sortType = SortField.Type.LONG;
+            }
+            query.setSort(new Sort(new SortField(sortBy, sortType, isReversed)));
         }
         return query;
     }

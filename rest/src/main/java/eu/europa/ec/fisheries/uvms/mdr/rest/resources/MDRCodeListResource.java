@@ -13,31 +13,39 @@
 
 package eu.europa.ec.fisheries.uvms.mdr.rest.resources;
 
-import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
-import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
-import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
-import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
-import eu.europa.ec.fisheries.uvms.rest.dto.PaginationDto;
-import eu.europa.ec.fisheries.uvms.rest.dto.SearchRequestDto;
-import eu.europa.ec.fisheries.uvms.rest.dto.SortingDto;
-import eu.europa.ec.fisheries.uvms.rest.resource.UnionVMSResource;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+
+import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
+import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
+import eu.europa.ec.fisheries.mdr.repository.MdrLuceneSearchRepository;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.PaginationDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.SearchRequestDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.dto.SortingDto;
+import eu.europa.ec.fisheries.uvms.commons.rest.resource.UnionVMSResource;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.IUserRoleInterceptor;
+import eu.europa.ec.fisheries.uvms.mdr.rest.resources.util.MdrExceptionInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import un.unece.uncefact.data.standard.mdr.communication.MdrFeaturesEnum;
 
 /**
  * Created by georgige on 8/22/2016.
@@ -66,7 +74,7 @@ public class MDRCodeListResource extends UnionVMSResource {
             int pageSize             = pagination!=null?pagination.getPageSize():Integer.MAX_VALUE;
             SortingDto sorting       = searchRequest.getSorting();
             String sortBy            = sorting!=null? sorting.getSortBy():null;
-            boolean isReversed       = sorting!=null? sorting.isReversed():false;
+            boolean isReversed       = sorting!=null && sorting.isReversed();
             String filter            = (String) criteria.get("filter");
             String[] searchAttributes = getSearchAttributesAsArray(criteria.get("searchAttribute"));
             try {
@@ -113,10 +121,10 @@ public class MDRCodeListResource extends UnionVMSResource {
                 log.warn("No search attributes provide. Going to consider only 'code' attribute.");
             }
             if(!MasterDataRegistryEntityCacheFactory.getInstance().existsAcronym(acronym)){
-                createErrorResponse("The acronym you are searching for doesn't exist in MDR cache.");
+                return createErrorResponse("The acronym you are searching for doesn't exist in MDR cache.");
             }
             if(StringUtils.isEmpty(filter)){
-                createErrorResponse("Filter attribute cannot be empty.");
+                return createErrorResponse("Filter attribute cannot be empty.");
             }
             List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(acronym, offset, pageSize, sortBy, isReversed, filter, searchAttributes);
             int totalCodeItemsCount = mdrSearchRepositroy.countCodeListItemsByAcronymAndFilter(acronym, filter, searchAttributes);

@@ -12,20 +12,20 @@ package eu.europa.ec.fisheries.mdr.cachefactory;
 
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
 import eu.europa.ec.fisheries.mdr.mapper.MasterDataRegistryEntityCacheFactory;
-import lombok.SneakyThrows;
-import org.junit.Test;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Created by kovian on 24/11/2016.
  */
-/*@Ignore*/
+@Ignore
 public class MdrCacheFactoryTest {
 
-    String filesPath              = "C:\\GIT Repository\\mdr-modules-repo\\uvms-mdrmodule-db\\LIQUIBASE\\postgres\\schema\\tables";
+    String filesPath              = "C:\\GIT Repository\\Mdr Github\\UVMS-MDRCacheModule-APP\\LIQUIBASE\\postgres\\schema\\tables";
     String includeDeclarationInit = "<include file=\"\\postgres\\schema\\tables\\";
 
     @Test
@@ -45,6 +45,7 @@ public class MdrCacheFactoryTest {
     }
 
     @Test
+	@Ignore
     @SneakyThrows
     public void testEnlistFileEntriesInConsole(){
         String includeDeclarationEnd  = "\"/>";

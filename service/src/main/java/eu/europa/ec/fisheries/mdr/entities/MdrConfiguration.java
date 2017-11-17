@@ -13,8 +13,15 @@ package eu.europa.ec.fisheries.mdr.entities;
 /**
  * Created by kovian on 29/07/2016.
  */
-import javax.persistence.*;
+
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Entity that will map the configuration of MDR module module.

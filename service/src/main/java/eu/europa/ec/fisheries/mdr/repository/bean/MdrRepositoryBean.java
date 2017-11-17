@@ -10,10 +10,12 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.repository.bean;
 
+import eu.europa.ec.fisheries.mdr.dao.CodeListStructureDao;
 import eu.europa.ec.fisheries.mdr.dao.MasterDataRegistryDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrBulkOperationsDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrConfigurationDao;
 import eu.europa.ec.fisheries.mdr.dao.MdrStatusDao;
+import eu.europa.ec.fisheries.mdr.entities.CodeListStructure;
 import eu.europa.ec.fisheries.mdr.entities.MdrCodeListStatus;
 import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.entities.codelists.baseentities.MasterDataRegistry;
@@ -21,20 +23,24 @@ import eu.europa.ec.fisheries.mdr.entities.constants.AcronymListState;
 import eu.europa.ec.fisheries.mdr.mapper.MdrEntityMapper;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.bean.BaseMdrBean;
-import eu.europa.ec.fisheries.uvms.common.DateUtils;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.commons.date.DateUtils;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
 import un.unece.uncefact.data.standard.mdr.response.IDType;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataNodeType;
+import un.unece.uncefact.data.standard.mdr.response.MDRDataSetType;
 
 @Stateless
 @Slf4j
@@ -49,6 +55,8 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
 
     private MasterDataRegistryDao mdrDao;
 
+    private CodeListStructureDao structDao;
+
     @PostConstruct
     public void init() {
         initEntityManager();
@@ -56,6 +64,7 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         mdrDao = new MasterDataRegistryDao<>(getEntityManager());
         mdrConfigDao = new MdrConfigurationDao(getEntityManager());
         statusDao = new MdrStatusDao(getEntityManager());
+        structDao = new CodeListStructureDao(getEntityManager());
     }
 
     @SuppressWarnings("unchecked")
@@ -81,27 +90,103 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void updateMdrEntity(FLUXMDRReturnMessage response) {
-        // Response is OK
         final FLUXResponseDocumentType fluxResponseDocument = response.getFLUXResponseDocument();
+
+        // Response is OK
         if (!"NOK".equals(fluxResponseDocument.getResponseCode().toString().toUpperCase())) {
-            List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
-            if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
-                try {
-                    insertNewData(mdrEntityRows);
-                    statusDao.updateStatusSuccessForAcronym(response.getMDRDataSet(), AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
-                } catch (ServiceException e) {
-                    statusDao.updateStatusForAcronym(mdrEntityRows.get(0).getAcronym(), AcronymListState.FAILED);
-                    log.error("Transaction rolled back! Couldn't persist mdr Entity : ", e);
-                }
-            } else { // List is empty
-                log.error("[[ ERROR ]] Got Message from Flux related to MDR but, the list is empty! So, nothing is going to be persisted!");
-                statusFailedOrEmptyForAcronym(fluxResponseDocument, AcronymListState.EMPTY);
+            if (isBigList(response)) { // In case of big lists we need to save chunks of data at a time
+                saveBigList(response);
+            } else {
+                saveSmallList(response, fluxResponseDocument);
             }
             // Response is NOT OK
         } else {
             log.error("Response was not ok (NOK) so nothing is going to be persisted.");
             statusFailedOrEmptyForAcronym(fluxResponseDocument, AcronymListState.FAILED);
         }
+    }
+
+    private void saveBigList(FLUXMDRReturnMessage response) {
+        log.info("\n\n[START] Received BIG List. Going to chunk it ::::::::::::::::::::::::::::::");
+        List<List<MasterDataRegistry>> chuncksList = getDataNodesAsChunks(response.getMDRDataSet().getContainedMDRDataNodes(), response.getMDRDataSet().getID().getValue(), 500);
+        log.info("[END] Finished chunking BIG list ::::::::::::::::::::::::::::::\n\n");
+        try {
+            // Deletion phase
+            deleteDataAndPurgeIndexes(chuncksList.get(0));
+
+            // Insertion phase
+            int counter = 0;
+            for (List<MasterDataRegistry> chunkOfMdrEntityRows : chuncksList) {
+                log.info("Inserting chunk : " + counter++);
+                insertNewDataWithoutPurging(chunkOfMdrEntityRows);
+            }
+            statusDao.updateStatusSuccessForAcronym(response.getMDRDataSet(), AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
+        } catch (ServiceException e) {
+            statusDao.updateStatusForAcronym(chuncksList.get(0).get(0).getAcronym(), AcronymListState.FAILED);
+            log.error("Transaction rolled back! Couldn't persist mdr Entity : ", e);
+        }
+
+
+    }
+
+    private void saveSmallList(FLUXMDRReturnMessage response, FLUXResponseDocumentType fluxResponseDocument) {
+        List<MasterDataRegistry> mdrEntityRows = MdrEntityMapper.mapJAXBObjectToMasterDataType(response);
+        if (CollectionUtils.isNotEmpty(mdrEntityRows)) {
+            log.info("START [STAT] : Received and going to save [ - " + mdrEntityRows.size() + " - ] Rows of the entity [ " + mdrEntityRows.get(0).getAcronym() + " ]");
+            try {
+                insertNewData(mdrEntityRows);
+                statusDao.updateStatusSuccessForAcronym(response.getMDRDataSet(), AcronymListState.SUCCESS, DateUtils.nowUTC().toDate());
+            } catch (ServiceException e) {
+                statusDao.updateStatusForAcronym(mdrEntityRows.get(0).getAcronym(), AcronymListState.FAILED);
+                log.error("Transaction rolled back! Couldn't persist mdr Entity : ", e);
+            }
+            log.info("END [STAT] : Succesfully saved [ - " + mdrEntityRows.size() + " - ] Rows of the entity [ " + mdrEntityRows.get(0).getAcronym() + " ]");
+        } else { // List is empty
+            log.error("[[ ERROR ]] Got Message from Flux related to MDR but, the list is empty! So, nothing is going to be persisted!");
+            statusFailedOrEmptyForAcronym(fluxResponseDocument, AcronymListState.EMPTY);
+        }
+    }
+
+    /**
+     * Chunks the data in chunks of chunkSize size.
+     *
+     * @param containedMDRDataNodes
+     * @param acronym
+     * @param chunkSize
+     * @return chunked data
+     */
+    public List<List<MasterDataRegistry>> getDataNodesAsChunks(List<MDRDataNodeType> containedMDRDataNodes, String acronym, int chunkSize) {
+        log.info("The BIG lists size is : [[ " + containedMDRDataNodes.size() + " ]]");
+        List<List<MasterDataRegistry>> chunks = new ArrayList<>();
+        createChunks(chunks, containedMDRDataNodes, containedMDRDataNodes.size(), acronym, 0, chunkSize);
+        log.info("Created : [[ " + chunks.size() + " ]] chunks of [[ " + chunkSize + " ]] dataNodes each.");
+        return chunks;
+    }
+
+    private void createChunks(List<List<MasterDataRegistry>> chunks, List<MDRDataNodeType> dataNodes, int listSize, String acronym, int chunkStart, int chunkSize) {
+        List<MDRDataNodeType> chunk = new ArrayList<>();
+        int i;
+        for (i = chunkStart; i < chunkStart + chunkSize && i < listSize; i++) {
+            chunk.add(dataNodes.get(i));
+        }
+        chunks.add(MdrEntityMapper.mapJaxbToMDRType(chunk, acronym));
+        if (i < listSize) {
+            createChunks(chunks, dataNodes, listSize, acronym, i, chunkSize);
+        }
+    }
+
+    /**
+     * Checks if the list is too big to be saved all in one time.
+     *
+     * @param response
+     * @return true if list is big (> 5000 entries), false otherwise
+     */
+    private boolean isBigList(FLUXMDRReturnMessage response) {
+        MDRDataSetType mdrDataSet = response.getMDRDataSet();
+        if (mdrDataSet == null || CollectionUtils.isEmpty(mdrDataSet.getContainedMDRDataNodes())) {
+            return false;
+        }
+        return mdrDataSet.getContainedMDRDataNodes().size() > 3000;
     }
 
     /**
@@ -116,9 +201,9 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         if (referencedID != null && StringUtils.isNotEmpty(referencedID.getValue())) {//, but has referenceID to relate which acronym failed
             log.info("Reference ID different then null");
             MdrCodeListStatus referencedStatus = statusDao.getStatusForUuid(referencedID.getValue());
-            log.info("Found MdrCodeListStatus for related ref ID : "+referencedStatus.getObjectAcronym());
+            log.info("Found MdrCodeListStatus for related ref ID : " + referencedStatus.getObjectAcronym());
             if (referencedStatus != null) {
-                log.info("Going to set the status FAILED for acronym : "+referencedStatus.getObjectAcronym());
+                log.info("Going to set the status FAILED for acronym : " + referencedStatus.getObjectAcronym());
                 statusDao.updateStatusForAcronym(referencedStatus.getObjectAcronym(), state);
             } else {
                 log.error("[[ERROR]] The MDR response received in MDR module was OK, but the referenceId couldn't be found in status table!");
@@ -126,6 +211,23 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
         } else {//, and doesn't have referenceID
             log.error("[[ERROR]] The MDR response received in MDR module was NOK and has no referenceId to link it to!");
         }
+    }
+
+    /**
+     * Method for saving the new mdrData (MDR entity rows) without deleting previous data.
+     *
+     * @param mdrEntityRows
+     * @throws ServiceException
+     */
+    @Override
+    public void insertNewDataWithoutPurging(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException {
+        saveNewEntriesAndRefreshIndexes(mdrEntityRows, mdrEntityRows.get(0).getClass());
+    }
+
+    @Override
+    public void deleteDataAndPurgeIndexes(List<? extends MasterDataRegistry> mdrEntityRows) throws ServiceException {
+        Class mdrClass = mdrEntityRows.get(0).getClass();
+        deleteFromDbAndPurgeIndexes(mdrClass, mdrClass.getSimpleName());
     }
 
     /**
@@ -170,6 +272,18 @@ public class MdrRepositoryBean extends BaseMdrBean implements MdrRepository {
     @Override
     public MdrConfiguration getMdrSchedulerConfiguration() {
         return mdrConfigDao.getMdrSchedulerConfiguration();
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.REQUIRED)
+    public void saveAcronymStructureMessage(String messageStr, String acronym) {
+        structDao.saveStructureMessage(new CodeListStructure(acronym, new Date(), messageStr));
+    }
+
+
+    @Override
+    public void updateMetaDataForAcronym(MDRDataSetType metaData) {
+        statusDao.updateMetadataForAcronym(metaData);
     }
 
     /*

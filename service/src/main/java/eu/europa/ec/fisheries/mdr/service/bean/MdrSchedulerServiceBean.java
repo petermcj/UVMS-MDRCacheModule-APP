@@ -13,14 +13,19 @@ import eu.europa.ec.fisheries.mdr.entities.MdrConfiguration;
 import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrSchedulerService;
 import eu.europa.ec.fisheries.mdr.service.MdrSynchronizationService;
-import eu.europa.ec.fisheries.uvms.exception.ServiceException;
+import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
+import java.util.Collection;
+import javax.annotation.Resource;
+import javax.ejb.EJB;
+import javax.ejb.ScheduleExpression;
+import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
+import javax.ejb.TimerService;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Resource;
-import javax.ejb.*;
-import javax.transaction.Transactional;
-import java.util.Collection;
 
 /**
  * @author kovian
@@ -87,7 +92,7 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
                 setUpScheduler(schedulerExpressionStrClean);
                 // Persist the new config into DB;
                 mdrRepository.changeMdrSchedulerConfiguration(schedulerExpressionStrClean);
-                log.info("New MDR scheduler timer created - [{}] - and stored.", TIMER_CONFIG.getInfo());
+                log.info("[END] New MDR scheduler timer created - [{}] - and stored.", TIMER_CONFIG.getInfo());
             } catch (ServiceException e) {
                 log.error("Error while trying to save the new configuration", e);
             } catch (IllegalArgumentException ex) {
@@ -146,6 +151,6 @@ public class MdrSchedulerServiceBean implements MdrSchedulerService {
         if (args.length != 5) {
             throw new IllegalArgumentException("Invalid scheduler expression: " + schedulerExpressionStr);
         }
-        return expression.minute(args[0]).hour(args[1]).dayOfMonth(args[2]).month(args[3]).year(args[4]);
+        return expression.minute(args[0]).hour(args[1]).dayOfMonth(args[2]).month(args[3]).dayOfWeek(args[4]);
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+				   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+				   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+       
+    <changeSet author="kovian" id="189067210515248124">
+	  <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1"
+					  sequenceName="mdr_farm_seq" startValue="2000"/>
+    </changeSet>  
+
+	<changeSet author="kovian (generated)" id="1509379254114-93">
+        <createTable tableName="mdr_farm">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="end_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="start_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="contracting_party" type="VARCHAR(255)"/>
+            <column name="en_name" type="VARCHAR(255)"/>
+            <column name="iso_2_code" type="VARCHAR(255)"/>
+            <column name="legal_reference" type="VARCHAR(255)"/>
+            <column name="place_fk_x_key" type="VARCHAR(255)"/>
+            <column name="places_code" type="VARCHAR(255)"/>
+            <column name="places_code2" type="VARCHAR(255)"/>
+            <column name="rfmo_code" type="VARCHAR(255)"/>
+            <column name="rfmo_en_description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    
+	<changeSet author="kovian (generated)" id="1490280409454-24" objectQuotingStrategy="QUOTE_ALL_OBJECTS">
+        <addPrimaryKey columnNames="id" constraintName="mdr_farm_pkey" tableName="mdr_farm"/>
+    </changeSet>
+	
+	<changeSet author="kovian" id="76817789687171-24" dbms="postgresql">
+		<addDefaultValue 
+				columnDataType="BIGINT"
+				columnName="id"
+				defaultValueSequenceNext="mdr_farm_seq"
+				tableName="mdr_farm"/>
+	</changeSet>	
+	
+</databaseChangeLog>

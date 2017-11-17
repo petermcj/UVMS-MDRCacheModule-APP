@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>mdr-module-weblogic</artifactId>
@@ -10,7 +9,7 @@
     <parent>
         <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
         <artifactId>mdr</artifactId>
-        <version>0.5.0-SNAPSHOT</version>
+        <version>1.0.6-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -22,19 +21,40 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms</groupId>
-            <artifactId>usm4uvms</artifactId>
-            <version>${usm4uvms.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>eu.europa.ec.fisheries.uvms</groupId>
+			<artifactId>usm4uvms</artifactId>
+			<version>${usm4uvms.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+				<exclusion>
+				    <groupId>net.sf.ehcache</groupId>
+  					<artifactId>ehcache</artifactId>				
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.ehcache.internal</groupId>
+		    <artifactId>ehcache-core</artifactId>
+            <version>2.10.4</version>
+            <exclusions>
+            	<exclusion>
+            		 <groupId>org.slf4j</groupId>
+    				 <artifactId>slf4j-api</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>		
         <dependency>
             <groupId>eu.europa.ec.mare.usm</groupId>
             <artifactId>jwt-handler-impl</artifactId>
             <version>${jwt-handler-impl.version}</version>
         </dependency>
         <dependency>
-            <groupId>eu.europa.ec.fisheries.uvms</groupId>
-            <artifactId>uvms-commons</artifactId>
+            <groupId>eu.europa.ec.fisheries.uvms.commons</groupId>
+            <artifactId>uvms-commons-message</artifactId>
             <version>${uvms.commons.version}</version>
         </dependency>
         <dependency>
