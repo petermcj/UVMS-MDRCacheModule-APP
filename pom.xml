@@ -42,19 +42,19 @@
         <mdr.model.version>1.0.1</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>4.0.4</exchange.model>
+        <exchange.model>4.0.6</exchange.model>
         <rules.model>3.0.11</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
         <logback.core.version>1.2.3</logback.core.version>
-        <uvms.commons.version>3.0.6-SNAPSHOT</uvms.commons.version>
-        <uvms.test.version>0.0.4</uvms.test.version>
+        <uvms.commons.version>3.0.6</uvms.commons.version>
+        <uvms.test.version>0.0.8</uvms.test.version>
 
         <hibernate-search-orm.version>5.3.0.Final</hibernate-search-orm.version>
 
         <junit.version>4.12</junit.version>
 
-        <usm4uvms.version>4.0.5-SNAPSHOT</usm4uvms.version>
+        <usm4uvms.version>4.0.5</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <database.dialect>oracle</database.dialect>
