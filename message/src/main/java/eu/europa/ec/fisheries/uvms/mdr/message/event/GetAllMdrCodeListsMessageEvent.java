@@ -17,9 +17,10 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 /**
- * Created by kovian on 02/12/2016.
+ * Created by kovian on 18/12/2017.
  */
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
-public @interface GetMDRListMessageEvent {}
+public @interface GetAllMdrCodeListsMessageEvent {
+}
