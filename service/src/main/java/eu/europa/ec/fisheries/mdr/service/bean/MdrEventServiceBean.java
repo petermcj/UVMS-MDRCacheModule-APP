@@ -10,6 +10,8 @@ details. You should have received a copy of the GNU General Public License along
  */
 package eu.europa.ec.fisheries.mdr.service.bean;
 
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetAllMdrCodeListsMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetSingleMDRListMessageEvent;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Observes;
@@ -30,7 +32,6 @@ import eu.europa.ec.fisheries.mdr.repository.MdrRepository;
 import eu.europa.ec.fisheries.mdr.service.MdrEventService;
 import eu.europa.ec.fisheries.uvms.commons.message.impl.JAXBUtils;
 import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueueProducer;
@@ -41,6 +42,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import un.unece.uncefact.data.standard.mdr.communication.MdrGetCodeListRequest;
 import un.unece.uncefact.data.standard.mdr.communication.SetFLUXMDRSyncMessageResponse;
+import un.unece.uncefact.data.standard.mdr.communication.SingleCodeListRappresentation;
 import un.unece.uncefact.data.standard.mdr.communication.ValidationResultType;
 import un.unece.uncefact.data.standard.mdr.response.FLUXMDRReturnMessage;
 import un.unece.uncefact.data.standard.mdr.response.FLUXResponseDocumentType;
@@ -120,9 +122,8 @@ public class MdrEventServiceBean implements MdrEventService {
      * @param message
      */
     @Override
-    public void recievedGetMdrCodeListMessage(@Observes @GetMDRListMessageEvent EventMessage message) {
-        log.info("-->> Recieved message from FLUX related to MDR Entity Synchronization.");
-        // Extract request message
+    public void recievedGetSingleMdrCodeListMessage(@Observes @GetSingleMDRListMessageEvent EventMessage message) {
+        log.info("[INFO] Recieved GetSingleMDRListMessageEvent.. Going to fetch Lucene Indexes..");
         MdrGetCodeListRequest requestObj;
         try {
             requestObj = extractMdrGetCodeListEventMessage(extractMessageRequestString(message));
@@ -158,6 +159,31 @@ public class MdrEventServiceBean implements MdrEventService {
             }
             String mdrGetCodeListResponse = MdrModuleMapper.createFluxMdrGetCodeListResponse(mdrList, requestObj.getAcronym(), validation, validationStr);
             mdrResponseQueueProducer.sendModuleResponseMessage(message.getJmsMessage(), mdrGetCodeListResponse, "MDR");
+        } catch (MdrModelMarshallException e) {
+            sendErrorMessageToMdrQueue(MDR_MODEL_MARSHALL_EXCEPTION + e, message.getJmsMessage());
+        } catch (ServiceException e) {
+            sendErrorMessageToMdrQueue(ERROR_GET_LIST_FOR_THE_REQUESTED_CODE + e, message.getJmsMessage());
+        }
+    }
+
+    @Override
+    public void recievedGetAllMdrCodeListMessage(@Observes @GetAllMdrCodeListsMessageEvent EventMessage message) {
+        try {
+            log.info("[INFO] Got GetAllMdrCodeListsMessageEvent..");
+            List<String> acronymsList = null;
+            try {
+                acronymsList = MasterDataRegistryEntityCacheFactory.getAcronymsList();
+            } catch (MdrCacheInitException e) {
+                log.error("[ERROR] While trying to get the acronym list (MasterDataRegistryEntityCacheFactory.getAcronymsList())!!");
+            }
+            List<SingleCodeListRappresentation> allCoceLists = new ArrayList<>();
+            for(String actAcronym : acronymsList){
+                List<? extends MasterDataRegistry> mdrList = mdrSearchRepositroy.findCodeListItemsByAcronymAndFilter(actAcronym,
+                        0, 99999999, "code", false, "*", "code");
+                allCoceLists.add(MdrModuleMapper.mapToSingleCodeListRappresentation(mdrList, actAcronym, null, "OK"));
+            }
+            String response = MdrModuleMapper.mapToMdrGetAllCodeListsResponse(allCoceLists);
+            mdrResponseQueueProducer.sendModuleResponseMessage(message.getJmsMessage(), response, "MDR");
         } catch (MdrModelMarshallException e) {
             sendErrorMessageToMdrQueue(MDR_MODEL_MARSHALL_EXCEPTION + e, message.getJmsMessage());
         } catch (ServiceException e) {

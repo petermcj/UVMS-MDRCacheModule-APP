@@ -11,6 +11,8 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.message.consumer;
 
 
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetAllMdrCodeListsMessageEvent;
+import eu.europa.ec.fisheries.uvms.mdr.message.event.GetSingleMDRListMessageEvent;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.ejb.TransactionAttribute;
@@ -25,7 +27,6 @@ import javax.xml.bind.JAXBException;
 
 import eu.europa.ec.fisheries.uvms.commons.message.impl.JAXBUtils;
 import eu.europa.ec.fisheries.uvms.mdr.message.constants.MdrMessageConstants;
-import eu.europa.ec.fisheries.uvms.mdr.message.event.GetMDRListMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.carrier.EventMessage;
 import org.slf4j.Logger;
@@ -47,8 +48,12 @@ public class MdrMessageConsumerBean implements MessageListener {
     Event<EventMessage> synMdrListEvent;
 
     @Inject
-    @GetMDRListMessageEvent
-    Event<EventMessage> getMdrListEvent;
+    @GetSingleMDRListMessageEvent
+    Event<EventMessage> getSingleMdrListEvent;
+
+    @Inject
+    @GetAllMdrCodeListsMessageEvent
+    Event<EventMessage> getAllMdrListEvent;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -72,8 +77,11 @@ public class MdrMessageConsumerBean implements MessageListener {
                 	 synMdrListEvent.fire(new EventMessage(textMessage));
                      break;
                 case GET_MDR_CODE_LIST :
-                     getMdrListEvent.fire(new EventMessage(textMessage));
+                     getSingleMdrListEvent.fire(new EventMessage(textMessage));
                      break;
+                case GET_ALL_MDR_CODE_LIST :
+                    getAllMdrListEvent.fire(new EventMessage(textMessage));
+                    break;
                 default:
                     LOG.error("[ Request method {} is not implemented ]", request.getMethod().name());
                    // errorEvent.fire(new EventMessage(textMessage, "[ Request method " + request.getMethod().name() + "  is not implemented ]"));
