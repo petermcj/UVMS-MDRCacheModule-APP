@@ -26,13 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.commongrams.CommonGramsFilterFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
@@ -46,9 +44,6 @@ import un.unece.uncefact.data.standard.mdr.response.TextType;
 @AnalyzerDef(name = LOW_CASE_ANALYSER,
         tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
         filters = {
-                @TokenFilterDef(factory = StopFilterFactory.class, params = {
-                        @Parameter(name = "ignoreCase", value = "true")
-                }),
                 @TokenFilterDef(factory = CommonGramsFilterFactory.class),
                 @TokenFilterDef(factory = LowerCaseFilterFactory.class),
         })
