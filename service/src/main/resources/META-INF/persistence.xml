@@ -10,7 +10,7 @@
         <jta-data-source>java:jboss/datasources/uvms_mdr</jta-data-source>
 
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/>
+            <property name="hibernate.dialect" value="${hibernate.spatial.dialect}"/>
             <property name="hibernate.default_schema" value="mdr"/>
             <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform"/>
 
