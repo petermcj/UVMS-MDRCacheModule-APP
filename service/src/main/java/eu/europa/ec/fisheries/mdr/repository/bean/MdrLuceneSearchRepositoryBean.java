@@ -236,4 +236,5 @@ public class MdrLuceneSearchRepositoryBean extends BaseMdrBean implements MdrLuc
         log.info("Updating Lucene Index for MDR module..");
         getFullTextEntityManager().createIndexer().startAndWait();
     }
+
 }
