@@ -11,8 +11,8 @@ details. You should have received a copy of the GNU General Public License along
 package eu.europa.ec.fisheries.uvms.mdr.message.consumer;
 
 
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageConstants;
 import eu.europa.ec.fisheries.uvms.commons.message.impl.JAXBUtils;
-import eu.europa.ec.fisheries.uvms.mdr.message.constants.MdrMessageConstants;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.GetAllMdrCodeListsMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.GetSingleMdrListMessageEvent;
 import eu.europa.ec.fisheries.uvms.mdr.message.event.MdrSyncMessageEvent;
@@ -33,10 +33,10 @@ import org.slf4j.LoggerFactory;
 import un.unece.uncefact.data.standard.mdr.communication.MdrModuleRequest;
 
 
-@MessageDriven(mappedName = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE, activationConfig = {
-    @ActivationConfigProperty(propertyName = MdrMessageConstants.MESSAGING_TYPE_STR,   propertyValue = MdrMessageConstants.CONNECTION_TYPE),
-    @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_TYPE_STR, propertyValue = MdrMessageConstants.DESTINATION_TYPE_QUEUE),
-    @ActivationConfigProperty(propertyName = MdrMessageConstants.DESTINATION_STR,      propertyValue = MdrMessageConstants.MDR_MESSAGE_IN_QUEUE_NAME)
+@MessageDriven(mappedName = MessageConstants.QUEUE_MDR_EVENT, activationConfig = {
+    @ActivationConfigProperty(propertyName = MessageConstants.MESSAGING_TYPE_STR,   propertyValue = MessageConstants.CONNECTION_TYPE),
+    @ActivationConfigProperty(propertyName = MessageConstants.DESTINATION_TYPE_STR, propertyValue = MessageConstants.DESTINATION_TYPE_QUEUE),
+    @ActivationConfigProperty(propertyName = MessageConstants.DESTINATION_STR,      propertyValue = MessageConstants.MDR_MESSAGE_IN_QUEUE_NAME)
 })
 public class MdrMessageConsumerBean implements MessageListener {
 
