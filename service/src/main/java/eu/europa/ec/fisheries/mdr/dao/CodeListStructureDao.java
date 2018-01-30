@@ -38,7 +38,7 @@ public class CodeListStructureDao extends AbstractDAO<CodeListStructure> {
 
     public void saveStructureMessage(final CodeListStructure structure) {
         try {
-            deleteEntityByNamedQuery(CodeListStructure.class, CodeListStructure.DELETE_FROM_CODE_LIST_STRUCTURE, new HashMap<String, String>(){{put("acronym", structure.getAcronym());}});
+            deleteEntityByNamedQuery(CodeListStructure.class, CodeListStructure.DELETE_FROM_CODE_LIST_STRUCTURE, new HashMap<String, Object>(){{put("acronym", structure.getAcronym());}});
             createEntity(structure);
         } catch (ServiceException e) {
             log.error("Error during saving of CodeListStructure entity!");
