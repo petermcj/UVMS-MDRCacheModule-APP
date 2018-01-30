@@ -41,7 +41,7 @@ public class MdrMessageProducerBean implements IMdrMessageProducer {
     private RulesQueueProducer rulesQueueProducer;
 
     /**
-     * Sends a message to Exchange Queue.
+     * Sends a message to Rules Queue.
      *
      * @param text (to be sent to the queue)
      * @return messageID

@@ -44,15 +44,15 @@ public class MdrMessageConsumerBean implements MessageListener {
 
     @Inject
     @MdrSyncMessageEvent
-    Event<EventMessage> synMdrListEvent;
+    private Event<EventMessage> synMdrListEvent;
 
     @Inject
     @GetSingleMdrListMessageEvent
-    Event<EventMessage> getSingleMdrListEvent;
+    private Event<EventMessage> getSingleMdrListEvent;
 
     @Inject
     @GetAllMdrCodeListsMessageEvent
-    Event<EventMessage> getAllMdrListEvent;
+    private Event<EventMessage> getAllMdrListEvent;
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
