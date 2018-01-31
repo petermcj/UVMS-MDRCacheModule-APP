@@ -10,13 +10,12 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.uvms.mdr.message.producer;
 
+import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
 import eu.europa.ec.fisheries.uvms.mdr.message.constants.ModuleQueues;
 import eu.europa.ec.fisheries.uvms.mdr.message.consumer.commonconsumers.MdrEventConsumer;
-import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrEventQueueProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.MdrQueueProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.RulesEventQueueProducer;
 import eu.europa.ec.fisheries.uvms.mdr.message.producer.commonproducers.RulesQueueProducer;
-import eu.europa.ec.fisheries.uvms.commons.message.api.MessageException;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jms.Destination;
@@ -30,10 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MdrMessageProducerBean implements IMdrMessageProducer {
 
     @EJB
-    MdrEventConsumer mdrEventQueueConsumer;
-
-    @EJB
-    private MdrEventQueueProducer mdrEventQueueProducer;
+    private MdrEventConsumer mdrEventQueueConsumer;
 
     @EJB
     private MdrQueueProducer mdrQueueProducer;
@@ -45,7 +41,7 @@ public class MdrMessageProducerBean implements IMdrMessageProducer {
     private RulesQueueProducer rulesQueueProducer;
 
     /**
-     * Sends a message to Exchange Queue.
+     * Sends a message to Rules Queue.
      *
      * @param text (to be sent to the queue)
      * @return messageID
