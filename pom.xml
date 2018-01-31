@@ -5,12 +5,12 @@
     <parent>
         <groupId>fish.focus.uvms.maven</groupId>
         <artifactId>uvms-pom</artifactId>
-        <version>1.14</version>
+        <version>1.16</version>
     </parent>
 
     <groupId>eu.europa.ec.fisheries.uvms.mdr</groupId>
     <artifactId>mdr</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.8-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Maven project-archetype for UnionVms modules</description>
 
@@ -42,7 +42,7 @@
         <mdr.model.version>1.0.2-SNAPSHOT</mdr.model.version>
 
         <!-- Other modules dependencies -->
-        <exchange.model>4.0.6</exchange.model>
+        <exchange.model>4.0.9</exchange.model>
         <rules.model>3.0.11</rules.model>
 
         <jackson.version>2.7.3</jackson.version>
@@ -54,7 +54,7 @@
 
         <junit.version>4.12</junit.version>
 
-        <usm4uvms.version>4.0.5</usm4uvms.version>
+        <usm4uvms.version>4.0.8</usm4uvms.version>
         <usm_deployment_descriptor_force_update>true</usm_deployment_descriptor_force_update>
         <release.branch.name>uvms-1.0.0</release.branch.name>
         <database.dialect>oracle</database.dialect>

@@ -10,12 +10,12 @@ details. You should have received a copy of the GNU General Public License along
 */
 package eu.europa.ec.fisheries.mdr.dao;
 
+import javax.persistence.EntityManager;
+import java.util.HashMap;
+
 import eu.europa.ec.fisheries.mdr.entities.CodeListStructure;
 import eu.europa.ec.fisheries.uvms.commons.service.dao.AbstractDAO;
 import eu.europa.ec.fisheries.uvms.commons.service.exception.ServiceException;
-
-import java.util.HashMap;
-import javax.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
